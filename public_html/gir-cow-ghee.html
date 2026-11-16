@@ -1,0 +1,716 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gir Cow Ghee — Gamtu India</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --brown:#432514;--brown2:#5a3a28;
+  --sand:#cab9a7;--cream:#faf6f1;
+  --gold:#d4a017;--gold-light:#f5e6c0;
+  --teal:#00b894;--teal2:#00a381;
+  /* Matching index page button variables */
+  --btn-qty-bg: linear-gradient(135deg,#FF6B2B 0%,#F5A623 60%,#FFD700 100%);
+  --btn-qty-hover: linear-gradient(135deg,#e85a1a 0%,#e09510 60%,#f0c800 100%);
+  --btn-qty-color: #3a1800;
+  --btn-cart-bg: linear-gradient(135deg,#1a6b3a 0%,#22a05a 60%,#00c98c 100%);
+  --btn-cart-hover: linear-gradient(135deg,#145a2e 0%,#1a8a48 60%,#00b07a 100%);
+  --btn-cart-color: #fff;
+  --btn-count-bg: linear-gradient(135deg,#1e3d2f 0%,#1a5e3a 100%);
+}
+body{font-family:"Poppins",sans-serif;background:#fff;overflow-x:hidden;color:#333;}
+
+/* ── NAVBAR ── */
+.navbar{position:fixed;top:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:10px 40px;background:var(--sand);z-index:1000;transition:box-shadow 0.3s,background 0.3s;}
+.navbar.scrolled{box-shadow:0 4px 24px rgba(67,37,20,0.18);background:rgba(202,185,167,0.96);backdrop-filter:blur(10px);}
+.navbar-logo img{height:56px;display:block;}
+.nav-menu{display:flex;align-items:center;gap:28px;}
+.nav-menu a{text-decoration:none;color:var(--brown);font-size:15px;font-weight:500;transition:0.3s;}
+.nav-menu a:hover{opacity:0.7;}
+.cart-icon{font-size:15px;font-weight:600;color:var(--brown);cursor:pointer;display:flex;align-items:center;gap:4px;}
+.menu-toggle{display:none;flex-direction:column;justify-content:center;cursor:pointer;width:30px;height:22px;position:relative;z-index:1001;}
+.menu-toggle span{position:absolute;width:100%;height:2.5px;background:var(--brown);border-radius:2px;transition:all 0.3s;}
+.menu-toggle span:nth-child(1){top:0;}.menu-toggle span:nth-child(2){top:9px;}.menu-toggle span:nth-child(3){top:18px;}
+.menu-toggle.active span:nth-child(1){transform:rotate(45deg);top:9px;}
+.menu-toggle.active span:nth-child(2){opacity:0;}
+.menu-toggle.active span:nth-child(3){transform:rotate(-45deg);top:9px;}
+@media(max-width:900px){.navbar{padding:10px 20px;}.menu-toggle{display:flex;}.nav-menu{position:fixed;top:76px;left:0;width:100%;background:var(--sand);flex-direction:column;align-items:center;padding:20px 0;gap:12px;opacity:0;visibility:hidden;transform:translateY(-10px);transition:0.3s;z-index:999;box-shadow:0 8px 24px rgba(67,37,20,0.15);}.nav-menu.active{opacity:1;visibility:visible;transform:translateY(0);}}
+
+/* ── BREADCRUMB ── */
+.breadcrumb{margin-top:76px;padding:14px 40px;background:var(--cream);font-size:13px;color:#9a8070;}
+.breadcrumb a{color:var(--brown);text-decoration:none;font-weight:500;}
+.breadcrumb a:hover{text-decoration:underline;}
+.breadcrumb span{margin:0 7px;color:#c0b0a0;}
+@media(max-width:600px){.breadcrumb{padding:14px 20px;}}
+
+/* ── PRODUCT HERO ── */
+.product-hero{padding:40px 40px 60px;background:linear-gradient(135deg,#faf6f1 0%,#f0e8df 50%,#e8d8ca 100%);position:relative;overflow:hidden;}
+.product-hero::before{content:"";position:absolute;top:-120px;right:-120px;width:500px;height:500px;border-radius:50%;background:rgba(202,185,167,0.18);pointer-events:none;}
+.product-hero-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;position:relative;z-index:2;}
+
+/* Gallery */
+.product-gallery{display:flex;flex-direction:column;gap:14px;}
+.gallery-main{border-radius:24px;overflow:hidden;background:transparent;box-shadow:0 20px 60px rgba(67,37,20,0.14);position:relative;}
+.gallery-main img{width:100%;height:420px;object-fit:contain;padding:28px;display:block;transition:transform 0.6s;mix-blend-mode:multiply;}
+.gallery-main:hover img{transform:scale(1.04);}
+.gallery-badge{position:absolute;top:18px;left:18px;background:linear-gradient(135deg,#d4a017,#b8880e);color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:6px 14px;border-radius:20px;z-index:3;box-shadow:0 4px 14px rgba(67,37,20,0.35);}
+.gallery-thumbs{display:flex;gap:10px;}
+.gallery-thumb{width:68px;height:68px;border-radius:12px;overflow:hidden;border:2px solid transparent;cursor:pointer;transition:all 0.3s;background:transparent;box-shadow:0 4px 12px rgba(67,37,20,0.1);}
+.gallery-thumb img{width:100%;height:100%;object-fit:contain;padding:6px;mix-blend-mode:multiply;}
+.gallery-thumb.active,.gallery-thumb:hover{border-color:var(--brown);}
+
+/* Product Info */
+.product-info{padding:4px 0;}
+.product-category-tag{display:inline-flex;align-items:center;gap:6px;background:var(--gold-light);color:var(--brown);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;padding:6px 16px;border-radius:20px;margin-bottom:14px;border:1px solid rgba(212,160,23,0.3);}
+.product-title{font-family:"Playfair Display",serif;font-size:38px;color:var(--brown);line-height:1.15;margin-bottom:10px;font-weight:700;}
+.product-sku{font-size:12px;color:#a09080;margin-bottom:14px;}
+.product-rating{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+.stars{color:#f59e0b;font-size:17px;letter-spacing:2px;}
+.rating-count{font-size:13px;color:#9a8070;}
+.product-price-block{background:#fff;border-radius:16px;padding:18px 22px;margin-bottom:20px;box-shadow:0 4px 20px rgba(67,37,20,0.06);border:1px solid rgba(202,185,167,0.3);}
+.price-main{font-size:36px;font-weight:700;color:var(--brown);line-height:1;}
+.price-per{font-size:13px;color:#9a8070;margin-top:4px;}
+.price-savings{display:inline-block;background:#dcfce7;color:#16a34a;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;margin-top:8px;}
+
+/* ── CART SECTION — matching index page button styles ── */
+.cart-section{display:flex;gap:14px;align-items:center;margin-bottom:24px;flex-wrap:wrap;}
+
+/* Qty wrap — same style as index page qty-inner */
+.qty-wrap{display:flex;align-items:center;background:var(--btn-count-bg);border-radius:30px;overflow:hidden;box-shadow:0 4px 14px rgba(26,107,58,0.35);}
+.qty-wrap button{
+  width:44px;height:50px;
+  border:none;
+  background:var(--btn-qty-bg);
+  color:var(--btn-qty-color);
+  font-size:22px;font-weight:800;
+  cursor:pointer;
+  transition:all 0.25s;
+  display:flex;align-items:center;justify-content:center;
+  line-height:1;
+  flex-shrink:0;
+}
+.qty-wrap button:first-child{border-radius:30px 0 0 30px;}
+.qty-wrap button:last-child{border-radius:0 30px 30px 0;}
+.qty-wrap button:hover{background:var(--btn-qty-hover);transform:scale(1.08);}
+.qty-wrap span{
+  min-width:50px;text-align:center;
+  font-size:17px;font-weight:700;
+  color:#fff;
+  padding:0 6px;
+  background:var(--btn-count-bg);
+}
+
+/* Add to cart btn — matching index page bs-add-btn */
+.add-cart-btn{
+  flex:1;
+  padding:15px 24px;
+  background:var(--btn-cart-bg);
+  color:var(--btn-cart-color);
+  border:none;border-radius:30px;
+  font-size:15px;font-weight:700;
+  cursor:pointer;
+  transition:all 0.3s;
+  font-family:"Poppins",sans-serif;
+  box-shadow:0 8px 24px rgba(26,107,58,0.35);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  white-space:nowrap;
+}
+.add-cart-btn:hover{background:var(--btn-cart-hover);transform:translateY(-3px);box-shadow:0 12px 30px rgba(26,107,58,0.45);}
+
+.wishlist-btn{width:50px;height:50px;border-radius:50%;border:2px solid rgba(202,185,167,0.5);background:#fff;cursor:pointer;font-size:22px;display:flex;align-items:center;justify-content:center;transition:all 0.3s;flex-shrink:0;}
+.wishlist-btn:hover{border-color:var(--brown);transform:scale(1.1);}
+
+.trust-inline{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.trust-badge{display:flex;align-items:center;gap:6px;background:var(--cream);border:1px solid rgba(202,185,167,0.4);border-radius:20px;padding:6px 12px;font-size:11px;font-weight:500;color:var(--brown);}
+.highlights{border-radius:16px;border:1px solid rgba(202,185,167,0.35);overflow:hidden;}
+.highlight-item{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;border-bottom:1px solid rgba(202,185,167,0.2);transition:background 0.2s;}
+.highlight-item:last-child{border-bottom:none;}
+.highlight-item:hover{background:var(--cream);}
+.hi-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.hi-text strong{display:block;font-size:13px;font-weight:600;color:var(--brown);margin-bottom:2px;}
+.hi-text span{font-size:12px;color:#9a8070;}
+
+@media(max-width:1000px){.product-hero-inner{grid-template-columns:1fr;gap:36px;}}
+@media(max-width:600px){.product-hero{padding:28px 20px 44px;}.product-title{font-size:28px;}.price-main{font-size:28px;}.gallery-main img{height:300px;}.cart-section{flex-wrap:wrap;}.add-cart-btn{min-width:100%;}}
+
+/* ═══════════════════════════════════════════════════
+   INGREDIENTS SECTION — Premium visual design
+═══════════════════════════════════════════════════ */
+.ing-section{
+  background:linear-gradient(135deg,#432514 0%,#5a3a28 60%,#7a4a32 100%);
+  padding:64px 40px;
+  position:relative;
+  overflow:hidden;
+}
+.ing-section::before{
+  content:"";position:absolute;top:-100px;right:-100px;
+  width:400px;height:400px;border-radius:50%;
+  background:rgba(202,185,167,0.07);pointer-events:none;
+}
+.ing-section::after{
+  content:"";position:absolute;bottom:-80px;left:-80px;
+  width:300px;height:300px;border-radius:50%;
+  background:rgba(255,255,255,0.04);pointer-events:none;
+}
+.ing-inner{max-width:1200px;margin:0 auto;position:relative;z-index:2;}
+.ing-top-row{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:36px;flex-wrap:wrap;}
+.ing-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(202,185,167,0.6);margin-bottom:8px;}
+.ing-title{font-family:"Playfair Display",serif;font-size:32px;color:#fff;margin-bottom:6px;}
+.ing-subtitle{font-size:14px;color:rgba(202,185,167,0.75);}
+.ing-total-badge{
+  background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);
+  color:#fff;font-size:12px;font-weight:700;
+  padding:8px 20px;border-radius:30px;white-space:nowrap;
+  backdrop-filter:blur(8px);
+}
+
+/* Big segmented bar */
+.ing-bar-outer{
+  background:rgba(255,255,255,0.08);
+  border-radius:14px;
+  padding:6px;
+  margin-bottom:28px;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,0.2);
+}
+.ing-bar-track{
+  display:flex;
+  height:28px;
+  border-radius:10px;
+  overflow:hidden;
+  gap:3px;
+}
+.ing-bar-segment{
+  height:100%;
+  transition:flex 0.5s ease;
+  position:relative;
+  cursor:default;
+}
+.ing-bar-segment:first-child{border-radius:8px 0 0 8px;}
+.ing-bar-segment:last-child{border-radius:0 8px 8px 0;}
+.ing-bar-segment:only-child{border-radius:8px;}
+
+/* Cards grid for each ingredient */
+.ing-cards-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
+  gap:12px;
+  margin-bottom:0;
+}
+.ing-card{
+  background:rgba(255,255,255,0.09);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:16px;
+  padding:16px 18px;
+  transition:all 0.3s;
+  position:relative;
+  overflow:hidden;
+  backdrop-filter:blur(6px);
+}
+.ing-card:hover{background:rgba(255,255,255,0.15);transform:translateY(-3px);}
+.ing-card-dot-line{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.ing-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;box-shadow:0 0 8px rgba(255,255,255,0.3);}
+.ing-card-name{font-size:13px;font-weight:600;color:#fff;line-height:1.3;}
+.ing-card-pct{font-family:"Playfair Display",serif;font-size:28px;font-weight:700;color:#fff;line-height:1;margin-bottom:4px;}
+.ing-card-pct-label{font-size:10px;color:rgba(202,185,167,0.65);text-transform:uppercase;letter-spacing:0.8px;}
+.ing-card-bar{height:3px;border-radius:2px;margin-top:10px;opacity:0.7;}
+
+/* Fallback single pill row (when no ingredients from API) */
+.ing-pills-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
+.ing-pill{display:flex;align-items:center;gap:7px;padding:7px 16px;background:rgba(255,255,255,0.1);border-radius:22px;border:1px solid rgba(255,255,255,0.2);font-size:12px;font-weight:600;color:#fff;}
+.ing-pill strong{color:var(--sand);}
+
+@media(max-width:768px){
+  .ing-section{padding:48px 20px;}
+  .ing-title{font-size:24px;}
+  .ing-cards-grid{grid-template-columns:repeat(2,1fr);}
+  .ing-bar-track{height:20px;}
+}
+@media(max-width:480px){
+  .ing-cards-grid{grid-template-columns:1fr 1fr;}
+}
+
+/* ── TABS ── */
+.tabs-section{padding:56px 40px;background:#fff;max-width:1200px;margin:0 auto;}
+.tabs-nav{display:flex;border-bottom:2px solid rgba(202,185,167,0.35);margin-bottom:36px;overflow-x:auto;}
+.tab-btn{padding:13px 28px;font-size:14px;font-weight:600;color:#9a8070;cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all 0.25s;white-space:nowrap;font-family:"Poppins",sans-serif;}
+.tab-btn.active{color:var(--brown);border-bottom-color:var(--btn-cart-bg);}
+.tab-pane{display:none;animation:fadeTab 0.35s ease;}
+.tab-pane.active{display:block;}
+@keyframes fadeTab{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.desc-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+.desc-text h3{font-family:"Playfair Display",serif;font-size:26px;color:var(--brown);margin-bottom:14px;}
+.desc-text p{font-size:15px;color:#6b4b35;line-height:1.9;margin-bottom:14px;}
+.desc-text ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.desc-text ul li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:#6b4b35;line-height:1.7;}
+.desc-text ul li::before{content:"✓";color:var(--teal);font-weight:700;flex-shrink:0;margin-top:2px;}
+.desc-visual{border-radius:20px;background:linear-gradient(135deg,#f5ede3,#e3cbb8);padding:28px;display:flex;flex-direction:column;gap:14px;}
+.desc-stat{background:#fff;border-radius:12px;padding:14px 18px;box-shadow:0 4px 14px rgba(67,37,20,0.08);}
+.desc-stat-num{font-family:"Playfair Display",serif;font-size:34px;color:var(--brown);font-weight:700;line-height:1;}
+.desc-stat-label{font-size:12px;color:#9a8070;margin-top:3px;}
+@media(max-width:700px){.desc-grid{grid-template-columns:1fr;}.tabs-section{padding:40px 20px;}}
+.nutrition-table{max-width:520px;}
+.nutrition-table h3{font-family:"Playfair Display",serif;font-size:22px;color:var(--brown);margin-bottom:18px;}
+.nut-row{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid rgba(202,185,167,0.3);font-size:14px;}
+.nut-row:first-of-type{background:var(--brown);color:#fff;border-radius:10px 10px 0 0;font-weight:700;}
+.nut-row:last-of-type{border-bottom:none;}
+.nut-row:nth-child(even):not(:first-of-type){background:var(--cream);}
+.nut-val{color:var(--brown);font-weight:700;}
+.nut-row:first-of-type .nut-val{color:#fff;}
+
+/* ── ALSO LIKE ── */
+.also-like-section{padding:64px 40px 88px;background:var(--cream);}
+.section-header{text-align:center;margin-bottom:44px;}
+.section-eyebrow{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:var(--brown);opacity:0.55;margin-bottom:8px;}
+.section-title{font-family:"Playfair Display",serif;font-size:32px;color:var(--brown);}
+.underline-bar{width:54px;height:3px;background:var(--teal);margin:12px auto 0;border-radius:2px;}
+.also-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;max-width:1200px;margin:0 auto;}
+.also-card{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 18px rgba(67,37,20,0.07);transition:all 0.4s;border:1px solid rgba(202,185,167,0.2);cursor:pointer;display:flex;flex-direction:column;}
+.also-card:hover{transform:translateY(-9px);box-shadow:0 22px 50px rgba(67,37,20,0.14);}
+.also-img{height:190px;background:transparent;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.also-img img{width:100%;height:100%;object-fit:contain;padding:18px;transition:transform 0.5s;mix-blend-mode:multiply;}
+.also-card:hover .also-img img{transform:scale(1.08);}
+.also-body{padding:14px 16px 18px;flex:1;display:flex;flex-direction:column;}
+.also-name{font-size:13px;font-weight:600;color:var(--brown);margin-bottom:5px;}
+.also-price{font-size:17px;font-weight:700;color:var(--brown);margin-bottom:3px;}
+.also-weight{font-size:12px;color:#9a8070;margin-bottom:10px;}
+.also-add{width:100%;padding:9px;background:var(--btn-cart-bg);color:#fff;border:none;border-radius:18px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.25s;font-family:"Poppins",sans-serif;margin-top:auto;box-shadow:0 3px 10px rgba(26,107,58,0.25);}
+.also-add:hover{background:var(--btn-cart-hover);}
+@media(max-width:1000px){.also-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.also-grid{grid-template-columns:repeat(2,1fr);gap:12px;}.also-like-section{padding:48px 16px 68px;}}
+
+/* ── CART TOAST ── */
+.cart-toast{position:fixed;bottom:30px;right:30px;z-index:99999;display:flex;align-items:center;gap:14px;background:#fff;border-radius:18px;padding:16px 22px 16px 18px;box-shadow:0 20px 60px rgba(67,37,20,0.22);border-left:5px solid var(--teal);min-width:300px;max-width:380px;transform:translateX(140%) scale(0.92);opacity:0;transition:all 0.42s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;}
+.cart-toast.show{transform:translateX(0) scale(1);opacity:1;pointer-events:auto;}
+.cart-toast-img{width:54px;height:54px;border-radius:12px;object-fit:contain;flex-shrink:0;background:var(--cream);padding:4px;mix-blend-mode:multiply;}
+.cart-toast-body{flex:1;}
+.cart-toast-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#22c55e;margin-bottom:3px;display:flex;align-items:center;gap:5px;}
+.cart-toast-label::before{content:"";width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;}
+.cart-toast-name{font-size:14px;font-weight:700;color:var(--brown);margin-bottom:2px;}
+.cart-toast-price{font-size:13px;color:#7a6a5c;}
+.cart-toast-go{background:var(--btn-cart-bg);color:#fff;border:none;padding:8px 14px;border-radius:10px;font-size:12px;font-weight:700;font-family:"Poppins",sans-serif;cursor:pointer;flex-shrink:0;}
+@media(max-width:500px){.cart-toast{bottom:16px;right:10px;left:10px;min-width:unset;max-width:unset;}}
+
+/* ── STICKY BAR ── */
+.sticky-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid rgba(202,185,167,0.4);padding:12px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;z-index:500;transform:translateY(100%);transition:transform 0.4s;box-shadow:0 -8px 30px rgba(67,37,20,0.12);}
+.sticky-bar.visible{transform:translateY(0);}
+.sticky-bar-info{display:flex;align-items:center;gap:12px;}
+.sticky-bar-img{width:44px;height:44px;object-fit:contain;background:transparent;border-radius:10px;padding:4px;mix-blend-mode:multiply;}
+.sticky-bar-name{font-size:15px;font-weight:700;color:var(--brown);}
+.sticky-bar-price{font-size:14px;color:#9a8070;}
+.sticky-bar-btn{padding:12px 30px;background:var(--btn-cart-bg);color:#fff;border:none;border-radius:25px;font-size:14px;font-weight:700;cursor:pointer;font-family:"Poppins",sans-serif;transition:all 0.25s;box-shadow:0 4px 14px rgba(26,107,58,0.3);}
+.sticky-bar-btn:hover{background:var(--btn-cart-hover);}
+@media(max-width:600px){.sticky-bar{padding:10px 16px;}}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+</style>
+<script src="assets/title-case.js" defer></script>
+</head>
+<body>
+
+<!-- CART TOAST -->
+<div class="cart-toast" id="cartToast">
+  <img class="cart-toast-img" id="cartToastImg" src="" alt="">
+  <div class="cart-toast-body">
+    <div class="cart-toast-label">Added to Cart</div>
+    <div class="cart-toast-name" id="cartToastName">Product</div>
+    <div class="cart-toast-price" id="cartToastPrice">₹0</div>
+  </div>
+  <button class="cart-toast-go" onclick="window.location.href='cart.html'">View Cart →</button>
+</div>
+
+<!-- STICKY BAR -->
+<div class="sticky-bar" id="stickyBar">
+  <div class="sticky-bar-info">
+    <img class="sticky-bar-img" id="stickyImg" src="https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_34_26-AM.png" alt="">
+    <div><div class="sticky-bar-name" id="stickyName">Gir Cow Ghee</div><div class="sticky-bar-price" id="stickyPrice">₹ 1500</div></div>
+  </div>
+  <button class="sticky-bar-btn" onclick="addToCartMain()">🛒 Add to Cart</button>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="mainNav">
+  <div class="navbar-logo"><img src="https://gamtuindia.com/wp-content/uploads/2026/03/Gamtu-Logo-PNG-1.png" alt="Gamtu"></div>
+  <div class="nav-menu" id="navMenu">
+    <a href="index.html">Home</a><a href="product.html">Products</a><a href="about.html">About Us</a>
+    <div class="cart-icon" onclick="window.location.href='cart.html'">🛒 <span id="cartCount">0</span></div>
+  </div>
+  <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a><span>›</span><a href="product.html">Products</a><span>›</span>Gir Cow Ghee
+</div>
+
+<!-- PRODUCT HERO -->
+<section class="product-hero" id="productHeroSection">
+  <div class="product-hero-inner">
+    <!-- LEFT: Gallery -->
+    <div class="product-gallery">
+      <div class="gallery-main">
+        <div class="gallery-badge">🏅 Best Seller</div>
+        <img id="mainImg" src="https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_34_26-AM.png" alt="Gir Cow Ghee">
+      </div>
+      <div class="gallery-thumbs">
+        <div class="gallery-thumb active"><img src="https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_34_26-AM.png" alt=""></div>
+        <div class="gallery-thumb"><img src="https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_34_26-AM.png" alt=""></div>
+        <div class="gallery-thumb"><img src="https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_34_26-AM.png" alt=""></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Info -->
+    <div class="product-info">
+      <div class="product-category-tag">🐄 A2 Desi Cow · Premium Ghee</div>
+      <h1 class="product-title" id="productTitle">Gir Cow Ghee</h1>
+      <div class="product-sku">SKU: GHE001</div>
+      <div class="product-rating"><span class="stars">★★★★★</span><span class="rating-count">4.9 · 128 Reviews</span></div>
+      <div class="product-price-block">
+        <div class="price-main" id="priceDisplay">₹ 1500</div>
+        <div class="price-per">Per 250g unit · Free shipping above ₹999</div>
+        <div class="price-savings">🎉 You save ₹200 vs market price</div>
+      </div>
+
+      <!-- Cart section with fixed qty buttons -->
+      <div class="cart-section">
+        <div class="qty-wrap">
+          <button id="qtyMinus" onclick="changeQty(-1)">−</button>
+          <span id="qtyDisplay">1</span>
+          <button id="qtyPlus" onclick="changeQty(1)">+</button>
+        </div>
+        <button class="add-cart-btn" onclick="addToCartMain()">🛒 Add to Cart</button>
+        <button class="wishlist-btn" id="wishlistBtn" onclick="toggleWishlist(this)">🤍</button>
+      </div>
+
+      <div class="trust-inline">
+        <div class="trust-badge">🌿 100% Natural</div>
+        <div class="trust-badge">🚚 Fast Delivery</div>
+        <div class="trust-badge">✅ Lab Tested</div>
+        <div class="trust-badge">↩️ Easy Returns</div>
+      </div>
+      <div class="highlights">
+        <div class="highlight-item"><div class="hi-icon">🔥</div><div class="hi-text"><strong>Ancient Bilona Method</strong><span>Hand-churned in small batches from cultured A2 curd — not extracted by centrifuge</span></div></div>
+        <div class="highlight-item"><div class="hi-icon">🐄</div><div class="hi-text"><strong>Authentic Gir Cow Breed</strong><span>Sourced from pasture-raised Gir cows in Gujarat — rich in A2 beta-casein protein</span></div></div>
+        <div class="highlight-item"><div class="hi-icon">🌡️</div><div class="hi-text"><strong>High Smoke Point</strong><span>Ideal for high-heat cooking, frying, and deep-roasting without harmful compounds</span></div></div>
+        <div class="highlight-item"><div class="hi-icon">📦</div><div class="hi-text"><strong>Eco-Friendly Glass Jar</strong><span>Preserves freshness, aroma, and purity — zero plastic touching your food</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     INGREDIENTS SECTION — Premium redesigned
+═══════════════════════════════════════════════ -->
+<section class="ing-section">
+  <div class="ing-inner">
+    <div class="ing-top-row">
+      <div>
+        <div class="ing-label">Transparency First</div>
+        <div class="ing-title">What's Inside Every Jar</div>
+        <div class="ing-subtitle">100% traceable ingredients — no hidden additives, ever</div>
+      </div>
+      <div class="ing-total-badge" id="ingTotalBadge">🌿 100% Pure · 0 Additives</div>
+    </div>
+
+    <!-- Segmented bar -->
+    <div class="ing-bar-outer">
+      <div class="ing-bar-track" id="ingBarTrack">
+        <div class="ing-bar-segment" style="flex:100;background:#D85A30;border-radius:8px;"></div>
+      </div>
+    </div>
+
+    <!-- Cards grid -->
+    <div class="ing-cards-grid" id="ingCardsGrid">
+      <!-- Default card — will be replaced by API data -->
+      <div class="ing-card">
+        <div class="ing-card-dot-line">
+          <div class="ing-dot" style="background:#D85A30;"></div>
+          <div class="ing-card-name">A2 Gir Cow Milk</div>
+        </div>
+        <div class="ing-card-pct">100<span style="font-size:18px;">%</span></div>
+        <div class="ing-card-pct-label">Pure Composition</div>
+        <div class="ing-card-bar" style="background:#D85A30;width:100%;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TABS -->
+<section class="tabs-section">
+  <div class="tabs-nav">
+    <button class="tab-btn active" onclick="switchTab('desc',this)">Description</button>
+    <button class="tab-btn" onclick="switchTab('nutrition',this)">Nutrition</button>
+    <button class="tab-btn" onclick="switchTab('howto',this)">How to Use</button>
+  </div>
+  <div class="tab-pane active" id="tab-desc">
+    <div class="desc-grid">
+      <div class="desc-text">
+        <h3>The Gold Standard of Ghee</h3>
+        <p>Our Gir Cow Ghee is crafted from the milk of grass-fed, pasture-raised Gir cows using the traditional bilona method — milk is set into curd, hand-churned into butter, then slow-cooked into pure golden ghee.</p>
+        <p>The result is a ghee richer in CLA, Omega-3 fatty acids, fat-soluble vitamins (A, D, E, K), and butyric acid — supporting gut health, reducing inflammation, and boosting immunity.</p>
+        <ul>
+          <li>Made from 100% authentic A2 milk — no A1 cow mixing</li>
+          <li>No preservatives, additives, or artificial colours</li>
+          <li>Grainy texture confirms handmade, authentic process</li>
+          <li>Beautiful golden colour with natural nutty aroma</li>
+          <li>Satvik, Jain-friendly, and suitable for all diet types</li>
+          <li>Shelf-stable for 12 months without refrigeration</li>
+        </ul>
+      </div>
+      <div class="desc-visual">
+        <div class="desc-stat"><div class="desc-stat-num">250+</div><div class="desc-stat-label">Liters of milk per kg ghee</div></div>
+        <div class="desc-stat"><div class="desc-stat-num">48 hr</div><div class="desc-stat-label">Slow bilona churning process</div></div>
+        <div class="desc-stat"><div class="desc-stat-num">A2</div><div class="desc-stat-label">Beta-casein protein certified</div></div>
+        <div class="desc-stat"><div class="desc-stat-num">0</div><div class="desc-stat-label">Artificial additives or preservatives</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane" id="tab-nutrition">
+    <div class="nutrition-table">
+      <h3>Nutritional Information</h3>
+      <p style="font-size:13px;color:#9a8070;margin-bottom:18px;">Per 100g serving · Values are approximate</p>
+      <div class="nut-row"><span>Nutrient</span><span class="nut-val">Amount</span></div>
+      <div class="nut-row"><span>Energy</span><span class="nut-val">883 kcal</span></div>
+      <div class="nut-row"><span>Total Fat</span><span class="nut-val">99.8 g</span></div>
+      <div class="nut-row"><span>Saturated Fat</span><span class="nut-val">62 g</span></div>
+      <div class="nut-row"><span>Monounsaturated Fat</span><span class="nut-val">29 g</span></div>
+      <div class="nut-row"><span>Omega-3 (ALA)</span><span class="nut-val">1.2 g</span></div>
+      <div class="nut-row"><span>CLA</span><span class="nut-val">2.1 g</span></div>
+      <div class="nut-row"><span>Butyric Acid</span><span class="nut-val">3.8 g</span></div>
+      <div class="nut-row"><span>Vitamin A</span><span class="nut-val">3069 IU</span></div>
+      <div class="nut-row"><span>Vitamin D</span><span class="nut-val">54 IU</span></div>
+      <div class="nut-row"><span>Vitamin E</span><span class="nut-val">2.8 mg</span></div>
+      <div class="nut-row"><span>Cholesterol</span><span class="nut-val">256 mg</span></div>
+      <div class="nut-row"><span>Carbohydrates</span><span class="nut-val">0 g</span></div>
+      <div class="nut-row"><span>Protein</span><span class="nut-val">0 g</span></div>
+    </div>
+  </div>
+  <div class="tab-pane" id="tab-howto">
+    <div style="max-width:680px">
+      <h3 style="font-family:'Playfair Display',serif;font-size:26px;color:var(--brown);margin-bottom:22px;">How to Use Gir Cow Ghee</h3>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:16px;background:var(--cream);border-radius:14px;"><div style="font-size:26px;flex-shrink:0;">🍳</div><div><strong style="display:block;color:var(--brown);margin-bottom:3px;">For Cooking & Tadka</strong><span style="font-size:14px;color:#6b4b35;line-height:1.7;">Use 1-2 teaspoons for tempering spices, sautéing vegetables, or drizzling over dal. High smoke point (485°F) makes it ideal for frying.</span></div></div>
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:16px;background:var(--cream);border-radius:14px;"><div style="font-size:26px;flex-shrink:0;">🫓</div><div><strong style="display:block;color:var(--brown);margin-bottom:3px;">Spread on Rotis & Parathas</strong><span style="font-size:14px;color:#6b4b35;line-height:1.7;">Apply a generous layer on hot roti or paratha. The warmth melts the ghee perfectly, releasing its nutty aroma.</span></div></div>
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:16px;background:var(--cream);border-radius:14px;"><div style="font-size:26px;flex-shrink:0;">🙏</div><div><strong style="display:block;color:var(--brown);margin-bottom:3px;">Ayurvedic Daily Use</strong><span style="font-size:14px;color:#6b4b35;line-height:1.7;">Consume ½ teaspoon on empty stomach in the morning with warm water for gut health and immunity boost.</span></div></div>
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:16px;background:var(--cream);border-radius:14px;"><div style="font-size:26px;flex-shrink:0;">📦</div><div><strong style="display:block;color:var(--brown);margin-bottom:3px;">Storage</strong><span style="font-size:14px;color:#6b4b35;line-height:1.7;">Store at room temperature away from direct sunlight. No refrigeration needed. Shelf life: 12 months. Always use a dry, clean spoon.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ALSO LIKE -->
+<section class="also-like-section">
+  <div class="section-header reveal">
+    <span class="section-eyebrow">Explore More</span>
+    <h2 class="section-title">You Might Also Like</h2>
+    <div class="underline-bar"></div>
+  </div>
+  <div class="also-grid" id="alsoGrid">
+    <div style="grid-column:1/-1;text-align:center;padding:40px;color:#9a8070;">Loading...</div>
+  </div>
+</section>
+
+<script>
+// ── State ──
+let currentQty = 1;
+let currentPrice = 1500;
+let currentName = "Gir Cow Ghee";
+let currentImg = "https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_34_26-AM.png";
+let currentGrams = 250;
+let toastTimer = null;
+
+const ING_COLORS = ["#D85A30","#1D9E75","#378ADD","#D4537E","#7F77DD","#BA7517","#639922","#E24B4A","#2D9FA0","#C06C3A"];
+const fallbackImgs = {
+  "A2 Gir Cow Ghee":"https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_34_26-AM.png",
+  "Instant Jain Soup":"https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_42_46-AM.png",
+  "Premium Dry Fruits":"https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_43_12-AM.png",
+  "Herbal Wellness Tea":"https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_46_05-AM.png"
+};
+const PRODUCT_PAGES = {
+  "Gir Cow Ghee":"gir-cow-ghee.html","A2 Ghee":"gir-cow-ghee.html","Deshi Valona Ghee":"gir-cow-ghee.html",
+  "Almonds":"almonds.html","Red Chilly Sauce":"red-chilly-sauce.html"
+};
+
+// ── Cart utils ──
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || {};
+  let t = 0;
+  Object.values(cart).forEach(i => t += i.qty);
+  document.getElementById("cartCount").innerText = t;
+}
+
+function showToast(name, price, img) {
+  document.getElementById("cartToastName").innerText = name;
+  document.getElementById("cartToastPrice").innerText = "₹" + price + " each";
+  document.getElementById("cartToastImg").src = img;
+  const t = document.getElementById("cartToast");
+  t.classList.add("show");
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 3200);
+}
+
+function addToCartMain() {
+  let cart = JSON.parse(localStorage.getItem("cart")) || {};
+  if (!cart[currentName]) {
+    cart[currentName] = { qty: currentQty, price: currentPrice, image: currentImg, grams: currentGrams };
+  } else {
+    cart[currentName].qty += currentQty;
+  }
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartCount();
+  showToast(currentName, currentPrice, currentImg);
+}
+
+// ── Qty buttons — properly working ──
+function changeQty(delta) {
+  currentQty = Math.max(1, currentQty + delta);
+  document.getElementById("qtyDisplay").innerText = currentQty;
+}
+
+// Make sure buttons are wired via addEventListener too (belt + suspenders)
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById("qtyMinus").addEventListener("click", () => changeQty(-1));
+  document.getElementById("qtyPlus").addEventListener("click", () => changeQty(1));
+});
+
+function toggleWishlist(btn) {
+  btn.innerText = btn.innerText === "🤍" ? "❤️" : "🤍";
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById("tab-" + id).classList.add("active");
+  btn.classList.add("active");
+}
+
+// ── Navbar ──
+document.getElementById("menuToggle").addEventListener("click", function() {
+  this.classList.toggle("active");
+  document.getElementById("navMenu").classList.toggle("active");
+});
+window.addEventListener("scroll", () => {
+  document.getElementById("mainNav").classList.toggle("scrolled", window.scrollY > 50);
+  const heroBottom = document.getElementById("productHeroSection").getBoundingClientRect().bottom;
+  document.getElementById("stickyBar").classList.toggle("visible", heroBottom < 0);
+});
+
+// ── Gallery thumbs ──
+document.querySelectorAll(".gallery-thumb").forEach(t => {
+  t.addEventListener("click", () => {
+    document.querySelectorAll(".gallery-thumb").forEach(x => x.classList.remove("active"));
+    t.classList.add("active");
+    document.getElementById("mainImg").src = t.querySelector("img").src;
+  });
+});
+
+// ── Reveal observer ──
+const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add("visible"); }), { threshold: 0.1 });
+document.querySelectorAll(".reveal").forEach(el => obs.observe(el));
+
+// ── Build ingredient section ──
+function buildIngredients(ingredients) {
+  if (!ingredients || !ingredients.length) return;
+
+  // Bar
+  const segs = ingredients.map((ing, i) => {
+    let r = '';
+    if (i === 0 && ingredients.length === 1) r = 'border-radius:8px;';
+    else if (i === 0) r = 'border-radius:8px 0 0 8px;';
+    else if (i === ingredients.length - 1) r = 'border-radius:0 8px 8px 0;';
+    return `<div class="ing-bar-segment" style="flex:${ing.percentage};background:${ING_COLORS[i % ING_COLORS.length]};${r}" title="${ing.name}: ${ing.percentage}%"></div>`;
+  }).join('');
+  document.getElementById("ingBarTrack").innerHTML = segs;
+
+  // Update badge
+  document.getElementById("ingTotalBadge").innerText = `🌿 ${ingredients.length} Ingredient${ingredients.length > 1 ? 's' : ''} · 0 Additives`;
+
+  // Cards
+  const cards = ingredients.map((ing, i) => {
+    const color = ING_COLORS[i % ING_COLORS.length];
+    const barWidth = Math.min(100, ing.percentage);
+    return `
+      <div class="ing-card">
+        <div class="ing-card-dot-line">
+          <div class="ing-dot" style="background:${color};"></div>
+          <div class="ing-card-name">${ing.name}</div>
+        </div>
+        <div class="ing-card-pct">${ing.percentage}<span style="font-size:18px;font-weight:400;">%</span></div>
+        <div class="ing-card-pct-label">of composition</div>
+        <div class="ing-card-bar" style="background:${color};width:${barWidth}%;"></div>
+      </div>`;
+  }).join('');
+  document.getElementById("ingCardsGrid").innerHTML = cards;
+}
+
+// ── Fetch products from API ──
+fetch("https://api.totalkaro.com/api/public/products/6")
+  .then(r => r.json())
+  .then(products => {
+    // Find ghee product
+    const p = products.find(x =>
+      x.name && (x.name.toLowerCase().includes("gir cow") || x.name.toLowerCase().includes("ghee"))
+    );
+
+    if (p) {
+      // Update page data
+      currentPrice = p.price || 1500;
+      currentName = p.name || "Gir Cow Ghee";
+      currentImg = p.image || currentImg;
+      currentGrams = p.grams || 250;
+
+      document.getElementById("productTitle").innerText = p.name || "Gir Cow Ghee";
+      document.getElementById("priceDisplay").innerText = "₹ " + currentPrice;
+      document.getElementById("stickyPrice").innerText = "₹ " + currentPrice;
+
+      if (p.image) {
+        document.getElementById("mainImg").src = p.image;
+        document.getElementById("stickyImg").src = p.image;
+        document.querySelectorAll(".gallery-thumb img").forEach(img => img.src = p.image);
+      }
+
+      // Build ingredient section
+      if (p.ingredients && p.ingredients.length) {
+        buildIngredients(p.ingredients);
+      }
+    }
+
+    // Build "also like" grid
+    const others = products.filter(x => x.id !== (p && p.id)).slice(0, 4);
+    document.getElementById("alsoGrid").innerHTML = others.map(op => {
+      const img = op.image || fallbackImgs[op.name] || "https://via.placeholder.com/250";
+      const pg = PRODUCT_PAGES[op.name] || "product.html";
+      return `
+        <div class="also-card reveal" onclick="window.location.href='${pg}'">
+          <div class="also-img" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#faf6f1 0%,#f0e6d8 100%);padding:16px;text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:#432514;line-height:1.3;">${op.name}</div></div>
+          <div class="also-body">
+            <div class="also-name">${op.name}</div>
+            <div class="also-price">₹ ${op.price}</div>
+            <div class="also-weight">${op.grams || 0} gm</div>
+            <button class="also-add" onclick="event.stopPropagation();quickAdd('${op.name}',${op.price},'${img}')">+ Add to Cart</button>
+          </div>
+        </div>`;
+    }).join('');
+    document.querySelectorAll(".reveal").forEach(el => obs.observe(el));
+  })
+  .catch(() => {
+    // API failed — keep defaults
+    console.log("API unavailable, using defaults");
+  });
+
+function quickAdd(name, price, img) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || {};
+  if (!cart[name]) cart[name] = { qty: 1, price, image: img };
+  else cart[name].qty++;
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartCount();
+  showToast(name, price, img);
+}
+
+// ── Init ──
+updateCartCount();
+</script>
+</body>
+</html>

@@ -1,0 +1,3706 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gamtu — All Products</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --brown:#432514;--brown2:#5a3a28;--brown3:#2e1a0e;
+  --sand:#cab9a7;--cream:#faf6f1;
+  --gold:#c9a84c;--gold2:#e8c97a;
+  --nav-h:78px;
+  --btn-qty-bg:linear-gradient(135deg,#FF6B2B,#F5A623 60%,#FFD700);
+  --btn-qty-color:#3a1800;
+  --btn-cart-bg:linear-gradient(135deg,#1a6b3a,#22a05a 60%,#00c98c);
+  --btn-cart-hover:linear-gradient(135deg,#145a2e,#1a8a48 60%,#00b07a);
+  --btn-count-bg:linear-gradient(135deg,#1e3d2f,#1a5e3a);
+}
+html{scroll-behavior:smooth;}
+body{font-family:"Cormorant Garamond",sans-serif;background:#3a1a08;overflow-x:hidden;}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .55s ease,transform .55s ease;}
+.reveal.visible{opacity:1;transform:none;}
+
+/* ═══════════════════════════════════════
+   NAVBAR
+═══════════════════════════════════════ */
+
+.navbar{
+    position:fixed;
+    top:0;
+    width:100%;
+    height:var(--nav-h);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 40px;
+    background:#fef9f4;
+    border-bottom:none;
+    box-shadow:0 0 0 4px #fef9f4;
+    z-index:1000;
+    transition:background .3s,box-shadow .3s;
+    overflow:visible;
+}
+.navbar.scrolled{
+    background:rgba(254,249,244,.97);
+    backdrop-filter:blur(10px);
+    box-shadow:0 4px 28px rgba(67,37,20,.12);
+    border-bottom:1.5px solid rgba(202,185,167,.55);
+}
+
+/* Logo */
+
+.nav-logo{
+    display:flex;
+    align-items:center;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+.nav-logo img{
+    height:100px;
+    display:block;
+    transition:.3s;
+}
+
+.nav-logo img:hover{
+    transform:scale(1.05);
+}
+
+/* Navigation */
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:30px;
+    flex:1;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:var(--brown);
+    font-size:22px;
+    font-weight:500;
+    position:relative;
+    transition:.25s;
+    white-space:nowrap;
+}
+
+.nav-links a::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-4px;
+    width:0;
+    height:2px;
+    background:var(--gold);
+    transition:.28s;
+    border-radius:2px;
+}
+
+.nav-links a:hover{
+    color:var(--brown3);
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after{
+    width:100%;
+}
+
+.nav-links a.active{
+    color:var(--brown3);
+    font-weight:700;
+}
+
+/* Dropdown */
+
+.nav-dd{
+    position:relative;
+}
+
+.nav-dd-btn{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    color:var(--brown);
+    font-size:22px;
+    font-weight:500;
+    cursor:pointer;
+    background:none;
+    border:none;
+    padding:0;
+    position:relative;
+    font-family:"Cormorant Garamond",sans-serif;
+}
+
+.nav-dd-btn::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-4px;
+    width:0;
+    height:2px;
+    background:var(--gold);
+    transition:.28s;
+}
+
+.nav-dd:hover .nav-dd-btn,
+.nav-dd.open .nav-dd-btn{
+    color:var(--brown3);
+}
+
+.nav-dd:hover .nav-dd-btn::after,
+.nav-dd.open .nav-dd-btn::after{
+    width:calc(100% - 14px);
+}
+
+.chevron{
+    font-size:9px;
+    opacity:.5;
+    transition:.3s;
+}
+
+.nav-dd.open .chevron{
+    transform:rotate(180deg);
+}
+
+.nav-dd-menu{
+    position:absolute;
+    top:calc(100% + 14px);
+    left:50%;
+    transform:translateX(-50%) translateY(5px);
+    min-width:196px;
+    background:#fff;
+    border-radius:15px;
+    padding:8px;
+    border:1px solid rgba(202,185,167,.3);
+    box-shadow:0 16px 44px rgba(67,37,20,.16);
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:.24s;
+    z-index:9999;
+}
+
+.nav-dd-menu::before{
+    content:"";
+    position:absolute;
+    top:-5px;
+    left:50%;
+    width:10px;
+    height:10px;
+    transform:translateX(-50%) rotate(45deg);
+    background:#fff;
+    border-left:1px solid rgba(202,185,167,.3);
+    border-top:1px solid rgba(202,185,167,.3);
+}
+
+.nav-dd:hover .nav-dd-menu,
+.nav-dd.open .nav-dd-menu{
+    opacity:1;
+    visibility:visible;
+    transform:translateX(-50%);
+    pointer-events:auto;
+}
+
+.nav-dd-menu a{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 13px;
+    color:var(--brown);
+    text-decoration:none;
+    border-radius:9px;
+    font-size:14px;
+    font-weight:500;
+}
+
+.nav-dd-menu a:hover{
+    background:var(--cream);
+    color:var(--brown3);
+}
+
+/* Right */
+
+.nav-right{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-shrink:0;
+    background:#fef9f4;
+    padding:4px 0;
+}
+
+/* Profile */
+
+.profile-wrap{
+    position:relative;
+}
+
+.profile-btn{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 16px 10px 12px;
+    border-radius:30px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    color:var(--brown);
+    font-size:18px;
+    font-weight:600;
+    font-family:"Cormorant Garamond",sans-serif;
+    transition:.22s;
+}
+
+.profile-btn:hover{
+    background:rgba(202,185,167,.38);
+}
+
+.profile-avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,var(--brown),var(--gold));
+    color:#fff;
+    font-size:18px;
+}
+
+.profile-name{
+    max-width:130px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    font-size:18px;
+    font-weight:600;
+}
+
+.profile-drop{
+    position:absolute;
+    top:calc(100% + 10px);
+    right:0;
+    min-width:170px;
+    background:#fff;
+    border-radius:14px;
+    padding:7px;
+    box-shadow:0 16px 44px rgba(67,37,20,.15);
+    border:1px solid rgba(202,185,167,.28);
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transform:translateY(5px);
+    transition:.24s;
+    z-index:9999;
+}
+
+.profile-wrap:hover .profile-drop,
+.profile-wrap.open .profile-drop{
+    opacity:1;
+    visibility:visible;
+    transform:translateY(0);
+    pointer-events:auto;
+}
+
+.profile-drop a{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 12px;
+    text-decoration:none;
+    color:var(--brown);
+    border-radius:8px;
+    font-size:14px;
+}
+
+.profile-drop a:hover{
+    background:var(--cream);
+}
+
+/* Login */
+
+.nav-login{
+    padding:10px 20px;
+    border-radius:25px;
+    background:var(--brown);
+    color:#fff;
+    text-decoration:none;
+    font-size:16px;
+    font-weight:600;
+    box-shadow:0 4px 13px rgba(67,37,20,.24);
+}
+
+.nav-login:hover{
+    background:var(--brown3);
+}
+
+/* Cart */
+
+.cart-btn{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:5px 14px;
+    border-radius:30px;
+    background:var(--btn-cart-bg);
+    color:#fff;
+    border:none;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:600;
+    font-family:"Cormorant Garamond",sans-serif;
+    white-space:nowrap;
+    box-shadow:none;
+    transition:.25s;
+    max-height:36px;
+}
+
+.cart-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(26,107,58,.38);
+}
+
+.cart-count{
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    background:rgba(255,255,255,.22);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+    font-weight:700;
+}
+
+/* Hamburger */
+
+.hamburger{
+    display:none;
+    flex-direction:column;
+    gap:5px;
+    background:none;
+    border:none;
+    cursor:pointer;
+}
+
+.hamburger span{
+    width:23px;
+    height:2px;
+    background:var(--brown);
+    border-radius:2px;
+}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+
+.mob-menu{position:fixed;top:var(--nav-h);left:0;width:100%;background:rgba(254,249,244,.99);backdrop-filter:blur(14px);border-bottom:1.5px solid rgba(202,185,167,.4);box-shadow:0 14px 38px rgba(67,37,20,.1);z-index:998;flex-direction:column;padding:12px 22px 20px;gap:2px;opacity:0;transform:translateY(-6px);transition:all .28s cubic-bezier(.4,0,.2,1);pointer-events:none;display:flex;visibility:hidden;}
+.mob-menu.open{opacity:1;transform:translateY(0);pointer-events:auto;visibility:visible;}
+.mob-menu a,.mob-toggle{display:flex;align-items:center;justify-content:space-between;padding:12px 2px;border:none;border-bottom:1px solid rgba(202,185,167,.22);color:var(--brown);font-size:15.5px;font-weight:600;text-decoration:none;transition:color .2s;background:none;font-family:"Cormorant Garamond",sans-serif;cursor:pointer;width:100%;text-align:left;}
+.mob-menu a:hover,.mob-toggle:hover{color:var(--brown3);}
+.mob-menu a.active{color:var(--gold);font-weight:700;}
+
+.mob-bottom{display:flex;gap:9px;margin-top:12px;}
+.mob-bottom .nav-login{flex:1;text-align:center;display:flex;align-items:center;justify-content:center;}
+.mob-bottom .cart-btn{flex:1;justify-content:center;text-align:center;}
+
+@media(max-width:880px){
+
+    .hamburger{
+        display:flex;
+    }
+
+    .nav-links,
+    .nav-right>.profile-wrap,
+    .nav-right>.nav-login{
+        display:none !important;
+    }
+
+    .navbar{
+        padding:0 18px;
+    }
+
+}
+
+@media(max-width:480px){
+
+    .nav-logo img{
+        height:64px;
+    }
+
+    .navbar{
+        padding:0 14px;
+    }
+
+}
+
+/* ══ PAGE HERO ══ */
+.page-hero{margin-top:0;padding-top:calc(var(--nav-h) + 18px);padding-left:36px;padding-right:36px;padding-bottom:42px;background:linear-gradient(135deg,#3a1a08 0%,#5a2e14 50%,#432514 100%);text-align:center;position:relative;overflow:visible;}
+.page-hero::before{content:"";position:absolute;inset:0;opacity:.3;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");}
+.hero-deco{position:absolute;border-radius:50%;pointer-events:none;}
+.hero-deco:nth-child(1){width:300px;height:300px;top:-90px;right:-50px;background:radial-gradient(circle,rgba(201,168,76,.14) 0%,transparent 70%);}
+.hero-deco:nth-child(2){width:200px;height:200px;bottom:-60px;left:-30px;background:radial-gradient(circle,rgba(202,185,167,.08) 0%,transparent 70%);}
+.page-hero-inner{position:relative;z-index:2;}
+.page-hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(201,168,76,.16);border:1px solid rgba(201,168,76,.38);color:var(--gold2);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 15px;border-radius:28px;margin-bottom:13px;}
+.page-hero h1{font-family:"Cormorant Garamond",serif;font-size:46px;color:#fff;line-height:1.2;margin-bottom:9px;}
+.page-hero h1 em{color:var(--gold2);font-style:italic;}
+.page-hero p{font-size:14.5px;color:rgba(202,185,167,.76);max-width:450px;margin:0 auto 22px;line-height:1.7;}
+.cat-nav{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;position:relative;z-index:2;}
+.cat-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:26px;border:1.5px solid rgba(201,168,76,.26);color:rgba(255,255,255,.85);font-size:12px;font-weight:600;cursor:pointer;transition:all .28s;text-decoration:none;background:rgba(255,255,255,.08);backdrop-filter:blur(6px);}
+.cat-pill:hover,.cat-pill.active{background:var(--gold);color:var(--brown3);border-color:var(--gold);transform:translateY(-3px);box-shadow:0 7px 18px rgba(201,168,76,.34);}
+@media(max-width:768px){.page-hero{padding:38px 18px 30px;}.page-hero h1{font-size:30px;}}
+@media(max-width:480px){.page-hero h1{font-size:24px;}.cat-pill{padding:6px 13px;font-size:11px;}}
+
+/* ══ MARQUEE ══ */
+.marquee-bar{background:var(--brown);padding:10px 0;overflow:hidden;}
+.marquee-inner{display:flex;width:max-content;animation:marquee 30s linear infinite;}
+.marquee-item{display:flex;align-items:center;gap:9px;color:rgba(255,255,255,.88);font-size:12px;font-weight:500;white-space:nowrap;padding:0 30px;border-right:1px solid rgba(255,255,255,.14);}
+.marquee-item span{color:var(--gold2);font-size:14px;}
+
+/* ══ MOBILE FAB + DRAWER ══ */
+.mob-fab{
+  display:none;
+  position:fixed;bottom:22px;left:22px;z-index:500;/* LOWERED from 2000 */
+  width:50px;height:50px;border-radius:50%;
+  background:linear-gradient(135deg,var(--brown),var(--brown2));
+  color:#fff;font-size:19px;align-items:center;justify-content:center;
+  box-shadow:0 6px 22px rgba(67,37,20,.4);cursor:pointer;border:none;transition:transform .28s;
+}
+.mob-fab:hover{transform:scale(1.1);}
+
+/* CRITICAL FIX: backdrop must NOT block pointer events when inactive */
+.mob-backdrop{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.52);
+  z-index:499;/* LOWERED, below FAB */
+  opacity:0;
+  transition:opacity .28s;
+  backdrop-filter:blur(3px);
+  pointer-events:none;/* CRITICAL: off by default */
+  display:none;
+}
+.mob-backdrop.active{
+  opacity:1;
+  pointer-events:auto;/* Only blocks when drawer is open */
+  display:block;
+}
+
+.mob-drawer{
+  position:fixed;left:0;top:0;bottom:0;width:264px;
+  z-index:500;/* matches FAB */
+  background:linear-gradient(180deg,#fef9f4 0%,#f5ece0 100%);
+  border-right:1.5px solid rgba(202,185,167,.42);
+  padding:70px 14px 28px;
+  transform:translateX(-100%);
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+  overflow-y:auto;
+  display:none;
+}
+.mob-drawer.open{transform:translateX(0);display:block;}
+
+.mob-drawer-title{font-size:9.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(67,37,20,.4);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(202,185,167,.38);}
+.mob-drawer-link{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:11px;margin-bottom:3px;cursor:pointer;transition:all .2s;border:1px solid transparent;background:transparent;color:var(--brown);font-size:13.5px;font-weight:600;text-decoration:none;}
+.mob-drawer-link:hover,.mob-drawer-link.active{background:rgba(67,37,20,.07);border-color:rgba(202,185,167,.38);transform:translateX(3px);}
+.mob-drawer-emoji{font-size:17px;width:26px;text-align:center;flex-shrink:0;}
+.mob-drawer-count{margin-left:auto;font-size:10px;font-weight:700;color:rgba(67,37,20,.48);background:rgba(67,37,20,.07);padding:2px 7px;border-radius:8px;}
+@media(max-width:1000px){.mob-fab{display:flex;}}
+
+/* ══ LAYOUT ══ */
+.products-page{padding:28px 0 96px;background:#fff;}
+@media(max-width:768px){.products-page{padding:18px 0 96px;}}
+.page-layout{
+  display:flex;
+  gap:20px;
+  width:100%;
+  padding:0 clamp(12px,3vw,48px);
+  align-items:flex-start;
+  box-sizing:border-box;
+}
+.main-area{flex:1;min-width:0;}
+
+/* ══ SIDEBAR ══ */
+.sidebar{
+  flex:0 0 232px;width:232px;
+  position:sticky;top:calc(var(--nav-h) + 14px);
+  max-height:calc(100vh - var(--nav-h) - 28px);
+  display:flex;flex-direction:column;
+  border-radius:22px;
+  overflow:hidden;
+  border:1px solid rgba(202,185,167,.3);
+  box-shadow:0 4px 32px rgba(67,37,20,.1);
+  background:#fff;
+}
+
+/* ── Sidebar Header ── */
+.sidebar-head{
+  flex-shrink:0;
+  padding:0;
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(160deg,#2e1408 0%,#432514 50%,#5a2e14 100%);
+}
+.sidebar-head-inner{
+  position:relative;z-index:2;
+  padding:20px 18px 16px;
+}
+.sidebar-head-ring1{
+  position:absolute;width:160px;height:160px;border-radius:50%;
+  border:1.5px solid rgba(201,168,76,.15);
+  top:-60px;right:-50px;pointer-events:none;
+  animation:ringFloat1 7s ease-in-out infinite;
+}
+.sidebar-head-ring2{
+  position:absolute;width:100px;height:100px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.08);
+  bottom:-30px;left:-20px;pointer-events:none;
+  animation:ringFloat2 9s ease-in-out infinite;
+}
+.sidebar-head-dot{
+  position:absolute;width:6px;height:6px;border-radius:50%;
+  background:rgba(201,168,76,.4);
+  top:18px;right:18px;pointer-events:none;
+}
+@keyframes ringFloat1{0%,100%{transform:translateX(0) translateY(0);}50%{transform:translateX(-12px) translateY(6px);}}
+@keyframes ringFloat2{0%,100%{transform:translateX(0) translateY(0);}50%{transform:translateX(10px) translateY(-8px);}}
+
+.sidebar-head-eyebrow{
+  font-size:8.5px;font-weight:700;
+  letter-spacing:3px;text-transform:uppercase;
+  color:rgba(201,168,76,.65);
+  margin-bottom:5px;
+  display:flex;align-items:center;gap:6px;
+}
+.sidebar-head-eyebrow::before{
+  content:"";display:inline-block;
+  width:16px;height:1px;
+  background:rgba(201,168,76,.5);
+  border-radius:1px;
+}
+.sidebar-head-title{
+  font-family:"Cormorant Garamond",serif;
+  font-size:23px;color:#fff;font-weight:700;
+  line-height:1.1;letter-spacing:-.2px;
+}
+.sidebar-head-title span{
+  color:var(--gold2);font-style:italic;
+}
+.sidebar-head-sub{
+  font-size:10px;color:rgba(202,185,167,.45);
+  margin-top:5px;font-weight:500;letter-spacing:.3px;
+}
+
+/* gold divider stripe below header */
+.sidebar-stripe{
+  height:3px;
+  background:linear-gradient(90deg,var(--gold),rgba(201,168,76,.2),transparent);
+  flex-shrink:0;
+}
+
+/* ── Sidebar Body ── */
+.sidebar-body{
+  flex:1;overflow-y:auto;
+  background:#fff;
+  padding:6px 8px 10px;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(202,185,167,.3) transparent;
+}
+.sidebar-body::-webkit-scrollbar{width:3px;}
+.sidebar-body::-webkit-scrollbar-thumb{background:rgba(202,185,167,.38);border-radius:3px;}
+.sidebar-body::-webkit-scrollbar-track{background:transparent;}
+
+.sidebar-section-lbl{
+  font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(67,37,20,.3);padding:8px 10px 5px;display:block;
+}
+
+.sidebar-item{
+  display:flex;align-items:center;gap:9px;
+  padding:8px 10px;border-radius:12px;
+  cursor:pointer;transition:all .22s cubic-bezier(.4,0,.2,1);
+  border:1px solid transparent;
+  background:none;width:100%;text-align:left;
+  font-family:"Cormorant Garamond",sans-serif;
+  position:relative;margin-bottom:1px;
+}
+.sidebar-item:hover{
+  background:var(--cream);
+  border-color:rgba(202,185,167,.4);
+  transform:translateX(2px);
+}
+.sidebar-item.active{
+  background:linear-gradient(135deg,rgba(67,37,20,.06) 0%,rgba(202,185,167,.14) 100%);
+  border-color:rgba(202,185,167,.45);
+  transform:translateX(2px);
+}
+/* gold left bar on active */
+.sidebar-item.active::before{
+  content:"";position:absolute;left:0;top:5px;bottom:5px;
+  width:3px;border-radius:0 3px 3px 0;
+  background:linear-gradient(180deg,var(--gold),var(--brown));
+}
+
+/* emoji pill */
+.sidebar-item-emoji{
+  font-size:14px;flex-shrink:0;
+  width:32px;height:32px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(67,37,20,.05);
+  border-radius:10px;
+  border:1px solid rgba(202,185,167,.28);
+  transition:all .22s;
+}
+.sidebar-item:hover .sidebar-item-emoji,
+.sidebar-item.active .sidebar-item-emoji{
+  background:rgba(67,37,20,.09);
+  border-color:rgba(202,185,167,.5);
+  transform:scale(1.08);
+}
+
+.sidebar-item-name{
+  font-size:11.5px;font-weight:600;
+  color:var(--brown2);flex:1;line-height:1.25;
+}
+.sidebar-item.active .sidebar-item-name{color:var(--brown3);font-weight:700;}
+
+.sidebar-item-count{
+  flex-shrink:0;font-size:9px;font-weight:700;
+  color:rgba(67,37,20,.5);
+  background:rgba(67,37,20,.06);
+  border-radius:20px;padding:2px 7px;
+  min-width:22px;text-align:center;
+  border:1px solid rgba(202,185,167,.25);
+  transition:all .22s;
+}
+.sidebar-item.active .sidebar-item-count{
+  background:var(--brown);color:#fff;border-color:transparent;
+}
+
+.sidebar-sep{
+  height:1px;background:rgba(202,185,167,.12);
+  margin:1px 8px;
+}
+
+/* ── Sidebar Footer ── */
+.sidebar-foot{
+  flex-shrink:0;
+  padding:10px 14px 12px;
+  background:linear-gradient(135deg,var(--cream),#f0e6d8);
+  border-top:1px solid rgba(202,185,167,.25);
+  display:flex;align-items:center;gap:8px;
+}
+.sidebar-foot-icon{
+  font-size:16px;
+  width:28px;height:28px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(67,37,20,.07);
+  border-radius:8px;flex-shrink:0;
+}
+.sidebar-foot-text{font-size:10px;color:rgba(67,37,20,.5);font-weight:600;line-height:1.3;}
+.sidebar-foot-text span{display:block;font-size:9px;font-weight:400;color:rgba(67,37,20,.35);}
+
+@media(max-width:1000px){.sidebar{display:none;}.page-layout{display:block;}}
+/* ══ LOADING ══ */
+.loading-state{text-align:center;padding:80px 20px;}
+.loading-spinner{width:42px;height:42px;border-radius:50%;border:4px solid rgba(202,185,167,.32);border-top-color:var(--brown);animation:spin .85s linear infinite;margin:0 auto 16px;}
+
+
+@keyframes decoFloat1{
+  0%{transform:translateX(0);}
+  50%{transform:translateX(-80vw);}
+  100%{transform:translateX(0);}
+}
+@keyframes decoFloat2{
+  0%{transform:translateX(0);}
+  50%{transform:translateX(80vw);}
+  100%{transform:translateX(0);}
+}
+/* ══ CATEGORY BANNER ══ */
+.cat-section{margin-bottom:70px;scroll-margin-top:calc(var(--nav-h) + 14px);}
+.cat-section:last-child{margin-bottom:0;}
+.cat-banner{border-radius:20px;padding:26px 30px;position:relative;overflow:hidden;margin-bottom:22px;display:flex;align-items:center;gap:18px;}
+.cat-banner::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");}
+.cat-banner-deco{position:absolute;border-radius:50%;pointer-events:none;}
+.cat-banner-deco:nth-child(2){right:-80px;top:-50px;width:220px;height:220px;background:rgba(255,255,255,.12);animation:decoFloat1 8s ease-in-out infinite;}
+.cat-banner-deco:nth-child(3){left:-80px;bottom:-60px;width:190px;height:190px;background:rgba(255,255,255,.08);animation:decoFloat2 10s ease-in-out infinite;}
+.cat-banner[data-cat="Dry Sharbat"]{background:linear-gradient(135deg,#c25000,#e85d00 55%,#ff9a00);}
+.cat-banner[data-cat="Liquid Sharbat"]{background:linear-gradient(135deg,#1a6b3a,#22a05a 55%,#00c98c);}
+.cat-banner[data-cat="Vegetable Powder"],.cat-banner[data-cat="Vegetable Powders"]{background:linear-gradient(135deg,#1a6b2e,#2e9e4f 55%,#56c96e);}
+.cat-banner[data-cat="Fruit Powder"],.cat-banner[data-cat="Fruit Powders"]{background:linear-gradient(135deg,#b52020,#e74c3c 55%,#ff7675);}
+.cat-banner[data-cat="Sugar Alternative"],.cat-banner[data-cat="Deshi Organic Sugar"]{background:linear-gradient(135deg,#7b4f12,#b87d2e 55%,#e0aa5a);}
+.cat-banner[data-cat="Instant Jain Soup"]{background:linear-gradient(135deg,#0f3d5c,#1a6ea0 55%,#4dacd6);}
+.cat-banner[data-cat="Instant Premix Sauce"]{background:linear-gradient(135deg,#991a00,#cc3300 55%,#ff5a1a);}
+.cat-banner[data-cat="Coffee"]{background:linear-gradient(135deg,#2c1a0e,#5a3520 55%,#8b5a35);}
+.cat-banner[data-cat="Beverages"]{background:linear-gradient(135deg,#0a3d5c,#1a6b8a 55%,#2a9ec0);}
+.cat-banner[data-cat="Herbal Teas"]{background:linear-gradient(135deg,#1a5c5c,#2a9e9e 55%,#58d6d6);}
+.cat-banner[data-cat="Tea Masala"]{background:linear-gradient(135deg,#8b1a2e,#c0354e 55%,#e85a6e);}
+.cat-banner[data-cat="Ice Cream Premix"]{background:linear-gradient(135deg,#7b3a8b,#b05ac0 55%,#d88ae0);}
+.cat-banner[data-cat="Food Oil"],.cat-banner[data-cat="Oils"]{background:linear-gradient(135deg,#5c3d00,#9a6a00 55%,#c9a84c);}
+.cat-banner[data-cat="Snacks"],.cat-banner[data-cat="Snacks Product"]{background:linear-gradient(135deg,#8b2500,#c25000 55%,#ff6b35);}
+.cat-banner[data-cat="Fast Food"]{background:linear-gradient(135deg,#8b2000,#c03010 55%,#f06030);}
+.cat-banner[data-cat="Fast Food Premixs & Masala"]{background:linear-gradient(135deg,#6b1a00,#a03010 55%,#d06030);}
+.cat-banner[data-cat="Food Masala"]{background:linear-gradient(135deg,#991a00,#e03010 55%,#ff6b3b);}
+.cat-banner[data-cat="Akha Masala"]{background:linear-gradient(135deg,#7a0e0e,#b52020 55%,#e84040);}
+.cat-banner[data-cat="Spices"]{background:linear-gradient(135deg,#8b1a00,#c03820 55%,#e86040);}
+.cat-banner[data-cat="Mouth Freshener"],.cat-banner[data-cat="Mouth Fresher"],.cat-banner[data-cat="Mouth Freshener (Mukhwas)"]{background:linear-gradient(135deg,#0a4a20,#1a7a3a 55%,#33b860);}
+.cat-banner[data-cat="Premium Gulkand"]{background:linear-gradient(135deg,#8b1a4a,#c03070 55%,#e8609a);}
+.cat-banner[data-cat="Gol"]{background:linear-gradient(135deg,#3a2800,#6a4a10 55%,#9a7030);}
+.cat-banner[data-cat="Gund"]{background:linear-gradient(135deg,#2a3a1a,#4a6a2a 55%,#6a9a40);}
+.cat-banner[data-cat="Pulses"]{background:linear-gradient(135deg,#3a1a60,#6a3a9a 55%,#9a60c0);}
+.cat-banner[data-cat="Rice"]{background:linear-gradient(135deg,#4a3000,#7a5a00 55%,#b08a00);}
+.cat-banner[data-cat="Dryfruit"]{background:linear-gradient(135deg,#5a2800,#8a4800 55%,#b87830);}
+.cat-banner[data-cat="Seeds"]{background:linear-gradient(135deg,#1a4a1a,#2a7a2a 55%,#45a845);}
+.cat-banner[data-cat="Ghee"]{background:linear-gradient(135deg,#7a5200,#b87d00 55%,#e8c040);}
+.cat-banner[data-cat="Ark"]{background:linear-gradient(135deg,#0a2a4a,#1a5080 55%,#2a80b8);}
+.cat-banner[data-cat="Rajasthan Special"]{background:linear-gradient(135deg,#8b3a00,#c06020 55%,#e89050);}
+.cat-banner[data-cat="Kansa Products"]{background:linear-gradient(135deg,#7b4f12,#b87d2e 55%,#e0aa5a);}
+.cat-banner[data-cat="Special Customer Favorite Items"],.cat-banner[data-cat="Special Customer Favourite Items"]{background:linear-gradient(135deg,#1a3a6b,#2a5ea0 55%,#4a90d8);}
+.cat-banner[data-cat="Most Popular Products"]{background:linear-gradient(135deg,#5a4000,#9a7500 55%,#c9a84c);}
+/* Default fallback for any uncovered category */
+.cat-banner:not([style*="background"]):not([data-cat]){background:linear-gradient(135deg,#432514,#6b3a20 55%,#9a6040);}
+.cat-banner-icon{width:68px;height:68px;flex-shrink:0;border-radius:16px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:32px;border:1.5px solid rgba(255,255,255,.28);position:relative;z-index:2;box-shadow:0 6px 18px rgba(0,0,0,.16);backdrop-filter:blur(5px);}
+.cat-banner-body{flex:1;position:relative;z-index:2;}
+.cat-banner-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:3px;}
+.cat-banner-title{font-family:"Cormorant Garamond",serif;font-size:26px;color:#fff;font-weight:700;line-height:1.15;margin-bottom:2px;}
+.cat-banner-desc{font-size:12.5px;color:rgba(255,255,255,.72);line-height:1.44;}
+.cat-banner-count{margin-left:auto;flex-shrink:0;background:rgba(255,255,255,.22);border:1.5px solid rgba(255,255,255,.34);color:#fff;font-size:12.5px;font-weight:700;padding:6px 16px;border-radius:20px;position:relative;z-index:2;white-space:nowrap;}
+@media(max-width:768px){.cat-banner{padding:18px 18px;gap:13px;border-radius:14px;}.cat-banner-icon{width:52px;height:52px;font-size:24px;border-radius:12px;}.cat-banner-title{font-size:20px;}.cat-banner-count{display:none;}}
+@media(max-width:480px){.cat-banner{padding:16px 14px;}.cat-banner-title{font-size:18px;}}
+
+/* ══ PRODUCT GRID + CARD ══ */
+.prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+@media(max-width:1320px){.prod-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:920px){.prod-grid{grid-template-columns:repeat(2,1fr);gap:13px;}}
+@media(max-width:380px){.prod-grid{grid-template-columns:1fr;}}
+
+/* ── NEW pc2 CARD (same as index.html) ── */
+.prod-card,.pc2{
+  background:#fff;border-radius:16px;overflow:hidden;
+  box-shadow:0 3px 16px rgba(67,37,20,.07);
+  border:1px solid rgba(202,185,167,.2);
+  display:flex;flex-direction:column;
+  transition:all .36s cubic-bezier(.4,0,.2,1);
+  position:relative;
+}
+.prod-card:hover,.pc2:hover{transform:translateY(-7px);box-shadow:0 17px 44px rgba(67,37,20,.13);}
+
+/* Image */
+.pc2-img,.prod-img{
+  height:192px;overflow:hidden;background:var(--cream);
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:16px 16px 0 0;
+  flex-shrink:0;
+}
+.pc2-img img,.prod-img img{width:100%;height:100%;object-fit:contain;padding:13px;transition:transform .46s;}
+.prod-card:hover .pc2-img img,.pc2:hover .pc2-img img{transform:scale(1.07);}
+/* Safety: hide images on non-Dry-Sharbat cards */
+.pc2:not([data-ds]):not([data-ki]) .pc2-img img{display:none!important;}
+/* Image fallback text */
+.pc2-img-fallback{display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:linear-gradient(135deg,#faf6f1,#f0e6d8);font-family:"Cormorant Garamond",serif;font-size:16px;font-weight:700;color:var(--brown);text-align:center;padding:16px;line-height:1.3;}
+/* Badge */
+.pc2-badge,.prod-oos{position:absolute;top:10px;left:10px;background:var(--brown);color:#fff;font-size:9px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;padding:3px 10px;border-radius:20px;z-index:2;box-shadow:0 3px 9px rgba(67,37,20,.3);}
+.prod-oos{left:auto;right:10px;background:rgba(67,37,20,.84);}
+/* Body */
+.pc2-body{padding:12px 13px 14px;flex:1;display:flex;flex-direction:column;gap:0;}
+/* Name */
+.pc2-name,.prod-name{font-size:13px;font-weight:700;color:#222;margin-bottom:7px;line-height:1.4;text-transform:none;letter-spacing:.2px;}
+/* Stars */
+.pc2-stars{display:flex;align-items:center;gap:5px;margin-bottom:9px;}
+.pc2-stars-icons{color:#f5a623;font-size:13px;letter-spacing:1px;}
+.pc2-reviews{font-size:11px;color:#888;font-weight:500;}
+/* Variant pills */
+.pc2-pills{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;}
+.pc2-pill{padding:4px 11px;border-radius:20px;border:1.5px solid #d0c8c0;font-size:11.5px;font-weight:700;color:#555;cursor:pointer;background:#fff;transition:all .2s;white-space:nowrap;font-family:"Cormorant Garamond",sans-serif;}
+.pc2-pill.active{border-color:var(--brown);background:var(--brown);color:#fff;}
+.pc2-pill:hover:not(.active){border-color:var(--brown);color:var(--brown);}
+/* Variant dropdown */
+.pc2-select-wrap{margin-bottom:11px;}
+.pc2-select{width:100%;padding:7px 10px;border-radius:10px;border:1.5px solid #d9cfc7;font-size:13px;font-weight:600;color:#333;background:#fff;cursor:pointer;font-family:"Cormorant Garamond",sans-serif;outline:none;transition:border-color .2s;}
+.pc2-select:focus{border-color:var(--brown);}
+/* Price row */
+.pc2-price-row,.pc2-mid{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.pc2-price-col{display:flex;flex-direction:column;justify-content:center;}
+.pc2-price{font-size:18px;font-weight:800;color:var(--brown);font-family:"Cormorant Garamond",serif;line-height:1;}
+/* Add to Cart */
+.pc2-cart-btn{width:100%;padding:10px;background:var(--btn-cart-bg);color:#fff;border:none;border-radius:10px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .26s;box-shadow:0 3px 9px rgba(26,107,58,.26);letter-spacing:.4px;margin-top:auto;font-family:"Cormorant Garamond",sans-serif;-webkit-tap-highlight-color:rgba(0,0,0,.1);touch-action:manipulation;}
+.pc2-cart-btn:hover,.pc2-cart-btn:active{background:var(--btn-cart-hover);transform:translateY(-1px);}
+.pc2-cart-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* QTY COUNTER — replaces ADD TO CART when qty > 0 */
+.pc2-qty-wrap{
+  width:100%;margin-top:auto;
+  display:none;
+  align-items:center;justify-content:space-between;
+  background:var(--btn-cart-bg);
+  border-radius:10px;overflow:hidden;
+  box-shadow:0 3px 9px rgba(26,107,58,.26);
+}
+.pc2-qty-wrap.active{display:flex;}
+.pc2-qty-btn{
+  width:44px;height:44px;flex-shrink:0;
+  border:none;background:rgba(0,0,0,.18);color:#fff;
+  font-size:20px;font-weight:800;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;
+  font-family:"Cormorant Garamond",sans-serif;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+.pc2-qty-btn:hover{background:rgba(0,0,0,.3);}
+.pc2-qty-num{
+  flex:1;text-align:center;color:#fff;
+  font-size:16px;font-weight:800;
+  font-family:"Cormorant Garamond",sans-serif;
+  user-select:none;
+}
+
+/* ══ CART TOAST ══ */
+.cart-toast{position:fixed;bottom:26px;right:26px;z-index:9999;display:flex;align-items:center;gap:12px;background:#fff;border-radius:15px;padding:13px 19px 13px 15px;box-shadow:0 16px 48px rgba(67,37,20,.2),0 3px 12px rgba(0,0,0,.06);border-left:4px solid var(--brown);min-width:280px;max-width:350px;transform:translateX(140%) scale(.92);opacity:0;transition:all .4s cubic-bezier(.34,1.56,.64,1);pointer-events:none;}
+.cart-toast.show{transform:translateX(0) scale(1);opacity:1;pointer-events:auto;}
+.toast-img-ph{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--sand),#e8ddd3);display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0;}
+img.toast-img{width:48px;height:48px;border-radius:10px;object-fit:contain;background:var(--cream);padding:4px;flex-shrink:0;}
+.cart-toast-body{flex:1;min-width:0;}
+.toast-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:#22c55e;margin-bottom:2px;display:flex;align-items:center;gap:4px;}
+.toast-label::before{content:"";width:5px;height:5px;border-radius:50%;background:#22c55e;display:inline-block;}
+.toast-name{font-size:13px;font-weight:700;color:var(--brown);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.toast-price{font-size:11.5px;color:#7a6a5c;font-weight:500;}
+.toast-go{background:var(--btn-cart-bg);color:#fff;border:none;padding:7px 13px;border-radius:9px;font-size:12px;font-weight:700;font-family:"Cormorant Garamond",sans-serif;cursor:pointer;flex-shrink:0;}
+.toast-go:hover{background:var(--btn-cart-hover);}
+@media(max-width:500px){.cart-toast{bottom:76px;right:7px;left:7px;min-width:unset;max-width:unset;}}
+
+/* ══ KANSA STOCK NOTIFY VALIDATION TOAST ══ */
+.kansa-notify-toast{
+  position:fixed;
+  bottom:32px;
+  left:50%;
+  transform:translateX(-50%) translateY(120px) scale(0.95);
+  z-index:100000;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  background:linear-gradient(135deg,#3a1a08 0%,#432514 60%,#5a3a28 100%);
+  color:#fff;
+  border-radius:18px;
+  padding:14px 22px 14px 18px;
+  box-shadow:0 22px 55px rgba(0,0,0,.45),0 0 0 1.5px rgba(201,168,76,.55);
+  min-width:320px;
+  max-width:92vw;
+  opacity:0;
+  pointer-events:none;
+  transition:transform .42s cubic-bezier(.34,1.56,.64,1),opacity .35s ease;
+}
+.kansa-notify-toast.show{
+  transform:translateX(-50%) translateY(0) scale(1);
+  opacity:1;
+  pointer-events:auto;
+}
+.knt-icon{
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#c9a84c,#e8c97a);
+  color:#2e1a0e;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  flex-shrink:0;
+  box-shadow:0 4px 14px rgba(201,168,76,.35);
+  animation:kntBellRing 2s ease infinite;
+}
+@keyframes kntBellRing{
+  0%,100%{transform:rotate(0)}
+  10%,30%{transform:rotate(14deg)}
+  20%,40%{transform:rotate(-14deg)}
+  50%{transform:rotate(0)}
+}
+.knt-body{flex:1;min-width:0;}
+.knt-tag{
+  font-size:10.5px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  color:#e8c97a;
+  margin-bottom:3px;
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+.knt-tag::before{
+  content:"";
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#e8c97a;
+  display:inline-block;
+}
+.knt-msg{
+  font-size:14.5px;
+  font-weight:600;
+  color:#faf6f1;
+  line-height:1.35;
+  letter-spacing:.2px;
+}
+.knt-close{
+  background:rgba(255,255,255,.14);
+  border:none;
+  color:#e8c97a;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  cursor:pointer;
+  transition:background .2s,transform .2s;
+  flex-shrink:0;
+  margin-left:6px;
+}
+.knt-close:hover{
+  background:rgba(255,255,255,.24);
+  transform:scale(1.1);
+}
+.pc2-cart-btn.notified,.prod-modal-add-cart-btn.notified{
+  background:linear-gradient(135deg,#b87d2e,#e0aa5a) !important;
+  color:#fff !important;
+  transform:scale(.98);
+}
+@media(max-width:500px){
+  .kansa-notify-toast{
+    bottom:80px;
+    width:calc(100% - 24px);
+    max-width:calc(100% - 24px);
+    padding:12px 14px;
+  }
+  .knt-msg{font-size:13px;}
+}
+
+
+/* ══ FOOTER ══ */
+/* base */
+.footer-contact-item{
+  transition: all .35s cubic-bezier(.4,0,.2,1);
+  border-radius: 14px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+/* hover effect */
+.footer-contact-item:hover{
+  background: rgba(201,168,76,.12);
+  transform: translateX(8px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(201,168,76,.15);
+}
+
+/* icon animation */
+.footer-contact-icon{
+  transition: all .35s ease;
+}
+
+.footer-contact-item:hover .footer-contact-icon{
+  transform: rotate(-6deg) scale(1.15);
+  background: var(--gold);
+  color: #000;
+}
+
+/* text highlight */
+.footer-contact-item:hover .footer-contact-text{
+  color: #fff;
+}
+.gamtu-footer{background:linear-gradient(160deg,#1a0c05 0%,#2e1408 50%,#1a0c05 100%);color:var(--sand);position:relative;overflow:hidden;}
+.footer-top-bar{background:linear-gradient(90deg,rgba(201,168,76,.15),rgba(201,168,76,.05),rgba(201,168,76,.15));border-bottom:1px solid rgba(201,168,76,.2);padding:20px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+.footer-top-tagline{font-size:14px;color:rgba(202,185,167,.75);letter-spacing:.5px;}
+.footer-top-tagline strong{color:var(--gold2);}
+.footer-trust-badges{display:flex;gap:24px;align-items:center;flex-wrap:wrap;}
+.trust-badge{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:rgba(202,185,167,.7);letter-spacing:.3px;}
+.trust-badge-icon{width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.25);display:flex;align-items:center;justify-content:center;font-size:13px;}
+.footer-main{padding:64px 60px 48px;display:grid;grid-template-columns:1.8fr 1fr 1fr 1.2fr;gap:56px;max-width:1400px;margin:0 auto;}
+.footer-logo-wrap{margin-bottom:10px;margin-left:-25px;}
+.footer-logo-wrap img{height:100px;display:block;}
+.footer-brand-desc{font-size:15px;line-height:1.9;color:rgba(202,185,167,.7);margin-bottom:28px;max-width:370px;}
+.footer-social{display:flex;gap:10px;flex-wrap:wrap;}
+.social-btn{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(202,185,167,.15);display:flex;align-items:center;justify-content:center;font-size:17px;color:rgba(202,185,167,.7);transition:all .35s;text-decoration:none;}
+.social-btn:hover{transform:translateY(-4px);border-color:rgba(201,168,76,.5);background:rgba(201,168,76,.12);}
+.social-btn:hover .fa-instagram{color:#e1306c;}
+.social-btn:hover .fa-whatsapp{color:#25d366;}
+.social-btn:hover .fa-facebook-f{color:#1877f2;}
+.social-btn:hover .fa-envelope{color:#ea4335;}
+.social-btn:hover .fa-youtube{color:#ff0000;}
+.footer-col h4{color:#fff;font-size:13px;font-weight:700;margin-bottom:22px;text-transform:uppercase;letter-spacing:2px;display:flex;align-items:center;gap:10px;}
+.footer-col h4::after{content:"";flex:1;height:1px;background:rgba(201,168,76,.2);}
+.footer-links{display:flex;flex-direction:column;gap:10px;}
+.footer-links a{color:rgba(202,185,167,.65);text-decoration:none;font-size:14px;transition:all .25s;display:flex;align-items:center;gap:8px;padding:4px 0;}
+.footer-links a::before{content:"→";font-size:11px;opacity:0;transform:translateX(-6px);transition:all .25s;}
+.footer-links a:hover{color:#fff;padding-left:4px;}
+.footer-links a:hover::before{opacity:.6;transform:translateX(0);}
+.footer-contact-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;}
+.footer-contact-icon{width:36px;height:36px;border-radius:10px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.footer-contact-text{font-size:14px;color:rgba(202,185,167,.75);line-height:1.5;padding-top:6px;}
+.footer-contact-text strong{display:block;color:#fff;font-size:12px;font-weight:700;margin-bottom:2px;letter-spacing:.5px;}
+.footer-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.35),rgba(201,168,76,.5),rgba(201,168,76,.35),transparent);margin:0 60px;}
+.footer-bottom{padding:24px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+.footer-bottom-copy{font-size:13px;color:rgba(202,185,167,.45);}
+.footer-bottom-copy span{color:rgba(201,168,76,.7);}
+.footer-bottom-links{display:flex;gap:22px;flex-wrap:wrap;}
+.footer-bottom-links a{font-size:12.5px;color:rgba(202,185,167,.4);text-decoration:none;transition:color .25s;}
+.footer-bottom-links a:hover{color:rgba(202,185,167,.8);}
+.footer-deco{position:absolute;right:-80px;top:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,.06),transparent 70%);pointer-events:none;}
+.footer-deco2{position:absolute;left:-60px;bottom:-60px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,.05),transparent 70%);pointer-events:none;}
+@media(max-width:1200px){.footer-main{grid-template-columns:1fr 1fr;gap:40px;padding:52px 40px 40px;}.footer-top-bar{padding:18px 40px;}}
+@media(max-width:768px){.footer-main{grid-template-columns:1fr 1fr;gap:32px;padding:40px 24px 32px;}.footer-top-bar{padding:14px 24px;}.footer-divider{margin:0 24px;}.footer-bottom{padding:20px 24px;flex-direction:column;text-align:center;}}
+@media(max-width:520px){.footer-main{grid-template-columns:1fr;gap:28px;padding:36px 20px 28px;}.footer-top-bar{flex-direction:column;gap:12px;text-align:center;}.footer-trust-badges{justify-content:center;}.footer-bottom-links{justify-content:center;}.footer-divider{margin:0 20px;}.footer-bottom{padding:16px 20px;}}
+.credit{
+  color: rgba(202,185,167,.5);
+  font-size: 12px;
+  margin-left: 6px;
+  transition: all .3s;
+}
+
+.credit:hover{
+  color: var(--gold);
+  cursor: pointer;
+}
+
+/* ══ IN-CARD PRODUCT IMAGE CAROUSEL ══ */
+.pc2-carousel{width:100%;height:100%;position:relative;overflow:hidden;}
+.pc2-carousel-track{display:flex;height:100%;transition:transform .4s cubic-bezier(.4,0,.2,1);will-change:transform;}
+.pc2-carousel-slide{flex:0 0 100%;height:100%;display:flex;align-items:center;justify-content:center;}
+.pc2-carousel-slide img{width:100%;height:100%;object-fit:contain;padding:12px;display:block;}
+/* Arrow buttons — appear on hover, stay always visible on touch devices */
+.pc2-carr-btn{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:26px;height:26px;border-radius:50%;
+  background:rgba(255,255,255,.9);border:none;
+  color:var(--brown);font-size:16px;font-weight:800;
+  cursor:pointer;z-index:5;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+  transition:all .2s;
+  opacity:0;pointer-events:none;
+}
+.pc2:hover .pc2-carr-btn{opacity:1;pointer-events:auto;}
+.pc2-carr-btn:hover{background:var(--brown);color:#fff;transform:translateY(-50%) scale(1.1);}
+.pc2-carr-prev{left:6px;}
+.pc2-carr-next{right:6px;}
+/* Dots */
+.pc2-carr-dots{
+  position:absolute;bottom:6px;left:50%;transform:translateX(-50%);
+  display:flex;gap:5px;z-index:5;
+}
+.pc2-carr-dots span{
+  width:5px;height:5px;border-radius:50%;
+  background:rgba(67,37,20,.3);display:inline-block;
+  transition:all .3s;cursor:pointer;
+}
+.pc2-carr-dots span.active{background:var(--brown);width:14px;border-radius:3px;}
+/* On touch/mobile: always show arrows at reduced opacity */
+@media(hover:none),(max-width:480px){
+  .pc2-carr-btn{opacity:.65;pointer-events:auto;width:22px;height:22px;font-size:13px;}
+}
+
+/* ══ SEARCH BAR ══ */
+.srch-wrap{
+  position:relative;
+  max-width:560px;
+  margin:22px auto 8px;
+  z-index:99999;
+}
+.srch-box{
+  display:flex !important;
+  align-items:center !important;
+  background:#f0e6d8 !important;
+  border:none !important;
+  border-radius:50px !important;
+  padding:5px 5px 5px 18px !important;
+  gap:0 !important;
+  box-shadow:0 6px 28px rgba(0,0,0,.28),0 2px 6px rgba(0,0,0,.14) !important;
+  transition:box-shadow .25s;
+  overflow:hidden;
+}
+.srch-box:focus-within{
+  box-shadow:0 8px 36px rgba(0,0,0,.32),0 3px 10px rgba(0,0,0,.16) !important;
+}
+.srch-icon{
+  font-size:16px;
+  flex-shrink:0;
+  color:#9a7a5a;
+  margin-right:8px;
+  line-height:1;
+  display:flex;
+  align-items:center;
+  pointer-events:none;
+  user-select:none;
+}
+.srch-input{
+  -webkit-appearance:none !important;
+  appearance:none !important;
+  flex:1 !important;
+  background:transparent !important;
+  border:none !important;
+  border-radius:0 !important;
+  outline:none !important;
+  box-shadow:none !important;
+  font-family:"Cormorant Garamond",serif !important;
+  font-size:15px !important;
+  font-weight:500 !important;
+  color:#3a2010 !important;
+  padding:12px 8px 12px 0 !important;
+  margin:0 !important;
+  min-width:0 !important;
+  width:100% !important;
+}
+.srch-input::placeholder{
+  color:#a08060 !important;
+  font-weight:400 !important;
+  font-style:italic !important;
+  opacity:1 !important;
+}
+.srch-input:focus{
+  outline:none !important;
+  box-shadow:none !important;
+  border:none !important;
+}
+.srch-clear{
+  flex-shrink:0;
+  background:none;
+  border:none;
+  width:28px;height:28px;
+  color:#9a7a5a;
+  font-size:13px;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:.2s;
+  padding:0;
+  margin-right:4px;
+  border-radius:50%;
+  -webkit-appearance:none;
+  appearance:none;
+}
+.srch-clear:hover{background:rgba(67,37,20,.1);color:var(--brown);}
+.srch-submit{
+  flex-shrink:0;
+  -webkit-appearance:none;
+  appearance:none;
+  background:#2e1408 !important;
+  color:#fff !important;
+  border:none !important;
+  border-radius:50px !important;
+  padding:12px 28px !important;
+  font-family:"Cormorant Garamond",serif !important;
+  font-size:15px !important;
+  font-weight:700 !important;
+  letter-spacing:.3px;
+  cursor:pointer;
+  transition:background .22s,transform .18s;
+  white-space:nowrap;
+  line-height:1;
+  display:flex;
+  align-items:center;
+}
+.srch-submit:hover{background:#432514 !important;}
+.srch-submit:active{transform:scale(.98);}
+
+/* Dropdown */
+.srch-dropdown{
+  position:absolute;
+  top:calc(100% + 8px);
+  left:0;right:0;
+  background:#fff;
+  border-radius:18px;
+  box-shadow:0 20px 60px rgba(67,37,20,.22),0 4px 16px rgba(0,0,0,.1);
+  border:1px solid rgba(202,185,167,.3);
+  overflow:hidden;
+  display:none;
+  z-index:9999;
+  max-height:420px;
+  overflow-y:auto;
+}
+.srch-dropdown.open{display:block;}
+.srch-dropdown::-webkit-scrollbar{width:4px;}
+.srch-dropdown::-webkit-scrollbar-thumb{background:rgba(202,185,167,.5);border-radius:4px;}
+
+.srch-sec-label{
+  font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(67,37,20,.35);
+  padding:10px 16px 5px;
+  border-top:1px solid rgba(202,185,167,.15);
+}
+.srch-sec-label:first-child{border-top:none;}
+
+.srch-item{
+  display:flex;align-items:center;gap:12px;
+  padding:9px 16px;
+  cursor:pointer;
+  transition:background .18s;
+  border:none;background:none;width:100%;text-align:left;
+}
+.srch-item:hover,.srch-item.focused{background:rgba(67,37,20,.045);}
+.srch-item-icon{
+  flex-shrink:0;
+  width:34px;height:34px;
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;
+}
+.srch-item-icon.cat-icon{
+  background:linear-gradient(135deg,rgba(201,168,76,.15),rgba(201,168,76,.08));
+  border:1px solid rgba(201,168,76,.25);
+}
+.srch-item-icon.prod-icon{
+  background:var(--cream);
+  border:1px solid rgba(202,185,167,.3);
+  overflow:hidden;
+}
+.srch-item-icon.prod-icon img{
+  width:100%;height:100%;object-fit:contain;padding:3px;
+}
+.srch-item-body{flex:1;min-width:0;}
+.srch-item-name{
+  font-size:13.5px;font-weight:700;color:var(--brown);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.srch-item-name mark{
+  background:rgba(201,168,76,.28);
+  border-radius:3px;padding:0 1px;
+  font-style:normal;color:var(--brown3);
+}
+.srch-item-meta{
+  font-size:11px;color:rgba(67,37,20,.45);font-weight:500;margin-top:1px;
+}
+.srch-item-badge{
+  flex-shrink:0;
+  font-size:9px;font-weight:700;
+  padding:2px 8px;border-radius:10px;
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.srch-item-badge.badge-cat{
+  background:rgba(201,168,76,.12);color:var(--gold);
+  border:1px solid rgba(201,168,76,.28);
+}
+.srch-item-badge.badge-prod{
+  background:rgba(26,107,58,.08);color:#1a6b3a;
+  border:1px solid rgba(26,107,58,.2);
+}
+.srch-no-result{
+  padding:24px 16px;text-align:center;
+  font-size:14px;color:rgba(67,37,20,.4);font-weight:500;
+}
+.srch-no-result span{display:block;font-size:28px;margin-bottom:8px;}
+
+/* Highlight matched product cards */
+.prod-card.srch-hide{display:none;}
+.cat-section.srch-cat-hide{display:none;}
+
+/* Active search state — main area shows inline results */
+.srch-results-bar{
+  display:none;
+  align-items:center;gap:10px;
+  padding:12px clamp(12px,3vw,48px);
+  background:rgba(67,37,20,.04);
+  border-bottom:1px solid rgba(202,185,167,.2);
+  flex-wrap:wrap;
+}
+.srch-results-bar.visible{display:flex;}
+.srch-results-count{
+  font-size:13px;color:rgba(67,37,20,.6);font-weight:600;
+}
+.srch-results-count strong{color:var(--brown);}
+.srch-clear-btn{
+  margin-left:auto;
+  font-size:12px;font-weight:700;
+  color:var(--brown);
+  background:rgba(67,37,20,.07);
+  border:1px solid rgba(202,185,167,.35);
+  padding:5px 14px;border-radius:20px;
+  cursor:pointer;transition:.2s;
+}
+.srch-clear-btn:hover{background:rgba(67,37,20,.12);}
+@media(max-width:480px){
+  .srch-input{font-size:14px;}
+  .srch-dropdown{border-radius:14px;}
+}
+
+/* ══════════════════════════════════════════
+   PRODUCT DETAILS POPUP MODAL
+══════════════════════════════════════════ */
+body.modal-open {
+  overflow: hidden !important;
+}
+
+.prod-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  background: rgba(30, 14, 6, 0.68);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.prod-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.prod-modal-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 920px;
+  max-height: 90vh;
+  border-radius: 26px;
+  border: 1.5px solid rgba(202, 185, 167, 0.4);
+  box-shadow: 0 28px 70px rgba(46, 26, 14, 0.32), 0 8px 24px rgba(0, 0, 0, 0.12);
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transform: scale(0.92) translateY(24px);
+  transition: transform 0.38s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.35s ease;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sand) transparent;
+}
+
+.prod-modal-card::-webkit-scrollbar {
+  width: 6px;
+}
+.prod-modal-card::-webkit-scrollbar-thumb {
+  background: var(--sand);
+  border-radius: 10px;
+}
+
+.prod-modal-overlay.active .prod-modal-card {
+  transform: scale(1) translateY(0);
+}
+
+.prod-modal-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #faf6f1;
+  border: 1.5px solid rgba(202, 185, 167, 0.45);
+  color: var(--brown);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 20;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(67, 37, 20, 0.08);
+}
+
+.prod-modal-close:hover {
+  background: var(--brown);
+  color: #ffffff;
+  transform: rotate(90deg) scale(1.08);
+  border-color: var(--brown);
+}
+
+.prod-modal-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.22fr);
+  gap: 32px;
+  padding: 32px;
+}
+
+/* Gallery Column */
+.prod-modal-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.prod-modal-main-img-wrap {
+  width: 100%;
+  height: 340px;
+  border-radius: 20px;
+  background: linear-gradient(145deg, #faf6f1 0%, #f2e7db 100%);
+  border: 1.5px solid rgba(202, 185, 167, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 2px 10px rgba(67, 37, 20, 0.04);
+}
+
+.prod-modal-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: var(--brown);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+  z-index: 3;
+  box-shadow: 0 3px 10px rgba(67, 37, 20, 0.25);
+}
+
+.prod-modal-main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 20px;
+  transition: transform 0.45s ease, opacity 0.25s ease;
+  mix-blend-mode: multiply;
+  display: block;
+}
+
+.prod-modal-main-img:hover {
+  transform: scale(1.06);
+}
+
+.prod-modal-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--brown);
+  line-height: 1.35;
+  background: linear-gradient(145deg, #faf6f1, #f0e4d4);
+}
+
+/* Horizontal Thumbnails Carousel */
+.prod-modal-thumbs-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.prod-modal-thumbs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 4px 2px;
+  scrollbar-width: none;
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.prod-modal-thumbs::-webkit-scrollbar {
+  display: none;
+}
+
+.prod-modal-thumb {
+  flex: 0 0 60px;
+  height: 60px;
+  border-radius: 14px;
+  background: #faf6f1;
+  border: 2px solid rgba(202, 185, 167, 0.35);
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 4px;
+  position: relative;
+}
+
+.prod-modal-thumb:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+
+.prod-modal-thumb.active {
+  border-color: var(--brown);
+  box-shadow: 0 4px 14px rgba(67, 37, 20, 0.22);
+  transform: scale(1.05);
+  background: #fff;
+}
+
+.prod-modal-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.prod-modal-thumb-more {
+  cursor: pointer;
+  position: relative;
+}
+
+.prod-modal-thumb-more-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(46, 26, 14, 0.78);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.1;
+  border-radius: 10px;
+  text-align: center;
+  transition: background 0.2s ease;
+}
+
+.prod-modal-thumb-more-overlay span {
+  font-size: 8.5px;
+  font-family: sans-serif;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.prod-modal-thumb-more:hover .prod-modal-thumb-more-overlay {
+  background: rgba(46, 26, 14, 0.92);
+}
+
+.prod-modal-thumb-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid rgba(202, 185, 167, 0.45);
+  color: var(--brown);
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.prod-modal-thumb-btn:hover {
+  background: var(--brown);
+  color: #fff;
+}
+
+/* Info Column */
+.prod-modal-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.prod-modal-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.prod-modal-cat-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--brown2);
+  background: rgba(201, 168, 76, 0.16);
+  border: 1px solid rgba(201, 168, 76, 0.35);
+  padding: 3px 12px;
+  border-radius: 20px;
+  width: fit-content;
+}
+
+.prod-modal-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--brown);
+  line-height: 1.22;
+  margin: 2px 0 0;
+}
+
+.prod-modal-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.prod-modal-stars {
+  color: #f5a623;
+  font-size: 15px;
+  letter-spacing: 1.5px;
+}
+
+.prod-modal-score {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--brown);
+}
+
+.prod-modal-reviews-count {
+  font-size: 12.5px;
+  color: #7a6a5c;
+  font-weight: 500;
+}
+
+.prod-modal-stock-badge {
+  margin-left: auto;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.prod-modal-stock-badge.in-stock {
+  background: #e8f7ee;
+  color: #1a6b3a;
+  border: 1px solid #c2e8cf;
+}
+
+.prod-modal-stock-badge.out-of-stock {
+  background: #fde8e8;
+  color: #c0392b;
+  border: 1px solid #f8b4b4;
+}
+
+.prod-modal-divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(202, 185, 167, 0.4), rgba(202, 185, 167, 0.15));
+}
+
+/* Price & Variant Selector */
+.prod-modal-price-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--cream);
+  padding: 14px 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(202, 185, 167, 0.3);
+}
+
+.prod-modal-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.prod-modal-unit-price {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--brown);
+  line-height: 1;
+}
+
+.prod-modal-unit-weight {
+  font-size: 13.5px;
+  color: #7a6a5c;
+  font-weight: 600;
+}
+
+.prod-modal-variants-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.prod-modal-variant-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #7a6a5c;
+}
+
+.prod-modal-variant-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.prod-modal-variant-pill {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1.5px solid #d0c8c0;
+  background: #ffffff;
+  color: #555;
+  font-family: "Cormorant Garamond", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.prod-modal-variant-pill:hover:not(.active) {
+  border-color: var(--brown);
+  color: var(--brown);
+  background: #faf6f1;
+}
+
+.prod-modal-variant-pill.active {
+  background: var(--brown);
+  color: #ffffff;
+  border-color: var(--brown);
+  box-shadow: 0 3px 10px rgba(67, 37, 20, 0.22);
+}
+
+/* Description & Product Highlights */
+.prod-modal-desc-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.prod-modal-desc-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  color: var(--brown);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.prod-modal-desc-text {
+  font-size: 14px;
+  line-height: 1.62;
+  color: #554439;
+}
+
+.prod-modal-perks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.prod-modal-perk {
+  background: #fdfbf7;
+  border: 1px solid rgba(202, 185, 167, 0.35);
+  padding: 8px 10px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--brown);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  justify-content: center;
+}
+
+/* Bottom Action Bar: Qty Stepper, Total Price & Add to Cart */
+.prod-modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: 6px;
+  flex-wrap: wrap;
+}
+
+.prod-modal-qty-box {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--cream);
+  border: 1.5px solid rgba(202, 185, 167, 0.45);
+  border-radius: 14px;
+  padding: 4px;
+}
+
+.prod-modal-qty-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: none;
+  background: #ffffff;
+  color: var(--brown);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-shadow: 0 2px 6px rgba(67, 37, 20, 0.08);
+  font-family: "Cormorant Garamond", sans-serif;
+}
+
+.prod-modal-qty-btn:hover {
+  background: var(--brown);
+  color: #fff;
+}
+
+.prod-modal-qty-num {
+  min-width: 32px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--brown);
+  font-family: "Cormorant Garamond", sans-serif;
+  user-select: none;
+}
+
+.prod-modal-total-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.prod-modal-total-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #8a7a6c;
+}
+
+.prod-modal-total-value {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--brown);
+  line-height: 1.1;
+}
+
+.prod-modal-add-cart-btn {
+  flex: 1;
+  min-width: 170px;
+  padding: 13px 22px;
+  border-radius: 14px;
+  background: var(--btn-cart-bg);
+  color: #ffffff;
+  font-family: "Cormorant Garamond", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.26s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 16px rgba(26, 107, 58, 0.28);
+}
+
+.prod-modal-add-cart-btn:hover {
+  background: var(--btn-cart-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(26, 107, 58, 0.38);
+}
+
+.prod-modal-add-cart-btn:active {
+  transform: translateY(0);
+}
+
+.prod-modal-add-cart-btn.added {
+  background: #15803d !important;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 820px) {
+  .prod-modal-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 24px 18px 22px;
+  }
+  .prod-modal-main-img-wrap {
+    height: 240px;
+  }
+  .prod-modal-title {
+    font-size: 23px;
+  }
+  .prod-modal-perks {
+    grid-template-columns: 1fr 1fr;
+  }
+  .prod-modal-actions {
+    gap: 10px;
+  }
+  .prod-modal-add-cart-btn {
+    width: 100%;
+    order: 3;
+  }
+}
+
+@media (max-width: 480px) {
+  .prod-modal-overlay {
+    padding: 12px 10px;
+  }
+  .prod-modal-card {
+    border-radius: 20px;
+    max-height: 92vh;
+  }
+  .prod-modal-grid {
+    padding: 18px 14px;
+    gap: 16px;
+  }
+  .prod-modal-main-img-wrap {
+    height: 200px;
+  }
+  .prod-modal-close {
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+  .prod-modal-perks {
+    grid-template-columns: 1fr;
+  }
+  .prod-modal-title {
+    font-size: 20px;
+  }
+}
+</style>
+<script src="assets/title-case.js" defer></script>
+</head>
+<body>
+
+<!-- CART TOAST -->
+<div class="cart-toast" id="cartToast">
+  <div class="toast-img-ph" id="cartToastImg">🛒</div>
+  <div class="cart-toast-body">
+    <div class="toast-label">Added to Cart</div>
+    <div class="toast-name" id="cartToastName">Product</div>
+    <div class="toast-price" id="cartToastPrice">₹0</div>
+  </div>
+  <button class="toast-go" onclick="window.location.href='cart.html'">View Cart →</button>
+</div>
+
+<!-- KANSA STOCK NOTIFY VALIDATION TOAST -->
+<div class="kansa-notify-toast" id="kansaNotifyToast" role="alert" aria-live="assertive">
+  <div class="knt-icon">🔔</div>
+  <div class="knt-body">
+    <div class="knt-tag">COMING BACK SOON</div>
+    <div class="knt-msg" id="kansaNotifyMsg">This piece is currently unavailable.</div>
+  </div>
+  <button class="knt-close" onclick="closeKansaToast()" aria-label="Close notification">✕</button>
+</div>
+
+<!-- MOBILE DRAWER — rendered but hidden via CSS transform -->
+<div class="mob-backdrop" id="mobBackdrop"></div>
+<div class="mob-drawer" id="mobDrawer">
+  <div class="mob-drawer-title">Browse Categories</div>
+  <div id="mobDrawerLinks"></div>
+</div>
+<button class="mob-fab" id="mobFab" aria-label="Categories">☰</button>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="mainNav">
+  <a href="index.html" class="nav-logo" aria-label="Gamtu Home">
+    <img src="https://gamtuindia.com/wp-content/uploads/2026/03/Gamtu-Logo-PNG-1.png" alt="Gamtu">
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+        <a href="product.html" class="active">Products</a>
+    <a href="about.html">About Us</a>
+  </div>
+  <div class="nav-right">
+    <div class="profile-wrap" id="profileWrap" style="display:none;">
+      <button class="profile-btn" id="profileBtn">
+        <div class="profile-avatar">👤</div>
+        <span class="profile-name" id="profileName">User</span>
+        <span style="font-size:9px;opacity:.45;margin-left:2px;">▾</span>
+      </button>
+      <div class="profile-drop">
+        <a href="profile.html">👤 My Profile</a>
+        <a href="orders.html">📦 My Orders</a>
+        <a href="#" id="logoutBtn">🚪 Logout</a>
+      </div>
+    </div>
+    <a href="sign-up.html" id="loginLink" class="nav-login" style="display:none;">Login</a>
+    <button class="cart-btn" onclick="window.location.href='cart.html'">
+      🛒 Cart <span class="cart-count" id="cartCount">0</span>
+    </button>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mob-menu" id="mobMenu">
+  <a href="index.html">Home</a>
+    <a href="product.html" class="active">Products</a>
+  <a href="about.html">About Us</a>
+  <div class="mob-bottom">
+    <a href="sign-up.html" id="mobLoginLink" class="nav-login" style="display:none;">Login</a>
+    <button class="cart-btn" onclick="window.location.href='cart.html'" style="width:100%;">
+      🛒 Cart <span class="cart-count" id="mobCartCount">0</span>
+    </button>
+  </div>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="hero-deco"></div><div class="hero-deco"></div>
+  <div class="page-hero-inner">
+    <div class="page-hero-tag">🌿 Pure &amp; Traditional</div>
+    <h1>Our <em>Products</em></h1>
+    <p>Pure, traditional, and crafted with love — explore our complete range of natural wellness products.</p>
+    <!-- ══ SEARCH BAR ══ -->
+    <div class="srch-wrap" id="srchWrap">
+      <div class="srch-box">
+        <span class="srch-icon">🔍</span>
+        <input
+          type="text"
+          id="srchInput"
+          class="srch-input"
+          placeholder="Search products (e.g. sharbat, coffee, ghee)..."
+          autocomplete="off"
+          spellcheck="false"
+          aria-label="Search products or categories"
+        />
+        <button class="srch-clear" id="srchClear" aria-label="Clear search" style="display:none;">✕</button>
+        <button class="srch-submit" id="srchSubmit" onclick="__srchSubmit()">Search</button>
+      </div>
+      <div class="srch-dropdown" id="srchDropdown" role="listbox" aria-label="Search results"></div>
+    </div>
+    <div class="cat-nav" id="catNav"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-inner">
+    <div class="marquee-item"><span class="mi">🌿</span>Free From Artificial Color</div>
+    <div class="marquee-item"><span class="mi">🚚</span>Fast Delivery Across India</div>
+    <div class="marquee-item"><span class="mi">🙏</span>Organic | Kansa | Jain | Satvik | Instant | Healthy</div>
+    <div class="marquee-item"><span class="mi">🏺</span>100% Jayna Purvak Products</div>
+    <div class="marquee-item"><span class="mi">⭐</span>Trusted by 10,000+ Families</div>
+    <div class="marquee-item"><span class="mi">🌿</span>Free From Artificial Color</div>
+    <div class="marquee-item"><span class="mi">🚚</span>Fast Delivery Across India</div>
+    <div class="marquee-item"><span class="mi">🙏</span>Organic | Kansa | Jain | Satvik | Instant | Healthy</div>
+    <div class="marquee-item"><span class="mi">🏺</span>100% Jayna Purvak Products</div>
+    <div class="marquee-item"><span class="mi">⭐</span>Trusted by 10,000+ Families</div>
+  </div>
+</div>
+
+<!-- SEARCH RESULTS BAR -->
+<div class="srch-results-bar" id="srchResultsBar">
+  <span class="srch-results-count" id="srchResultsCount"></span>
+  <button class="srch-clear-btn" onclick="clearSearch()">✕ Clear Search</button>
+</div>
+
+<!-- PRODUCTS -->
+<div class="products-page">
+  <div class="page-layout">
+   <aside class="sidebar" id="sidebar">
+  <div class="sidebar-head">
+    <div class="sidebar-head-ring1"></div>
+    <div class="sidebar-head-ring2"></div>
+    <div class="sidebar-head-dot"></div>
+    <div class="sidebar-head-inner">
+      <div class="sidebar-head-eyebrow">Shop by</div>
+      <div class="sidebar-head-title">All <span>Categories</span></div>
+      <div class="sidebar-head-sub">Browse our full collection</div>
+    </div>
+  </div>
+  <div class="sidebar-stripe"></div>
+  <div class="sidebar-body" id="sidebarBody">
+    <span class="sidebar-section-lbl">Categories</span>
+  </div>
+  <div class="sidebar-foot">
+    <div class="sidebar-foot-icon">🌿</div>
+    <div class="sidebar-foot-text">
+      Pure &amp; Traditional
+      <span>100% Natural Products</span>
+    </div>
+  </div>
+</aside>
+    <main class="main-area">
+      <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p style="color:#9a8070;font-size:15px;font-weight:500;margin-top:4px;">Loading products...</p>
+      </div>
+      <div id="catContainer"></div>
+    </main>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="gamtu-footer">
+  <div class="footer-deco"></div>
+  <div class="footer-deco2"></div>
+  <div class="footer-top-bar">
+    <div class="footer-top-tagline"><strong>Gamtu India</strong> — Because peace  start on your plate </div>
+    <div class="footer-trust-badges">
+      <div class="trust-badge"></div>Organic | Kansa | Jain | Satvik | Instant | Healthy</div>
+      
+  </div>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <div class="footer-logo-wrap">
+        <img src="https://gamtuindia.com/wp-content/uploads/2026/04/Screenshot_2026-04-22_at_12.04.49_AM-removebg-preview.png" alt="Gamtu"/>
+      </div>
+      <p class="footer-brand-desc">Organic | Kansa | Jain | Satvik | Instant | Healthy</p>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/gamtuindia/" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://whatsapp.com/channel/0029VbBlKHCDeONGN7mjrY0A" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://www.facebook.com/profile.php?id=61582659989921" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+        <a href="mailto:info@gamtuindia.com" class="social-btn"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <div class="footer-links">
+        <a href="index.html">Home</a><a href="about.html">About Us</a>
+        <a href="product.html">All Products</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Our Products</h4>
+      <div class="footer-links">
+        <a href="product.html#sec-instant-jain-soup">Instant Jain Soups</a>
+        <a href="product.html#sec-instant-premix-sauce">Instant Premix Sauce</a>
+        <a href="product.html#sec-dry-sharbat">Dry Sharbat</a>
+        <a href="product.html#sec-kansa-products">Kansa Products</a>
+      </div>
+    </div>
+  <div class="footer-col">
+  <h4>Get in Touch</h4>
+
+  <!-- 📍 Location -->
+  <div class="footer-contact-item"
+       onclick="window.open('https://maps.app.goo.gl/QyRpjeofE9UbsdQx5','_blank')">
+    <div class="footer-contact-icon">📍</div>
+    <div class="footer-contact-text">
+      <strong>Location</strong>
+      Surat, Gujarat, India
+    </div>
+  </div>
+
+  <!-- 📞 Phone -->
+  <div class="footer-contact-item"
+       onclick="window.location.href='tel:+919712621143'">
+    <div class="footer-contact-icon">📞</div>
+    <div class="footer-contact-text">
+      <strong>Phone</strong>
+      +91 9712621143
+    </div>
+  </div>
+
+  <!-- ✉️ Email -->
+  <div class="footer-contact-item"
+       onclick="window.location.href='mailto:info@gamtuindia.com'">
+    <div class="footer-contact-icon">✉️</div>
+    <div class="footer-contact-text">
+      <strong>Email</strong>
+      info@gamtuindia.com
+    </div>
+  </div>
+
+  <!-- 🕐 Support -->
+  <div class="footer-contact-item">
+    <div class="footer-contact-icon">🕐</div>
+    <div class="footer-contact-text">
+      <strong>Support Hours</strong>
+      Mon – Sun, 10 AM – 9 PM
+    </div>
+  </div>
+</div>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-copy">© 2026 All Rights Reserved - <span onclick="openTaleWhatsApp()">Designed by Tale Light Media</span> </div>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy Policy</a><a href="#">Terms of Service</a>
+      <a href="#">Shipping Policy</a><a href="#">Refund Policy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── CATEGORIES ── */
+const CATS=[
+  {id:"Dry Sharbat",emoji:"🍹",desc:"Refreshing traditional dry sharbat blends"},
+  {id:"Liquid Sharbat",emoji:"🥤",desc:"Ready-to-use flavorful liquid sharbats"},
+  {id:"Instant Jain Soup",emoji:"🍲",desc:"Quick Jain soups without onion & garlic"},
+  {id:"Instant Premix Sauce",emoji:"🍶",desc:"Quick and easy cooking sauce mixes"},
+  {id:"Coffee",emoji:"☕",desc:"Pure and flavourful coffee blends"},
+  {id:"Herbal Teas",emoji:"🍵",desc:"Relaxing and healing herbal tea blends"},
+  {id:"Tea Masala",emoji:"🫖",desc:"Aromatic tea masala blends"},
+  {id:"Ice Cream Premix",emoji:"🍦",desc:"Easy ice cream premix flavours"},
+  {id:"Vegetable Powders",emoji:"🥬",desc:"Nutritious vegetable powders for daily health"},
+  {id:"Fruit Powders",emoji:"🍎",desc:"Natural fruit powders packed with goodness"},
+  {id:"Akha Masala",emoji:"🧂",desc:"Whole spices for authentic taste"},
+  {id:"Spices",emoji:"🌶",desc:"Pure and natural spices"},
+  {id:"MASALA",emoji:"🌶",desc:"Traditional masala blends for every dish"},
+  {id:"Fast Food",emoji:"🍔",desc:"Quick and tasty food options"},
+  {id:"Fast Food Premixs & Masala",emoji:"🍟",desc:"Ready premix masalas for fast food"},
+  {id:"READY TO FRY ",emoji:"🍳",desc:"Ready-to-fry snacks and food items"},
+  {id:"BISCUITS",emoji:"🍪",desc:"Crunchy and delicious biscuit varieties"},
+  {id:"Wafer Biscuits ",emoji:"🧇",desc:"Light and crispy wafer biscuit assortments"},
+  {id:"Waffles",emoji:"🧇",desc:"Golden and crispy waffle varieties"},
+  {id:"CAKE",emoji:"🎂",desc:"Delicious cake and bakery products"},
+  {id:"CHOCOLATE ",emoji:"🍫",desc:"Rich and indulgent chocolate treats"},
+  {id:"Food Oil",emoji:"🫙",desc:"Pure and healthy cooking oils"},
+  {id:"Cold Pressed Cooking Oil",emoji:"🫒",desc:"Natural cold pressed cooking oils"},
+  {id:"Hair Oil",emoji:"💆",desc:"Natural and nourishing hair oil blends"},
+  {id:"Ghee",emoji:"🥛",desc:"Pure and traditional ghee products"},
+  {id:"Coconut Sugar",emoji:"🥥",desc:"Natural and unrefined coconut sugar"},
+  {id:"Deshi Organic Sugar",emoji:"🌾",desc:"Pure deshi organic sugar varieties"},
+  {id:"Pulses",emoji:"🫘",desc:"Protein-rich pulses for daily meals"},
+  {id:"Rice",emoji:"🍚",desc:"Premium quality rice varieties"},
+  {id:"Desi Red Rice",emoji:"🌾",desc:"Traditional desi red rice varieties"},
+  {id:"ORGANIC FLOUR (ON ORDER BASIS ONLY )",emoji:"🌾",desc:"Pure organic flour milled on order"},
+  {id:"Seeds",emoji:"🌱",desc:"Super seeds packed with nutrients"},
+  {id:"BADAM",emoji:"🥜",desc:"Premium quality badam and almond products"},
+  {id:"DRIED POWDER",emoji:"🧉",desc:"Dried and powdered ingredients for cooking"},
+  {id:"Milk Based Drinks ",emoji:"🥛",desc:"Nourishing milk-based beverage mixes"},
+  {id:"Instant Chutney Dry Form",emoji:"🫙",desc:"Instant dry chutney mixes for quick use"},
+  {id:"INSTA",emoji:"⚡",desc:"Instant ready-to-use food products"},
+  {id:"Mouth Fresher",emoji:"🌿",desc:"Refreshing mukhwas for digestion"},
+  {id:"Premium Gulkand",emoji:"🌹",desc:"Premium quality gulkand products"},
+  {id:"Gol",emoji:"🟤",desc:"Pure and natural gol products"},
+  {id:"Gund",emoji:"🌾",desc:"Natural gund varieties"},
+  {id:"Ark",emoji:"🧪",desc:"Ayurvedic herbal extracts for wellness"},
+  {id:"Rajasthan Special",emoji:"🏜️",desc:"Authentic specialties from Rajasthan"},
+  {id:"Kansa Products",emoji:"🏺",desc:"Traditional Kansa utensils for health"},
+  {id:"Special Customer Favorite Items",emoji:"💛",desc:"Specially curated customer favorites"},
+  {id:"Most Popular Products",emoji:"⭐",desc:"Customer favorites and bestsellers"}
+];
+const ING_C=["#D85A30","#1D9E75","#378ADD","#D4537E","#7F77DD","#BA7517","#639922","#E24B4A","#2D9FA0","#C06C3A"];
+const STORED_PRODUCTS={};
+function sid(n){return n.replace(/[^a-z0-9]/gi,"-").toLowerCase();}
+/* toTitleCase: use global from title-case.js; fallback if not yet loaded */
+function toTitleCase(str){
+  if(window._ttc)return window._ttc(str);
+  return str.replace(/(\S+)/g,function(t){return t.charAt(0).toUpperCase()+t.slice(1).toLowerCase();});
+}
+
+/* ── AUTH ── */
+(function(){
+  const u=JSON.parse(localStorage.getItem("user"));
+  if(u && !u.name){ localStorage.removeItem("user"); window.location.href="sign-up.html"; return; }
+  if(u){
+    document.getElementById("profileName").textContent=u.name;
+    document.getElementById("profileWrap").style.display="flex";
+    document.getElementById("loginLink").style.display="none";
+    document.getElementById("mobLoginLink").style.display="none";
+  } else {
+    document.getElementById("profileWrap").style.display="none";
+    document.getElementById("loginLink").style.display="";
+    document.getElementById("mobLoginLink").style.display="";
+  }
+  function doLogout(e){ e.preventDefault(); localStorage.removeItem("user"); window.location.href="sign-up.html"; }
+  const lo = document.getElementById("logoutBtn"); if(lo) lo.addEventListener("click", doLogout);
+  const mlo = document.getElementById("mobLogoutBtn"); if(mlo) mlo.addEventListener("click", doLogout);
+
+  // show/hide mobile profile links
+  if(u){
+    const mp = document.getElementById("mobProfileLink"); if(mp) mp.style.display="";
+    const mo = document.getElementById("mobOrdersLink"); if(mo) mo.style.display="";
+    if(mlo) mlo.style.display="";
+  }
+})();
+
+/* ── NAVBAR SCROLL ── */
+window.addEventListener("scroll",()=>document.getElementById("mainNav").classList.toggle("scrolled",window.scrollY>40));
+
+
+
+/* ── Profile dropdown ── */
+const profileWrap=document.getElementById("profileWrap");
+const profileBtn=document.getElementById("profileBtn");
+if(profileBtn){
+  profileBtn.addEventListener("click",e=>{e.stopPropagation();profileWrap.classList.toggle("open");});
+  document.addEventListener("click",e=>{if(!profileWrap.contains(e.target))profileWrap.classList.remove("open");});
+}
+
+/* ── Hamburger & mobile menu ── */
+const hamburger=document.getElementById("hamburger");
+const mobMenu=document.getElementById("mobMenu");
+hamburger.addEventListener("click",e=>{
+  e.stopPropagation();
+  hamburger.classList.toggle("open");
+  mobMenu.classList.toggle("open");
+});
+document.addEventListener("click",e=>{
+  if(!mobMenu.contains(e.target)&&!hamburger.contains(e.target)){
+    hamburger.classList.remove("open");mobMenu.classList.remove("open");
+  }
+});
+
+
+/* ── Mobile FAB Drawer ── 
+   CRITICAL FIX: backdrop uses pointer-events:none when not active,
+   and display:none/block toggled explicitly
+*/
+const mobFab=document.getElementById("mobFab");
+const mobDrawer=document.getElementById("mobDrawer");
+const mobBackdrop=document.getElementById("mobBackdrop");
+
+function openDrawer(){
+  mobDrawer.classList.add("open");
+  mobBackdrop.classList.add("active");
+  mobFab.textContent="✕";
+}
+function closeDrawer(){
+  mobDrawer.classList.remove("open");
+  mobBackdrop.classList.remove("active");
+  mobFab.textContent="☰";
+}
+mobFab.addEventListener("click",e=>{
+  e.stopPropagation();
+  mobDrawer.classList.contains("open")?closeDrawer():openDrawer();
+});
+mobBackdrop.addEventListener("click",closeDrawer);
+
+/* ── Reveal ── */
+const revObs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible");}),{threshold:0.05});
+function observeAll(){document.querySelectorAll(".reveal:not(.obs)").forEach(el=>{el.classList.add("obs");revObs.observe(el);});}
+
+/* ── Ingredient bar ── */
+function buildIngBar(ings){
+  if(!ings||!ings.length)return"";
+  const segs=ings.map((g,i)=>{const r=i===0?"5px 0 0 5px":i===ings.length-1?"0 5px 5px 0":"0";return`<div class="ing-bar-seg" style="flex:${g.percentage};background:${ING_C[i%ING_C.length]};border-radius:${r};"></div>`;}).join("");
+  const pills=ings.map((g,i)=>`<div class="ing-pill"><div class="ing-dot" style="background:${ING_C[i%ING_C.length]};"></div><span style="font-weight:500">${g.name}</span><span style="font-weight:700;color:var(--brown);">${g.percentage}%</span></div>`).join("");
+  return`<div class="ing-bar-wrap"><div class="ing-bar-label">Composition</div><div class="ing-bar">${segs}</div><div class="ing-pills">${pills}</div></div>`;
+}
+
+
+// function buildCard(p){
+//   const img=p.image||"";const id=sid(p.name);const oos=p.stock<=0;
+//   return`<div class="prod-card reveal">
+//     <div class="prod-img" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#faf6f1 0%,#f0e6d8 100%);">
+//       <div style="text-align:center;padding:16px;">
+//         <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:#432514;line-height:1.3;max-width:160px;margin:0 auto;">${p.name}</div>
+//       </div>
+//       <div class="prod-img-overlay"><span>View Details →</span></div>
+//       ${oos?'<div class="prod-oos">Out of Stock</div>':""}
+//     </div>
+//     <div class="prod-body">
+//       <div class="prod-meta">
+//         <div class="prod-price">₹ ${parseFloat(p.price).toLocaleString("en-IN")}</div>
+//         <div class="prod-weight">${p.grams||0} ${p.unit||'g'}</div>
+//       </div>
+//       ${buildIngBar(p.ingredients)}
+//     </div>
+//     <div class="prod-foot">
+//       <div class="qty-pill">
+//         <button onclick="event.stopPropagation();dec('${p.name}')">−</button>
+//         <span id="q-${id}">0</span>
+//         <button onclick="event.stopPropagation();inc('${p.name}',${p.price},'${img}',${p.grams||0})">+</button>
+//       </div>
+//       <button class="add-cart-btn" onclick="event.stopPropagation();inc('${p.name}',${p.price},'${img}',${p.grams||0})"${oos?' disabled style="opacity:.5;cursor:not-allowed;"':""}>
+//         ${oos?"Out of Stock":"Add to Cart"}
+//       </button>
+//     </div>
+//   </div>`;
+// }
+
+
+
+/* ── RATING helpers ── */
+const PROD_RATINGS={};
+function getProdRating(name){
+  if(PROD_RATINGS[name])return PROD_RATINGS[name];
+  const base=4.3+(name.length%5)*0.1;
+  const cnt=30+(name.charCodeAt(0)%8)*17;
+  return{stars:+base.toFixed(1),count:cnt};
+}
+function prodStarsHtml(stars){
+  const full=Math.floor(stars),hasHalf=stars-full>=0.4;
+  let h='';
+  for(let i=0;i<full;i++)h+='★';
+  if(hasHalf)h+='★';
+  for(let i=full+(hasHalf?1:0);i<5;i++)h+='☆';
+  return h;
+}
+
+/* ── Variant store ── */
+const PROD_VARIANT_STORE={};
+function isKansaProduct(p){
+  if(!p)return false;
+  const cat=((p.category||'')+'').trim().toLowerCase();
+  const name=((p.name||'')+'').trim().toLowerCase();
+  if(cat==='kansa products'||cat.includes('kansa')||name.includes('kansa'))return true;
+  if(typeof KANSA_IMAGES!=='undefined'){
+    if(KANSA_IMAGES[p.name])return true;
+    for(const k in KANSA_IMAGES){
+      if(k.toLowerCase()===name)return true;
+    }
+  }
+  return false;
+}
+
+let kansaToastTimer=null;
+function showKansaNotifyMessage(name,id,fromModal){
+  const toast=document.getElementById('kansaNotifyToast');
+  if(toast){
+    const msgEl=document.getElementById('kansaNotifyMsg');
+    if(msgEl){
+      msgEl.textContent='This piece is currently unavailable.';
+    }
+    toast.classList.add('show');
+    if(kansaToastTimer)clearTimeout(kansaToastTimer);
+    kansaToastTimer=setTimeout(()=>{
+      toast.classList.remove('show');
+    },4500);
+  }
+
+  // Provide tactile visual feedback on the clicked button
+  if(fromModal){
+    const modalBtn=document.getElementById('modalAddCartBtn');
+    const modalText=document.getElementById('modalAddCartText');
+    if(modalBtn&&modalText){
+      const origText=modalText.textContent;
+      modalBtn.classList.add('notified');
+      modalText.textContent='🔔 COMING BACK SOON';
+      setTimeout(()=>{
+        modalBtn.classList.remove('notified');
+        modalText.textContent=origText;
+      },2200);
+    }
+  }else if(id){
+    const btn=document.getElementById('pcbtn-'+id)||document.getElementById('cartbtn-'+id);
+    if(btn){
+      const origText=btn.textContent;
+      btn.textContent='🔔 Coming Back Soon';
+      btn.classList.add('notified');
+      setTimeout(()=>{
+        btn.textContent=origText;
+        btn.classList.remove('notified');
+      },2200);
+    }
+  }
+}
+
+function closeKansaToast(){
+  const toast=document.getElementById('kansaNotifyToast');
+  if(toast)toast.classList.remove('show');
+  if(kansaToastTimer)clearTimeout(kansaToastTimer);
+}
+
+function regVariants(p){
+  const id=sid(p.name);
+  const isKansa=isKansaProduct(p);
+  const variants=(p.variants&&p.variants.length)
+    ? p.variants.map(v=>({
+        label:`${v.grams}${v.unit||'g'}`,
+        price:isKansa?0:parseFloat(v.price),
+        grams:v.grams,
+        stock:isKansa?0:v.stock,
+        image:v.image||''
+      }))
+    : [{label:`${p.grams||0}${p.unit||'g'}`,price:isKansa?0:parseFloat(p.price),grams:p.grams||0,stock:isKansa?0:p.stock,image:p.image||''}];
+  PROD_VARIANT_STORE[id]={variants,selectedIndex:0};
+}
+function selVariant(id,vi){
+  if(!PROD_VARIANT_STORE[id])return;
+  PROD_VARIANT_STORE[id].selectedIndex=vi;
+  const v=PROD_VARIANT_STORE[id].variants[vi];
+  const priceEl=document.getElementById('pp-'+id);
+  if(priceEl)priceEl.textContent='₹'+v.price;
+  document.querySelectorAll(`[data-pcard="${id}"]`).forEach((el,i)=>el.classList.toggle('active',i===vi));
+}
+function selVariantDrop(id,vi){selVariant(id,parseInt(vi));}
+function addProdToCart(id,name){
+  const p=STORED_PRODUCTS[id];
+  if(isKansaProduct(p||{name})){
+    showKansaNotifyMessage(name,id);
+    return;
+  }
+  const store=PROD_VARIANT_STORE[id];
+  const v=store?store.variants[store.selectedIndex||0]:{price:0,grams:0,image:''};
+  inc(name,v.price,v.image,v.grams);
+  _syncProdQty(id,name);
+}
+function prodInc(id,name){
+  const p=STORED_PRODUCTS[id];
+  if(isKansaProduct(p||{name})){
+    showKansaNotifyMessage(name,id);
+    return;
+  }
+  const store=PROD_VARIANT_STORE[id];
+  const v=store?store.variants[store.selectedIndex||0]:{price:0,grams:0,image:''};
+  inc(name,v.price,v.image,v.grams);
+  _syncProdQty(id,name);
+}
+function prodDec(id,name){
+  dec(name);
+  _syncProdQty(id,name);
+}
+function _syncProdQty(id,name){
+  const cart=JSON.parse(localStorage.getItem('cart'))||{};
+  const qty=cart[name]?.qty||0;
+  const btn=document.getElementById('pcbtn-'+id);
+  const wrap=document.getElementById('pqtywrap-'+id);
+  const num=document.getElementById('pqtynum-'+id);
+  if(!btn||!wrap)return;
+  if(qty>0){
+    btn.style.display='none';
+    wrap.classList.add('active');
+    if(num)num.textContent=qty;
+  }else{
+    btn.style.display='';
+    wrap.classList.remove('active');
+  }
+}
+
+/* ── KANSA PRODUCT IMAGE MAP ── */
+/* Centralized mapping: product name → local image paths.
+   Keys must match exact product names from the API.
+   Products with no folder images are simply absent (returns []). */
+const KANSA_IMAGES={
+  "Antique Copper Bottle Set":[
+    "assets/Kansa Products/Antique Copper Bottle Set/Copper_tip_bottle_front.png",
+    "assets/Kansa Products/Antique Copper Bottle Set/Copper_tip_bottle_back.png",
+    "assets/Kansa Products/Antique Copper Bottle Set/Copper_tip_bottle_side.png",
+    "assets/Kansa Products/Antique Copper Bottle Set/Copper_tip_bottle_top.png",
+    "assets/Kansa Products/Antique Copper Bottle Set/Kansa_Jar_Bottle_Front.png",
+    "assets/Kansa Products/Antique Copper Bottle Set/Kansa_Jar_Bottle_Back.png",
+    "assets/Kansa Products/Antique Copper Bottle Set/Kansa_Jar_Bottle_side.png",
+    "assets/Kansa Products/Antique Copper Bottle Set/Kansa_Jar_Bottle_Top.png"
+  ],
+  "Antique Copper Jar":[
+    "assets/Kansa Products/Antique Copper Jar/Copper_Tin_Big_Front.png",
+    "assets/Kansa Products/Antique Copper Jar/Copper_Tin_Big_back.png",
+    "assets/Kansa Products/Antique Copper Jar/Copper_Tin_Big_side.png",
+    "assets/Kansa Products/Antique Copper Jar/Copper_Tin_Big_Top.png",
+    "assets/Kansa Products/Antique Copper Jar/Kansa_Container_front.png",
+    "assets/Kansa Products/Antique Copper Jar/Kansa_Container_back.png",
+    "assets/Kansa Products/Antique Copper Jar/Kansa_Container_side.png",
+    "assets/Kansa Products/Antique Copper Jar/Kansa_Container_top.png",
+    "assets/Kansa Products/Antique Copper Jar/Kansa_Jar_Container_Front.png",
+    "assets/Kansa Products/Antique Copper Jar/Kansa_Jar_Container_Back.png",
+    "assets/Kansa Products/Antique Copper Jar/Kansa_Jar_Container_side.png",
+    "assets/Kansa Products/Antique Copper Jar/Kansa_Jar_Container_Top.png"
+  ],
+  "Authentic Mukhwas Set":[
+    "assets/Kansa Products/Authentic Mukhwas Set/Small_Kansa_Round_box_front.png",
+    "assets/Kansa Products/Authentic Mukhwas Set/Small_Kansa_Round_box_back.png",
+    "assets/Kansa Products/Authentic Mukhwas Set/Small_Kansa_Round_box_side.png",
+    "assets/Kansa Products/Authentic Mukhwas Set/Small_Kansa_Round_box_top.png"
+  ],
+  "Custard Bowl Set":[
+    "assets/Kansa Products/Custard Bowl Set/ChatGPT Image Aug 25, 2026, 03_00_41 PM.png",
+    "assets/Kansa Products/Custard Bowl Set/ChatGPT Image Aug 25, 2026, 03_01_38 PM.png",
+    "assets/Kansa Products/Custard Bowl Set/ChatGPT Image Aug 25, 2026, 03_02_16 PM.png",
+    "assets/Kansa Products/Custard Bowl Set/ChatGPT Image Aug 25, 2026, 03_02_39 PM.png"
+  ],
+  "Elegant Lassi Glass Set":[
+    "assets/Kansa Products/Elegant Lassi Glass Set/Kansa_Balti_shape_Front.png",
+    "assets/Kansa Products/Elegant Lassi Glass Set/Kansa_Balti_shape_Back.png",
+    "assets/Kansa Products/Elegant Lassi Glass Set/Kansa_Balti_shape_side.png",
+    "assets/Kansa Products/Elegant Lassi Glass Set/Kansa_Balti_shape_Top.png"
+  ],
+  "Glass sets":[
+    "assets/Kansa Products/Glass sets/Kansa_Glass_Front.png",
+    "assets/Kansa Products/Glass sets/Kansa_Glass_back.png",
+    "assets/Kansa Products/Glass sets/Kansa_Glass_side.png",
+    "assets/Kansa Products/Glass sets/Kansa_Glass_Top.png",
+    "assets/Kansa Products/Glass sets/Kansa_Straight_Glass_Front.png",
+    "assets/Kansa Products/Glass sets/Kansa_Straight_Glass_back.png",
+    "assets/Kansa Products/Glass sets/Kansa_Straight_Glass_side.png",
+    "assets/Kansa Products/Glass sets/Kansa_Straight_Glass_top.png",
+    "assets/Kansa Products/Glass sets/Kansa_Curve_glass_Front.png",
+    "assets/Kansa Products/Glass sets/Kansa_Curve_glass_back.png",
+    "assets/Kansa Products/Glass sets/Kansa_Curve_glass_side.png",
+    "assets/Kansa Products/Glass sets/Kansa_Curve_glass_top.png",
+    "assets/Kansa Products/Glass sets/Kansa_designer_class_Front.png",
+    "assets/Kansa Products/Glass sets/Kansa_designer_class_back.png",
+    "assets/Kansa Products/Glass sets/Kansa_designer_class_side.png",
+    "assets/Kansa Products/Glass sets/Kansa_designer_class_top.png",
+    "assets/Kansa Products/Glass sets/Designer Glass_Front.png",
+    "assets/Kansa Products/Glass sets/Designer Glass_Back.png",
+    "assets/Kansa Products/Glass sets/Designer glass_side.png",
+    "assets/Kansa Products/Glass sets/Designer glass_top.png",
+    "assets/Kansa Products/Glass sets/Black_Kansa_Glass_Front.png",
+    "assets/Kansa Products/Glass sets/Black_Kansa_Glass_Back.png",
+    "assets/Kansa Products/Glass sets/Black_Kansa_Glass_side.png",
+    "assets/Kansa Products/Glass sets/Black_Kansa_Glass_top.png",
+    "assets/Kansa Products/Glass sets/Curve_Glass_Back.png",
+    "assets/Kansa Products/Glass sets/Curve_Glass_Side.png",
+    "assets/Kansa Products/Glass sets/Curve_Glass_Top.png"
+  ],
+  "Kitchen vessels":[
+    "assets/Kansa Products/Kitchen vessels/Kansa_Container_front.png",
+    "assets/Kansa Products/Kitchen vessels/Kansa_Container_back.png",
+    "assets/Kansa Products/Kitchen vessels/Kansa_Container_side.png",
+    "assets/Kansa Products/Kitchen vessels/Kansa_Container_top.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_bowl_front.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_bowl_back.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_bowl_side.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_bowl_top.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_glass_front.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_glass_back.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_glass_side.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_glass_Top.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_katori_front.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_katori_back.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_katori_side.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_katori_top.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_small_thali_front.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_small_thali_back.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_small_thali_side.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_small_thali_top.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_spoon_front.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_spoon_back.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_spoon_side.png",
+    "assets/Kansa Products/Kitchen vessels/Kitchen_vessel_spoon_top.png"
+  ],
+  "Premium Dryfruit Box":[
+    "assets/Kansa Products/Premium Dryfruit Box/Copper_Tin_small_Front.png",
+    "assets/Kansa Products/Premium Dryfruit Box/Copper_Tin_small_Back.png",
+    "assets/Kansa Products/Premium Dryfruit Box/Copper_Tin_small_side.png",
+    "assets/Kansa Products/Premium Dryfruit Box/Copper_tin_small_top.png"
+  ],
+  "Pure copper bottles":[
+    "assets/Kansa Products/Pure copper bottles/ChatGPT Image Aug 25, 2026, 02_53_44 PM.png",
+    "assets/Kansa Products/Pure copper bottles/ChatGPT Image Aug 25, 2026, 02_56_37 PM.png",
+    "assets/Kansa Products/Pure copper bottles/ChatGPT Image Aug 25, 2026, 02_56_54 PM.png",
+    "assets/Kansa Products/Pure copper bottles/ChatGPT Image Aug 25, 2026, 02_58_16 PM.png"
+  ],
+  "Pure Kansa Wand":[
+    "assets/Kansa Products/Pure Kansa Wand/Wand_front_side.png",
+    "assets/Kansa Products/Pure Kansa Wand/Wand_back_side.png",
+    "assets/Kansa Products/Pure Kansa Wand/Wand_side_angel.png",
+    "assets/Kansa Products/Pure Kansa Wand/Wand_top_angel.png"
+  ],
+  "Tea sugar Container Set":[
+    "assets/Kansa Products/Tea sugar Container Set/Sugar_Tea_Container_Front.png",
+    "assets/Kansa Products/Tea sugar Container Set/Sugar_Tea_Container_back.png",
+    "assets/Kansa Products/Tea sugar Container Set/Sugar_Tea_Container_side.png",
+    "assets/Kansa Products/Tea sugar Container Set/Sugar_Tea_Container_Top.png"
+  ],
+  "Thali Set (nakshi, authentic, premium, kids, breakfast, pooja thali)":[
+    "assets/Kansa Products/Thali Set (nakshi, authentic, premium, kids, breakfast, pooja thali)/Kansa_Thali_Front.png",
+    "assets/Kansa Products/Thali Set (nakshi, authentic, premium, kids, breakfast, pooja thali)/Kansa_Thali_side.png",
+    "assets/Kansa Products/Thali Set (nakshi, authentic, premium, kids, breakfast, pooja thali)/Kansa_Thali_Top.png"
+  ],
+  "Various Bottle Sets":[
+    "assets/Kansa Products/Various Bottle Sets/Bottle_front.png",
+    "assets/Kansa Products/Various Bottle Sets/Bottle_black.png",
+    "assets/Kansa Products/Various Bottle Sets/Bottle_side.png",
+    "assets/Kansa Products/Various Bottle Sets/Bottle_Top.png"
+  ]
+};
+
+/** Returns images array for a given product name, or [] if not mapped. */
+function getKansaImages(name){return KANSA_IMAGES[name]||[];}
+
+/** Builds in-card carousel HTML for multiple images. */
+function buildInCardCarousel(name,images){
+  const id='kc-'+sid(name);
+  const slides=images.map(src=>
+    `<div class="pc2-carousel-slide"><img src="${src}" alt="${name}" loading="lazy" onerror="this.closest('.pc2-carousel-slide').style.display='none'"></div>`
+  ).join('');
+  const dots=images.map((_,i)=>
+    `<span class="${i===0?'active':''}" onclick="kcGo('${id}',${i},event)"></span>`
+  ).join('');
+  return `<div class="pc2-carousel" id="${id}" data-idx="0" data-total="${images.length}">`+
+    `<div class="pc2-carousel-track" id="${id}-track">${slides}</div>`+
+    `<button class="pc2-carr-btn pc2-carr-prev" onclick="kcPrev('${id}',event)" aria-label="Previous image">&#8249;</button>`+
+    `<button class="pc2-carr-btn pc2-carr-next" onclick="kcNext('${id}',event)" aria-label="Next image">&#8250;</button>`+
+    `<div class="pc2-carr-dots">${dots}</div>`+
+    `</div>`;
+}
+
+/** Navigate carousel to index idx (wraps). */
+function kcGo(id,idx,e){
+  if(e){e.stopPropagation();e.preventDefault();}
+  const el=document.getElementById(id);if(!el)return;
+  const total=parseInt(el.dataset.total);
+  idx=((idx%total)+total)%total;
+  el.dataset.idx=idx;
+  const track=document.getElementById(id+'-track');
+  if(track)track.style.transform=`translateX(-${idx*100}%)`;
+  el.querySelectorAll('.pc2-carr-dots span').forEach((d,i)=>d.classList.toggle('active',i===idx));
+}
+function kcPrev(id,e){const el=document.getElementById(id);if(el)kcGo(id,parseInt(el.dataset.idx)-1,e);}
+function kcNext(id,e){const el=document.getElementById(id);if(el)kcGo(id,parseInt(el.dataset.idx)+1,e);}
+
+/** Attach touch-swipe listeners to all in-card carousels (call after DOM render). */
+function initKansaCarouselSwipe(){
+  document.querySelectorAll('.pc2-carousel').forEach(el=>{
+    if(el.dataset.swipeInit)return; /* prevent double-init */
+    el.dataset.swipeInit='1';
+    let sx=0,sy=0;
+    el.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+    el.addEventListener('touchend',e=>{
+      const dx=e.changedTouches[0].clientX-sx;
+      const dy=e.changedTouches[0].clientY-sy;
+      if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>36){
+        dx<0?kcNext(el.id,null):kcPrev(el.id,null);
+      }
+    });
+  });
+}
+
+
+function buildCard(p){
+  const id=sid(p.name);
+  const isKansa=isKansaProduct(p);
+  const oos=!isKansa && p.stock<=0;
+  const rat=getProdRating(p.name);
+
+  regVariants(p);
+  STORED_PRODUCTS[id]=p;
+  const variants=PROD_VARIANT_STORE[id].variants;
+  const firstPrice=variants[0].price;
+
+  /* Build pills / dropdown */
+  let pillsHtml='';
+  let dropdownHtml='';
+  if(variants.length===1){
+    pillsHtml=`<span class="pc2-pill active">${variants[0].label}</span>`;
+  }else if(variants.length<=4){
+    pillsHtml=variants.map((v,vi)=>
+      `<button class="pc2-pill${vi===0?' active':''}" data-pcard="${id}" data-vi="${vi}" onclick="selVariant('${id}',${vi})">${v.label}</button>`
+    ).join('');
+  }else{
+    dropdownHtml=`<div class="pc2-select-wrap"><select class="pc2-select" id="psel-${id}" onchange="selVariantDrop('${id}',this.value)">${
+      variants.map((v,vi)=>`<option value="${vi}">${v.label} — ₹${v.price}</option>`).join('')
+    }</select></div>`;
+  }
+
+  /* Image — Decision logic */
+  const isDrySharbat=(p.category||'').trim()==='Dry Sharbat';
+  const kansaImages=getKansaImages(p.name);
+  const img=p.image||'';
+  let imgHtml;
+  const displayName=toTitleCase(p.name);
+  if(kansaImages.length>1){
+    imgHtml=buildInCardCarousel(p.name,kansaImages);
+  } else if(kansaImages.length===1){
+    imgHtml=`<img src="${kansaImages[0]}" alt="${displayName}" loading="lazy"
+        onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\\'pc2-img-fallback\\'>${displayName.replace(/'/g,'\\&#39;')}</div>');">`;  
+  } else if(isDrySharbat&&img){
+    imgHtml=`<img src="${img}" alt="${displayName}" loading="lazy"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+       <div class="pc2-img-fallback" style="display:none;">${displayName}</div>`;
+  } else {
+    imgHtml=`<div class="pc2-img-fallback">${displayName}</div>`;
+  }
+  const hasKansaImages=kansaImages.length>0;
+
+  return`<div class="prod-card pc2 reveal"${isDrySharbat?' data-ds="1"':''}${hasKansaImages?' data-ki="1"':''} style="cursor:pointer;" id="pcard-${id}" onclick="openProductModal('${id}',event)">
+    ${(p.stock<=0)?'<div class="prod-oos">Out of Stock</div>':''}
+    <div class="pc2-img prod-img">${imgHtml}</div>
+    <div class="pc2-body">
+      <div class="pc2-name">${toTitleCase(p.name)}</div>
+      <div class="pc2-stars">
+        <span class="pc2-stars-icons">${prodStarsHtml(rat.stars)}</span>
+        <span class="pc2-reviews">(${rat.count})</span>
+      </div>
+      ${dropdownHtml}
+      <div class="pc2-mid">
+        <div class="pc2-price-col"><span class="pc2-price" id="pp-${id}">₹${firstPrice}</span></div>
+        ${pillsHtml?`<div class="pc2-pills">${pillsHtml}</div>`:''}
+      </div>
+      <button class="pc2-cart-btn" id="pcbtn-${id}"
+        onclick="event.stopPropagation();addProdToCart('${id}','${p.name}')"${oos?' disabled':''}>
+        ${oos?'Out Of Stock':'Add To Cart'}
+      </button>
+      <div class="pc2-qty-wrap" id="pqtywrap-${id}" onclick="event.stopPropagation();">
+        <button class="pc2-qty-btn" onclick="event.stopPropagation();prodDec('${id}','${p.name}')">−</button>
+        <span class="pc2-qty-num" id="pqtynum-${id}">1</span>
+        <button class="pc2-qty-btn" onclick="event.stopPropagation();prodInc('${id}','${p.name}')">+</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ── Build page ── */
+function buildPage(products){
+  document.getElementById("loadingState").style.display="none";
+  const grouped={};CATS.forEach(c=>grouped[c.id]=[]);const other=[];
+  products.forEach(p=>{const pcat=p.category||"";if(grouped[pcat]!==undefined){grouped[pcat].push(p);}else{other.push(p);}});
+  if(other.length){const last=CATS[CATS.length-1];grouped[last.id]=[...grouped[last.id],...other];}
+  // Remove empty categories AND deduplicate (keep first non-empty of duplicates)
+  const seen=new Set();
+  const active=CATS.filter(c=>{
+    if(grouped[c.id]?.length>0 && !seen.has(c.id)){seen.add(c.id);return true;}
+    return false;
+  });
+
+//   document.getElementById("catNav").innerHTML=active.map(c=>`
+//     <a class="cat-pill" href="#sec-${sid(c.id)}" onclick="goTo('${c.id}');return false;">${c.emoji} ${c.id}</a>`).join("");
+
+  document.getElementById("sidebarBody").innerHTML=active.map((c,i)=>`
+    ${i>0?'<div class="sidebar-sep"></div>':""}
+    <button class="sidebar-item" data-cat="${c.id}" onclick="goTo('${c.id}')">
+      <span class="sidebar-item-emoji">${c.emoji}</span>
+      <span class="sidebar-item-name">${c.id.trim()}</span>
+      <span class="sidebar-item-count">${grouped[c.id].length}</span>
+    </button>`).join("");
+
+  document.getElementById("mobDrawerLinks").innerHTML=active.map(c=>`
+    <a class="mob-drawer-link" data-cat="${c.id}" href="#sec-${sid(c.id)}"
+       onclick="goTo('${c.id}');closeDrawer();return false;">
+      <span class="mob-drawer-emoji">${c.emoji}</span>
+      <span>${c.id.trim()}</span>
+      <span class="mob-drawer-count">${grouped[c.id].length}</span>
+    </a>`).join("");
+
+  document.getElementById("catContainer").innerHTML=active.map(c=>`
+    <section class="cat-section reveal" id="sec-${sid(c.id)}">
+      <div class="cat-banner" data-cat="${c.id}">
+        <div class="cat-banner-deco"></div><div class="cat-banner-deco"></div>
+        <div class="cat-banner-icon">${c.emoji}</div>
+        <div class="cat-banner-body">
+          <div class="cat-banner-label">Category</div>
+          <div class="cat-banner-title">${c.id.trim()}</div>
+          <div class="cat-banner-desc">${c.desc}</div>
+        </div>
+        <div class="cat-banner-count">${grouped[c.id].length} Products</div>
+      </div>
+      <div class="prod-grid">${grouped[c.id].map(p=>buildCard(p)).join("")}</div>
+    </section>`).join("");
+
+  observeAll();loadAllQty();initKansaCarouselSwipe();
+  /* Pass data to search engine */
+  if(window.__srchInit) window.__srchInit(products, active);
+
+ const prms = new URLSearchParams(window.location.search);
+const t = prms.get("cat") || window.location.hash.replace("#sec-","").replace("#","");
+if(t){
+  const tryJump = (tries) => {
+    const el = document.getElementById("sec-" + sid(t)) ||
+               document.getElementById("sec-" + t.replace(/[^a-z0-9]/gi,"-").toLowerCase());
+    if(el){
+      document.documentElement.style.scrollBehavior = "auto";
+      el.scrollIntoView({behavior:"auto", block:"start"});
+      setTimeout(()=> document.documentElement.style.scrollBehavior = "", 100);
+    } else if(tries > 0){
+      setTimeout(()=> tryJump(tries - 1), 100);
+    }
+  };
+  requestAnimationFrame(()=> requestAnimationFrame(()=> tryJump(15)));
+}
+
+ function updateActiveCat(){
+    const navH=parseInt(getComputedStyle(document.documentElement).getPropertyValue("--nav-h"))||78;
+    const midY=window.scrollY+navH+window.innerHeight*0.3;
+    let best=null,bestDist=Infinity;
+    document.querySelectorAll(".cat-section").forEach(sec=>{
+      const top=sec.offsetTop;
+      const bot=top+sec.offsetHeight;
+      if(midY>=top&&midY<=bot){best=sec;bestDist=0;}
+      else{const d=Math.min(Math.abs(midY-top),Math.abs(midY-bot));if(d<bestDist){bestDist=d;best=sec;}}
+    });
+    if(best){
+      const rawId=best.id.replace("sec-","");
+      const mc=active.find(c=>sid(c.id)===rawId);
+      if(mc){
+        document.querySelectorAll(".sidebar-item").forEach(b=>b.classList.toggle("active",b.dataset.cat===mc.id));
+        document.querySelectorAll(".mob-drawer-link").forEach(b=>b.classList.toggle("active",b.dataset.cat===mc.id));
+      }
+    }
+  }
+  window.addEventListener("scroll",updateActiveCat,{passive:true});
+  updateActiveCat();
+}
+
+function goTo(id){const el=document.getElementById("sec-"+sid(id));if(el)el.scrollIntoView({behavior:"smooth",block:"start"});}
+
+/* ══════════════════════════════════════════════════════════
+   SEARCH — searches both product names & category names
+   ══════════════════════════════════════════════════════════ */
+(function(){
+  /* State */
+  let allProducts=[];    // flat product list (after groupProducts)
+  let activeCategories=[];  // active CATS entries (set by buildPage)
+  let dropFocusIdx=-1;
+
+  /* DOM refs */
+  const inp   = document.getElementById("srchInput");
+  const drop  = document.getElementById("srchDropdown");
+  const clear = document.getElementById("srchClear");
+  const bar   = document.getElementById("srchResultsBar");
+  const cnt   = document.getElementById("srchResultsCount");
+
+  /* Called by buildPage after products & categories are ready */
+  window.__srchInit = function(products, active){
+    allProducts      = products;
+    activeCategories = active;
+  };
+
+  /* Highlight matched text */
+  function hl(text, q){
+    if(!q) return text;
+    const escaped = q.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+    return text.replace(new RegExp("("+escaped+")","gi"),"<mark>$1</mark>");
+  }
+
+  /* Build dropdown results */
+  function buildDrop(q){
+    const lq = q.trim().toLowerCase();
+    if(!lq){ closeDrop(); return; }
+
+    const catHits  = activeCategories.filter(c=>c.id.trim().toLowerCase().includes(lq));
+    const prodHits = allProducts.filter(p=>p.name.trim().toLowerCase().includes(lq));
+
+    if(!catHits.length && !prodHits.length){
+      drop.innerHTML=`<div class="srch-no-result"><span>🔍</span>No results for "<strong>${q}</strong>"</div>`;
+      drop.classList.add("open");
+      return;
+    }
+
+    let html="";
+
+    if(catHits.length){
+      html+=`<div class="srch-sec-label">Categories</div>`;
+      html+=catHits.slice(0,6).map(c=>`
+        <button class="srch-item" role="option"
+          data-type="cat" data-id="${c.id}"
+          onclick="__srchPickCat('${c.id.replace(/'/g,"\\'")}')">
+          <span class="srch-item-icon cat-icon">${c.emoji}</span>
+          <span class="srch-item-body">
+            <span class="srch-item-name">${hl(c.id.trim(),q)}</span>
+            <span class="srch-item-meta">${c.desc}</span>
+          </span>
+          <span class="srch-item-badge badge-cat">Category</span>
+        </button>`).join("");
+    }
+
+    if(prodHits.length){
+      html+=`<div class="srch-sec-label">Products</div>`;
+      html+=prodHits.slice(0,8).map(p=>{
+        const imgHtml = p.image
+          ? `<img src="${p.image}" alt="" loading="lazy" onerror="this.style.display='none'">`
+          : p.name.charAt(0).toUpperCase();
+        return`<button class="srch-item" role="option"
+          data-type="prod" data-name="${p.name.replace(/"/g,"&quot;")}"
+          data-cat="${(p.category||"").replace(/"/g,"&quot;")}"
+          onclick="__srchPickProd('${p.name.replace(/'/g,"\\'")}','${(p.category||"").replace(/'/g,"\\'")}')">
+          <span class="srch-item-icon prod-icon">${imgHtml}</span>
+          <span class="srch-item-body">
+            <span class="srch-item-name">${hl(p.name,q)}</span>
+            <span class="srch-item-meta">${p.category?p.category.trim():""}${p.price?" · ₹"+p.price:""}</span>
+          </span>
+          <span class="srch-item-badge badge-prod">Product</span>
+        </button>`;
+      }).join("");
+    }
+
+    drop.innerHTML = html;
+    drop.classList.add("open");
+    dropFocusIdx = -1;
+  }
+
+  function closeDrop(){
+    drop.classList.remove("open");
+    dropFocusIdx = -1;
+  }
+
+  /* Filter the main page to show only matching products/categories */
+  function applyFilter(q){
+    const lq = q.trim().toLowerCase();
+    if(!lq){ clearSearch(); return; }
+
+    let totalShown = 0;
+
+    document.querySelectorAll(".cat-section").forEach(sec=>{
+      const rawId   = sec.id.replace("sec-","");
+      const catObj  = activeCategories.find(c=>sid(c.id)===rawId);
+      const catName = catObj ? catObj.id.trim().toLowerCase() : rawId.replace(/-/g," ");
+      const catMatch = catName.includes(lq);
+
+      let prodShown = 0;
+      sec.querySelectorAll(".prod-card").forEach(card=>{
+        const nameEl = card.querySelector(".pc2-name");
+        if(!nameEl) return;
+        const pName = nameEl.textContent.trim().toLowerCase();
+        if(catMatch || pName.includes(lq)){
+          card.classList.remove("srch-hide");
+          prodShown++;
+        } else {
+          card.classList.add("srch-hide");
+        }
+      });
+
+      if(prodShown===0){
+        sec.classList.add("srch-cat-hide");
+      } else {
+        sec.classList.remove("srch-cat-hide");
+        totalShown += prodShown;
+      }
+    });
+
+    cnt.innerHTML = `<strong>${totalShown}</strong> result${totalShown!==1?"s":""} for "<strong>${q}</strong>"`;
+    bar.classList.add("visible");
+  }
+
+  /* Public: pick a category from dropdown */
+  window.__srchPickCat = function(catId){
+    inp.value = catId.trim();
+    clear.style.display = "flex";
+    closeDrop();
+    applyFilter(catId.trim());
+    goTo(catId);
+    inp.blur();
+  };
+
+  /* Public: pick a product from dropdown */
+  window.__srchPickProd = function(name, cat){
+    inp.value = name;
+    clear.style.display = "flex";
+    closeDrop();
+    applyFilter(name);
+    /* Scroll to that category section */
+    if(cat) goTo(cat);
+    inp.blur();
+  };
+
+  /* Public: clear search */
+  window.clearSearch = function(){
+    inp.value = "";
+    clear.style.display = "none";
+    closeDrop();
+    bar.classList.remove("visible");
+    document.querySelectorAll(".prod-card").forEach(c=>c.classList.remove("srch-hide"));
+    document.querySelectorAll(".cat-section").forEach(s=>s.classList.remove("srch-cat-hide"));
+  };
+
+  /* Public: submit search (button click) */
+  window.__srchSubmit = function(){
+    const q = inp.value.trim();
+    if(q){ closeDrop(); applyFilter(q); }
+    else { clearSearch(); }
+    inp.blur();
+  };
+
+  /* Input events */
+  inp.addEventListener("input",()=>{
+    const q = inp.value;
+    clear.style.display = q ? "flex" : "none";
+    buildDrop(q);
+    if(!q) clearSearch();
+  });
+
+  clear.addEventListener("click",()=>{ clearSearch(); inp.focus(); });
+
+  /* Keyboard nav in dropdown */
+  inp.addEventListener("keydown",e=>{
+    const items = drop.querySelectorAll(".srch-item");
+    if(e.key==="ArrowDown"){
+      e.preventDefault();
+      dropFocusIdx = Math.min(dropFocusIdx+1, items.length-1);
+      items.forEach((it,i)=>it.classList.toggle("focused",i===dropFocusIdx));
+      if(items[dropFocusIdx]) items[dropFocusIdx].scrollIntoView({block:"nearest"});
+    } else if(e.key==="ArrowUp"){
+      e.preventDefault();
+      dropFocusIdx = Math.max(dropFocusIdx-1, 0);
+      items.forEach((it,i)=>it.classList.toggle("focused",i===dropFocusIdx));
+    } else if(e.key==="Enter"){
+      e.preventDefault();
+      if(dropFocusIdx>=0 && items[dropFocusIdx]){
+        items[dropFocusIdx].click();
+      } else if(inp.value.trim()){
+        closeDrop();
+        applyFilter(inp.value.trim());
+      }
+    } else if(e.key==="Escape"){
+      closeDrop();
+      inp.blur();
+    }
+  });
+
+  /* Close dropdown on outside click */
+  document.addEventListener("click",e=>{
+    if(!e.target.closest("#srchWrap")) closeDrop();
+  });
+
+  /* Re-open on focus if query exists */
+  inp.addEventListener("focus",()=>{
+    if(inp.value.trim()) buildDrop(inp.value);
+  });
+})();
+
+/* ── FETCH ── */
+/* Group same-name products as variants on one card */
+function groupProducts(products){
+  const map=new Map();
+  products.forEach(p=>{
+    const isKansa=isKansaProduct(p);
+    const key=p.name.trim();
+    if(!map.has(key)) map.set(key,{...p,variants:[],price:isKansa?0:p.price,stock:isKansa?0:p.stock});
+    map.get(key).variants.push({
+      label:`${p.grams}${p.unit||'g'}`,
+      price:isKansa?0:parseFloat(p.price),
+      grams:p.grams,
+      unit:p.unit||'g',
+      stock:isKansa?0:p.stock,
+      image:p.image||''
+    });
+  });
+  const out=[];
+  map.forEach(p=>{
+    const isKansa=isKansaProduct(p);
+    p.variants.sort((a,b)=>a.price-b.price);
+    p.price=isKansa?0:p.variants[0].price;
+    p.stock=isKansa?0:(p.stock!==undefined?p.stock:0);
+    p.grams=p.variants[0].grams;
+    p.unit=p.variants[0].unit;
+    const imgVariant=p.variants.find(v=>v.image)||p.variants[0];
+    p.image=imgVariant.image||'';
+    out.push(p);
+  });
+  return out;
+}
+
+fetch("https://api.totalkaro.com/api/public/products/6")
+  .then(r=>r.json()).then(raw=>{
+    raw.forEach(p=>{
+      if(isKansaProduct(p)){
+        p.price=0;
+        p.stock=0;
+      }
+    });
+    buildPage(groupProducts(raw));
+  })
+  .catch(()=>{
+    document.getElementById("loadingState").innerHTML=`<div style="text-align:center;padding:70px 20px;">
+      <div style="font-size:44px;margin-bottom:14px;">⚠️</div>
+      <p style="font-size:15px;color:#9a8070;">Unable to load products. Please try again.</p>
+      <button onclick="location.reload()" style="margin-top:18px;padding:11px 26px;background:var(--brown);color:#fff;border:none;border-radius:22px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Cormorant Garamond',sans-serif;">Retry</button>
+    </div>`;
+  });
+
+/* ── CART ── */
+let toastT=null;
+function showToast(name,price,img){
+  const t=document.getElementById("cartToast");
+  document.getElementById("cartToastName").textContent=toTitleCase(name);
+  document.getElementById("cartToastPrice").textContent="₹"+price+" each";
+  const el=document.getElementById("cartToastImg");
+  if(img&&el){
+    if(el.tagName==="DIV")el.outerHTML=`<img class="toast-img" id="cartToastImg" src="${img}" onerror="this.outerHTML='<div class=toast-img-ph id=cartToastImg>🛒</div>'">`;
+    else el.src=img;
+  }
+  t.classList.add("show");
+  if(toastT)clearTimeout(toastT);
+  toastT=setTimeout(()=>t.classList.remove("show"),3200);
+}
+function inc(name,price,img,grams){
+  if(isKansaProduct({name})){
+    showKansaNotifyMessage(name);
+    return;
+  }
+  let c=JSON.parse(localStorage.getItem("cart"))||{};
+  if(!c[name])c[name]={qty:1,price,img,grams};else c[name].qty++;
+  localStorage.setItem("cart",JSON.stringify(c));
+  updUI(name);updCount();showToast(name,price,img);
+}
+function dec(name){
+  let c=JSON.parse(localStorage.getItem("cart"))||{};
+  if(!c[name])return;c[name].qty--;
+  if(c[name].qty<=0)delete c[name];
+  localStorage.setItem("cart",JSON.stringify(c));
+  updUI(name);updCount();
+}
+function updUI(name){
+  const c=JSON.parse(localStorage.getItem("cart"))||{};
+  const id=sid(name);const qty=c[name]?.qty||0;
+  document.querySelectorAll(`[id="q-${id}"]`).forEach(el=>el.textContent=qty);
+}
+function updCount(){
+  const c=JSON.parse(localStorage.getItem("cart"))||{};
+  let t=0;Object.values(c).forEach(i=>t+=i.qty);
+  document.querySelectorAll("#cartCount,#mobCartCount").forEach(el=>el.textContent=t);
+}
+
+function openTaleWhatsApp(){
+  window.open("https://talelightmedia.in/", "_blank");
+}
+
+
+function loadAllQty(){
+  const c=JSON.parse(localStorage.getItem("cart"))||{};
+  Object.keys(c).forEach(n=>{
+    updUI(n);
+    const id=sid(n);
+    _syncProdQty(id,n);
+  });
+  updCount();
+}
+window.onload=loadAllQty;
+
+/* ── INGREDIENT BAR ── */
+function buildIngredientBar(ings){
+  if(!ings||!ings.length)return"";
+  const segs=ings.map((g,i)=>{const r=i===0?"6px 0 0 6px":i===ings.length-1?"0 6px 6px 6px":"0";return`<div style="flex:${g.percentage};height:100%;background:${ING_C[i%ING_C.length]};border-radius:${r};" title="${g.name}:${g.percentage}%"></div>`;}).join("");
+  const pills=ings.map((g,i)=>`<div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555;padding:3px 9px;background:#faf8f5;border-radius:20px;border:1px solid #e8e0d8;"><div style="width:8px;height:8px;border-radius:50%;background:${ING_C[i%ING_C.length]};flex-shrink:0;"></div><span style="font-weight:500;">${g.name}</span><span style="font-weight:700;color:#432514;">${g.percentage}%</span></div>`).join("");
+  return`<div style="margin-top:12px;padding-top:10px;border-top:1px solid #f0e8e0;"><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:#a08060;margin-bottom:7px;">Composition</div><div style="display:flex;height:10px;border-radius:8px;overflow:hidden;gap:2px;margin-bottom:8px;">${segs}</div><div style="display:flex;flex-wrap:wrap;gap:5px;justify-content:center;">${pills}</div></div>`;
+}
+
+/* ══════════════════════════════════════════
+   PRODUCT DETAILS POPUP MODAL LOGIC
+   ══════════════════════════════════════════ */
+let currentModalProduct=null;
+let currentModalVariantIndex=0;
+let currentModalQty=1;
+let currentModalImages=[];
+let currentModalActiveImageIndex=0;
+let modalShowAllThumbs=false;
+
+function openProductModal(safeId,e){
+  if(e&&e.target&&e.target.closest('button, select, .pc2-carr-btn, .pc2-carr-dots, .pc2-pill, .pc2-qty-wrap, .pc2-select-wrap')){
+    return;
+  }
+  const p=STORED_PRODUCTS[safeId];
+  if(!p)return;
+
+  currentModalProduct=p;
+  const store=PROD_VARIANT_STORE[safeId];
+  currentModalVariantIndex=store?store.selectedIndex||0:0;
+  currentModalQty=1;
+  modalShowAllThumbs=false;
+
+  // Gather images for modal gallery
+  const isDrySharbat=(p.category||'').trim()==='Dry Sharbat';
+  const kansaImgs=getKansaImages(p.name);
+  let rawList=[];
+  if(kansaImgs.length>0){
+    rawList=kansaImgs;
+  }else if(isDrySharbat){
+    const variantImgs=(p.variants||[]).map(v=>v.image).filter(Boolean);
+    rawList=[p.image,...variantImgs].filter(Boolean);
+  }else{
+    rawList=[];
+  }
+  currentModalImages=Array.from(new Set(rawList));
+  currentModalActiveImageIndex=0;
+
+  // Populate content
+  const overlay=document.getElementById('productModalOverlay');
+  const badgeEl=document.getElementById('modalBadge');
+  const catEl=document.getElementById('modalCategory');
+  const titleEl=document.getElementById('modalProdTitle');
+  const starsEl=document.getElementById('modalStars');
+  const scoreEl=document.getElementById('modalRatingScore');
+  const reviewsEl=document.getElementById('modalReviewsCount');
+  const stockEl=document.getElementById('modalStockBadge');
+  const descEl=document.getElementById('modalDescription');
+  const ingEl=document.getElementById('modalIngredientsWrap');
+
+  // Category & Title
+  catEl.textContent=p.category?toTitleCase(p.category.trim()):'Pure & Natural';
+  titleEl.textContent=toTitleCase(p.name);
+
+  // Rating
+  const rat=getProdRating(p.name);
+  starsEl.innerHTML=prodStarsHtml(rat.stars);
+  scoreEl.textContent=rat.stars;
+  reviewsEl.textContent=`(${rat.count} verified reviews)`;
+
+  // Stock Status
+  const isKansa=isKansaProduct(p);
+  const isOutOfStock=p.stock<=0;
+  if(isOutOfStock){
+    stockEl.className='prod-modal-stock-badge out-of-stock';
+    stockEl.innerHTML='<span style="font-size:12px;">✕</span> Out of Stock';
+  }else{
+    stockEl.className='prod-modal-stock-badge in-stock';
+    stockEl.innerHTML='<span style="font-size:12px;">✓</span> In Stock';
+  }
+
+  // Badge
+  if(['Kokam Dry Sharbat','Lemonade Dry Sharbat','Coconut Dry Sharbat','Kalakhatta Dry Sharbat'].includes(p.name)){
+    badgeEl.style.display='block';
+    badgeEl.textContent='⭐ Best Seller';
+  }else{
+    badgeEl.style.display='none';
+  }
+
+  // Images & Thumbnails
+  updateModalGallery();
+
+  // Variants & Pricing
+  updateModalVariants();
+
+  // Description & Composition
+  if(p.description&&p.description.trim()){
+    descEl.textContent=p.description.trim();
+  }else{
+    descEl.textContent=`Crafted with traditional Indian wisdom, pure ingredients, and no artificial colors or harmful preservatives. Wholesome, rich in natural flavor, and 100% Jayna Purvak.`;
+  }
+
+  if(p.ingredients&&p.ingredients.length){
+    ingEl.style.display='block';
+    ingEl.innerHTML=buildIngredientBar(p.ingredients);
+  }else{
+    ingEl.style.display='none';
+    ingEl.innerHTML='';
+  }
+
+  // Quantity Stepper & Total
+  document.getElementById('modalQtyNum').textContent=currentModalQty;
+  recalcModalTotal();
+
+  // Reset Add to Cart button appearance
+  const addBtn=document.getElementById('modalAddCartBtn');
+  addBtn.disabled=(!isKansa && isOutOfStock);
+  addBtn.classList.remove('added');
+  document.getElementById('modalAddCartText').textContent=(!isKansa && isOutOfStock)?'OUT OF STOCK':'ADD TO CART';
+
+  // Open modal & lock background scroll
+  overlay.classList.add('active');
+  document.body.classList.add('modal-open');
+}
+
+function updateModalGallery(){
+  const mainImg=document.getElementById('modalMainImg');
+  const fallback=document.getElementById('modalFallbackImg');
+  const thumbsWrap=document.getElementById('modalThumbsWrap');
+  const thumbsContainer=document.getElementById('modalThumbs');
+
+  if(currentModalImages.length>0){
+    const activeSrc=currentModalImages[currentModalActiveImageIndex]||currentModalImages[0];
+    mainImg.style.display='block';
+    fallback.style.display='none';
+    mainImg.src=activeSrc;
+    mainImg.onerror=function(){
+      mainImg.style.display='none';
+      fallback.style.display='flex';
+      fallback.textContent=currentModalProduct?toTitleCase(currentModalProduct.name):'Gamtu Natural';
+    };
+  }else{
+    mainImg.style.display='none';
+    fallback.style.display='flex';
+    fallback.textContent=currentModalProduct?toTitleCase(currentModalProduct.name):'Gamtu Natural';
+  }
+
+  // Render thumbnails if multiple images exist
+  if(currentModalImages.length>1){
+    thumbsWrap.style.display='flex';
+    if(currentModalImages.length>5 && !modalShowAllThumbs){
+      const visibleThumbs=currentModalImages.slice(0, 4);
+      const remainingCount=currentModalImages.length - 4;
+      const fifthImg=currentModalImages[4];
+
+      let html=visibleThumbs.map((src,idx)=>`
+        <div class="prod-modal-thumb ${idx===currentModalActiveImageIndex?'active':''}" onclick="setModalActiveImage(${idx})">
+          <img src="${src}" alt="Thumbnail ${idx+1}" loading="lazy" onerror="this.parentElement.style.display='none'">
+        </div>
+      `).join('');
+
+      html+=`
+        <div class="prod-modal-thumb prod-modal-thumb-more ${currentModalActiveImageIndex>=4?'active':''}" onclick="expandModalThumbs()" title="Show all ${currentModalImages.length} images">
+          <img src="${fifthImg}" alt="More thumbnails" loading="lazy" onerror="this.parentElement.style.display='none'">
+          <div class="prod-modal-thumb-more-overlay">
+            <div>+${remainingCount}</div>
+            <span>More</span>
+          </div>
+        </div>
+      `;
+      thumbsContainer.innerHTML=html;
+    }else{
+      thumbsContainer.innerHTML=currentModalImages.map((src,idx)=>`
+        <div class="prod-modal-thumb ${idx===currentModalActiveImageIndex?'active':''}" onclick="setModalActiveImage(${idx})">
+          <img src="${src}" alt="Thumbnail ${idx+1}" loading="lazy" onerror="this.parentElement.style.display='none'">
+        </div>
+      `).join('');
+    }
+  }else{
+    thumbsWrap.style.display='none';
+    thumbsContainer.innerHTML='';
+  }
+}
+
+function expandModalThumbs(){
+  modalShowAllThumbs=true;
+  updateModalGallery();
+  if(currentModalActiveImageIndex<4){
+    setModalActiveImage(4);
+  }
+  const activeEl=document.querySelectorAll('#productModalOverlay .prod-modal-thumb')[currentModalActiveImageIndex];
+  if(activeEl)activeEl.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+}
+
+function setModalActiveImage(idx){
+  if(idx<0||idx>=currentModalImages.length)return;
+  currentModalActiveImageIndex=idx;
+  const mainImg=document.getElementById('modalMainImg');
+  mainImg.style.opacity='0';
+  setTimeout(()=>{
+    mainImg.src=currentModalImages[idx];
+    mainImg.style.opacity='1';
+  },120);
+
+  document.querySelectorAll('#productModalOverlay .prod-modal-thumb').forEach((thumb,i)=>{
+    thumb.classList.toggle('active',i===idx);
+  });
+}
+
+function modalThumbPrev(){
+  if(currentModalImages.length<=1)return;
+  const nextIdx=(currentModalActiveImageIndex-1+currentModalImages.length)%currentModalImages.length;
+  if(nextIdx>=4 && !modalShowAllThumbs){
+    modalShowAllThumbs=true;
+    updateModalGallery();
+  }
+  setModalActiveImage(nextIdx);
+  const activeEl=document.querySelectorAll('#productModalOverlay .prod-modal-thumb')[nextIdx];
+  if(activeEl)activeEl.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+}
+
+function modalThumbNext(){
+  if(currentModalImages.length<=1)return;
+  const nextIdx=(currentModalActiveImageIndex+1)%currentModalImages.length;
+  if(nextIdx>=4 && !modalShowAllThumbs){
+    modalShowAllThumbs=true;
+    updateModalGallery();
+  }
+  setModalActiveImage(nextIdx);
+  const activeEl=document.querySelectorAll('#productModalOverlay .prod-modal-thumb')[nextIdx];
+  if(activeEl)activeEl.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+}
+
+function updateModalVariants(){
+  if(!currentModalProduct)return;
+  const safeId=sid(currentModalProduct.name);
+  const store=PROD_VARIANT_STORE[safeId];
+  const variants=(store&&store.variants&&store.variants.length)
+    ? store.variants
+    : (currentModalProduct.variants&&currentModalProduct.variants.length
+        ? currentModalProduct.variants
+        : [{label:`${currentModalProduct.grams||0}${currentModalProduct.unit||'g'}`,price:parseFloat(currentModalProduct.price),grams:currentModalProduct.grams||0,image:currentModalProduct.image||''}]);
+
+  const currentVariant=variants[currentModalVariantIndex]||variants[0];
+  document.getElementById('modalUnitPrice').textContent=`₹${currentVariant.price}`;
+  document.getElementById('modalWeightTag').textContent=`(${currentVariant.label})`;
+
+  const wrap=document.getElementById('modalVariantsWrap');
+  const pillsContainer=document.getElementById('modalVariantPills');
+
+  if(variants.length>1){
+    wrap.style.display='flex';
+    pillsContainer.innerHTML=variants.map((v,idx)=>`
+      <button class="prod-modal-variant-pill ${idx===currentModalVariantIndex?'active':''}" onclick="selectModalVariant(${idx})">
+        ${v.label} — ₹${v.price}
+      </button>
+    `).join('');
+  }else{
+    wrap.style.display='none';
+    pillsContainer.innerHTML='';
+  }
+}
+
+function selectModalVariant(idx){
+  currentModalVariantIndex=idx;
+  const safeId=sid(currentModalProduct.name);
+  if(PROD_VARIANT_STORE[safeId]){
+    selVariant(safeId,idx);
+  }
+  updateModalVariants();
+  recalcModalTotal();
+  // Switch thumbnail/image if variant has its own image
+  const v=currentModalProduct.variants&&currentModalProduct.variants[idx];
+  if(v&&v.image){
+    const imgIdx=currentModalImages.indexOf(v.image);
+    if(imgIdx>=0)setModalActiveImage(imgIdx);
+  }
+}
+
+function modalChangeQty(delta){
+  let next=currentModalQty+delta;
+  if(next<1)next=1;
+  if(next>99)next=99;
+  currentModalQty=next;
+  document.getElementById('modalQtyNum').textContent=currentModalQty;
+  recalcModalTotal();
+}
+
+function recalcModalTotal(){
+  if(!currentModalProduct)return;
+  const safeId=sid(currentModalProduct.name);
+  const store=PROD_VARIANT_STORE[safeId];
+  const variants=(store&&store.variants&&store.variants.length)
+    ? store.variants
+    : (currentModalProduct.variants&&currentModalProduct.variants.length
+        ? currentModalProduct.variants
+        : [{price:parseFloat(currentModalProduct.price)}]);
+  const currentVariant=variants[currentModalVariantIndex]||variants[0];
+  const unitPrice=parseFloat(currentVariant.price)||0;
+  const total=unitPrice*currentModalQty;
+  document.getElementById('modalTotalPrice').textContent=`₹${total}`;
+}
+
+function modalAddToCart(){
+  if(!currentModalProduct)return;
+  if(isKansaProduct(currentModalProduct)){
+    showKansaNotifyMessage(currentModalProduct.name, null, true);
+    return;
+  }
+  const safeId=sid(currentModalProduct.name);
+  const store=PROD_VARIANT_STORE[safeId];
+  const variants=(store&&store.variants&&store.variants.length)
+    ? store.variants
+    : (currentModalProduct.variants&&currentModalProduct.variants.length
+        ? currentModalProduct.variants
+        : [{label:`${currentModalProduct.grams||0}${currentModalProduct.unit||'g'}`,price:parseFloat(currentModalProduct.price),grams:currentModalProduct.grams||0,image:currentModalProduct.image||''}]);
+  const v=variants[currentModalVariantIndex]||variants[0];
+
+  let cart=JSON.parse(localStorage.getItem('cart'))||{};
+  const name=currentModalProduct.name;
+  if(!cart[name]){
+    cart[name]={qty:currentModalQty,price:v.price,image:v.image||currentModalProduct.image||'',grams:v.grams};
+  }else{
+    cart[name].qty+=currentModalQty;
+    cart[name].price=v.price;
+  }
+  localStorage.setItem('cart',JSON.stringify(cart));
+
+  updUI(name);
+  updCount();
+  _syncProdQty(safeId,name);
+  showToast(name,v.price,v.image||currentModalProduct.image);
+
+  // Visual confirmation feedback on button
+  const btn=document.getElementById('modalAddCartBtn');
+  const btnText=document.getElementById('modalAddCartText');
+  btn.classList.add('added');
+  btnText.textContent='✓ ADDED TO CART!';
+  setTimeout(()=>{
+    btn.classList.remove('added');
+    btnText.textContent='ADD TO CART';
+  },1600);
+}
+
+function closeProductModal(){
+  const overlay=document.getElementById('productModalOverlay');
+  if(overlay)overlay.classList.remove('active');
+  document.body.classList.remove('modal-open');
+}
+
+// Global modal escape key listener
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    closeProductModal();
+  }
+});
+</script>
+
+<!-- ══════════════════════════════════════════
+     PRODUCT DETAILS POPUP MODAL
+══════════════════════════════════════════ -->
+<div id="productModalOverlay" class="prod-modal-overlay" onclick="if(event.target===this)closeProductModal()">
+  <div class="prod-modal-card" role="dialog" aria-modal="true" aria-labelledby="modalProdTitle">
+    <button class="prod-modal-close" id="modalCloseBtn" onclick="closeProductModal()" aria-label="Close product popup">✕</button>
+    <div class="prod-modal-grid">
+      <!-- Left: Media & Carousel Thumbnails -->
+      <div class="prod-modal-gallery">
+        <div class="prod-modal-main-img-wrap" id="modalMainImgWrap">
+          <span class="prod-modal-badge" id="modalBadge" style="display:none;"></span>
+          <img id="modalMainImg" class="prod-modal-main-img" src="" alt="Product Image" />
+          <div id="modalFallbackImg" class="prod-modal-fallback" style="display:none;"></div>
+        </div>
+        <div class="prod-modal-thumbs-wrap" id="modalThumbsWrap" style="display:none;">
+          <button class="prod-modal-thumb-btn" onclick="modalThumbPrev()" aria-label="Previous thumbnail">‹</button>
+          <div class="prod-modal-thumbs" id="modalThumbs"></div>
+          <button class="prod-modal-thumb-btn" onclick="modalThumbNext()" aria-label="Next thumbnail">›</button>
+        </div>
+      </div>
+
+      <!-- Right: Details & Action Controls -->
+      <div class="prod-modal-info">
+        <div class="prod-modal-header">
+          <div class="prod-modal-cat-tag" id="modalCategory">Pure & Natural</div>
+          <h2 class="prod-modal-title" id="modalProdTitle">Product Name</h2>
+          <div class="prod-modal-rating-row">
+            <div class="prod-modal-stars" id="modalStars">★★★★★</div>
+            <span class="prod-modal-score" id="modalRatingScore">4.8</span>
+            <span class="prod-modal-reviews-count" id="modalReviewsCount">(120 verified reviews)</span>
+            <span class="prod-modal-stock-badge in-stock" id="modalStockBadge">✓ In Stock</span>
+          </div>
+        </div>
+
+        <div class="prod-modal-divider"></div>
+
+        <!-- Price & Variant Selection -->
+        <div class="prod-modal-price-section">
+          <div class="prod-modal-price-row">
+            <span class="prod-modal-unit-price" id="modalUnitPrice">₹0</span>
+            <span class="prod-modal-unit-weight" id="modalWeightTag"></span>
+          </div>
+          <div class="prod-modal-variants-wrap" id="modalVariantsWrap">
+            <span class="prod-modal-variant-label">Select Pack Size</span>
+            <div class="prod-modal-variant-pills" id="modalVariantPills"></div>
+          </div>
+        </div>
+
+        <!-- Product Description & Composition -->
+        <div class="prod-modal-desc-box">
+          <div class="prod-modal-desc-title">🌿 About This Product</div>
+          <p class="prod-modal-desc-text" id="modalDescription"></p>
+          <div id="modalIngredientsWrap" style="display:none;"></div>
+        </div>
+
+        <!-- Trust Badges / Perks -->
+        <div class="prod-modal-perks">
+          <div class="prod-modal-perk"><span>🌱</span> 100% Pure & Organic</div>
+          <div class="prod-modal-perk"><span>🙏</span> Jain & Satvik Friendly</div>
+          <div class="prod-modal-perk"><span>🚚</span> Fast Safe Delivery</div>
+        </div>
+
+        <div class="prod-modal-divider"></div>
+
+        <!-- Quantity, Live Total & Add to Cart -->
+        <div class="prod-modal-actions">
+          <div class="prod-modal-qty-box">
+            <button type="button" class="prod-modal-qty-btn" onclick="modalChangeQty(-1)" aria-label="Decrease quantity">−</button>
+            <span class="prod-modal-qty-num" id="modalQtyNum">1</span>
+            <button type="button" class="prod-modal-qty-btn" onclick="modalChangeQty(1)" aria-label="Increase quantity">+</button>
+          </div>
+
+          <div class="prod-modal-total-box">
+            <span class="prod-modal-total-label">Total Amount</span>
+            <span class="prod-modal-total-value" id="modalTotalPrice">₹0</span>
+          </div>
+
+          <button type="button" class="prod-modal-add-cart-btn" id="modalAddCartBtn" onclick="modalAddToCart()">
+            <span style="font-size:16px;">🛒</span>
+            <span id="modalAddCartText">ADD TO CART</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

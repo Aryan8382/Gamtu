@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>A2 Gir Cow Ghee</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+margin:0;
+font-family:"Poppins",sans-serif;
+background:#fff;
+}
+
+/* CONTAINER */
+.product-detail{
+max-width:900px;
+margin:120px auto 60px;
+padding:20px;
+text-align:center;
+}
+
+/* IMAGE */
+.product-image{
+width:100%;
+max-width:420px;
+margin:auto;
+border-radius:20px;
+box-shadow:0 15px 40px rgba(0,0,0,0.1);
+}
+
+/* NAME */
+.product-name{
+font-size:34px;
+color:#432514;
+margin-top:25px;
+}
+
+/* PRICE */
+.product-price{
+font-size:24px;
+margin:10px 0;
+color:#000;
+font-weight:500;
+}
+
+/* DESCRIPTION */
+.product-desc{
+font-size:16px;
+color:#666;
+max-width:600px;
+margin:20px auto;
+line-height:1.7;
+}
+
+/* QUANTITY */
+.qty-box{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:20px;
+margin-top:30px;
+}
+
+.qty-btn{
+width:40px;
+height:40px;
+border:none;
+background:#432514;
+color:#fff;
+font-size:18px;
+border-radius:50%;
+cursor:pointer;
+}
+
+.qty-number{
+font-size:20px;
+min-width:40px;
+}
+
+/* BUTTON */
+.add-cart{
+margin-top:25px;
+padding:14px 34px;
+border-radius:30px;
+border:none;
+background:#432514;
+color:#fff;
+cursor:pointer;
+font-size:16px;
+transition:.3s;
+}
+
+.add-cart:hover{
+opacity:.85;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="product-detail">
+
+<img src="https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_34_26-AM.png" class="product-image">
+
+<h1 class="product-name">A2 Gir Cow Ghee</h1>
+
+<div class="product-price">₹ 999</div>
+
+<p class="product-desc">
+Our A2 Gir Cow Ghee is crafted using traditional bilona method,
+ensuring maximum nutrition and authentic taste.
+
+✔ Rich in healthy fats  
+✔ Improves digestion  
+✔ Boosts immunity  
+✔ 100% pure & natural  
+
+Made from desi Gir cows and prepared with love to bring
+you the essence of traditional Indian wellness.
+</p>
+
+<div class="qty-box">
+<button class="qty-btn" onclick="decreaseQty()">-</button>
+<span id="qty" class="qty-number">0</span>
+<button class="qty-btn" onclick="increaseQty()">+</button>
+</div>
+
+<button class="add-cart" onclick="addToCart()">Add to Cart</button>
+
+</div>
+
+<script>
+
+let qty = 0;
+
+function increaseQty(){
+qty++;
+updateUI();
+}
+
+function decreaseQty(){
+if(qty > 0){
+qty--;
+updateUI();
+}
+}
+
+function updateUI(){
+document.getElementById("qty").innerText = qty;
+}
+
+function addToCart(){
+
+if(qty === 0){
+alert("Please select quantity");
+return;
+}
+
+let cart = JSON.parse(localStorage.getItem("cart")) || {};
+
+if(!cart["A2 Gir Cow Ghee"]){
+cart["A2 Gir Cow Ghee"] = {
+qty: qty,
+price: 999,
+image: "https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_34_26-AM.png"
+};
+}else{
+cart["A2 Gir Cow Ghee"].qty += qty;
+}
+
+localStorage.setItem("cart", JSON.stringify(cart));
+
+alert("Ghee added to cart!");
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,786 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Orders — Gamtu</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*{ box-sizing:border-box; margin:0; padding:0; }
+:root{
+  --brown:#432514; --brown2:#5a3a28; --brown3:#2e1a0e;
+  --sand:#cab9a7; --sand-light:rgba(202,185,167,0.3);
+  --cream:#faf6f1; --white:#fff;
+  --gold:#c9a84c; --gold2:#e8c97a;
+  --nav-h:78px;
+  --orange:#ff6b00;
+}
+html{ scroll-behavior:smooth; }
+body{ font-family:"Cormorant Garamond",sans-serif; background:var(--cream); overflow-x:hidden; }
+
+/* ══ NAVBAR (identical to index.html) ══ */
+.navbar{
+  position:fixed; top:0; width:100%; height:var(--nav-h);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 40px;
+  background:#fef9f4;
+  border-bottom:1.5px solid rgba(202,185,167,0.55);
+  box-shadow:0 2px 18px rgba(67,37,20,0.07);
+  z-index:1000; transition:box-shadow 0.3s,background 0.3s;
+}
+.navbar.scrolled{ background:rgba(254,249,244,0.97); box-shadow:0 4px 28px rgba(67,37,20,0.12); backdrop-filter:blur(10px); }
+.nav-logo img{ height:100px; display:block; transition:transform 0.3s; }
+.nav-logo img:hover{ transform:scale(1.05); }
+.nav-links{ display:flex; align-items:center; gap:30px; flex:1; justify-content:center; }
+.nav-links a{
+  text-decoration:none;
+  color:var(--brown);
+  font-size:22px;
+  font-weight:500;
+  position:relative;
+  transition:color .25s;
+  white-space:nowrap;
+}.nav-links a::after{ content:""; position:absolute; left:0; bottom:-4px; width:0; height:2px; background:var(--gold); transition:width 0.28s; border-radius:2px; }
+.nav-links a:hover{ color:var(--brown3); }
+.nav-links a:hover::after,.nav-links a.active::after{ width:100%; }
+.nav-links a.active{ color:var(--brown3); font-weight:700; }
+.nav-dd{ position:relative; }
+.nav-dd-btn{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  color:var(--brown);
+  font-size:22px;
+  font-weight:500;
+  cursor:pointer;
+  transition:color .25s;
+  white-space:nowrap;
+  background:none;
+  border:none;
+  font-family:"Cormorant Garamond",sans-serif;
+  padding:0;
+  position:relative;
+}
+.nav-dd-btn::after{ content:""; position:absolute; left:0; bottom:-4px; width:0; height:2px; background:var(--gold); transition:width 0.28s; border-radius:2px; }
+.nav-dd:hover .nav-dd-btn::after,.nav-dd.open .nav-dd-btn::after{ width:calc(100% - 14px); }
+.nav-dd:hover .nav-dd-btn,.nav-dd.open .nav-dd-btn{ color:var(--brown3); }
+.chevron{ font-size:9px; opacity:0.5; transition:transform 0.28s; }
+.nav-dd.open .chevron{ transform:rotate(180deg); }
+.nav-dd-menu{ position:absolute; top:calc(100% + 14px); left:50%; transform:translateX(-50%) translateY(5px); min-width:196px; background:#fff; border-radius:15px; padding:8px; box-shadow:0 16px 44px rgba(67,37,20,0.16),0 3px 10px rgba(0,0,0,0.06); border:1px solid rgba(202,185,167,0.3); opacity:0; visibility:hidden; transition:all 0.24s cubic-bezier(0.4,0,0.2,1); z-index:9999; pointer-events:none; }
+.nav-dd-menu::before{ content:""; position:absolute; top:-5px; left:50%; transform:translateX(-50%) rotate(45deg); width:10px; height:10px; background:#fff; border-left:1px solid rgba(202,185,167,0.3); border-top:1px solid rgba(202,185,167,0.3); }
+.nav-dd:hover .nav-dd-menu,.nav-dd.open .nav-dd-menu{ opacity:1; visibility:visible; transform:translateX(-50%) translateY(0); pointer-events:auto; }
+.nav-dd-menu a{ display:flex; align-items:center; gap:8px; padding:10px 13px; font-size:14px; font-weight:500; color:var(--brown); text-decoration:none; border-radius:9px; transition:all 0.2s; }
+.nav-dd-menu a:hover{ background:var(--cream); color:var(--brown3); }
+.nav-right{ display:flex; align-items:center; gap:12px; flex-shrink:0; }
+.profile-wrap{ position:relative; }
+.profile-btn{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  cursor:pointer;
+  padding:10px 16px 10px 12px;
+  border-radius:30px;
+  background:none;
+  border:none;
+  font-family:"Cormorant Garamond",sans-serif;
+  font-size:18px;
+  font-weight:600;
+  color:var(--brown);
+  transition:all .22s;
+}
+.profile-btn:hover{ background:rgba(202,185,167,0.38); }
+.profile-avatar{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:linear-gradient(135deg,var(--brown),var(--gold));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  color:#fff;
+  flex-shrink:0;
+}
+.profile-name{
+  max-width:130px;
+  font-size:18px;
+  font-weight:600;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}.profile-drop{ position:absolute; top:calc(100% + 10px); right:0; min-width:166px; background:#fff; border-radius:13px; padding:7px; box-shadow:0 16px 44px rgba(67,37,20,0.15); border:1px solid rgba(202,185,167,0.28); opacity:0; visibility:hidden; transition:all 0.24s cubic-bezier(0.4,0,0.2,1); z-index:9999; pointer-events:none; transform:translateY(5px); }
+.profile-wrap:hover .profile-drop,.profile-wrap.open .profile-drop{ opacity:1; visibility:visible; transform:translateY(0); pointer-events:auto; }
+.profile-drop a{ display:flex; align-items:center; gap:8px; padding:10px 12px; font-size:13.5px; font-weight:500; color:var(--brown); text-decoration:none; border-radius:8px; transition:all 0.2s; }
+.profile-drop a:hover{ background:var(--cream); }
+.nav-login{ padding:8px 19px; border-radius:22px; background:var(--brown); color:#fff; font-size:14px; font-weight:600; text-decoration:none; transition:all 0.24s; border:none; cursor:pointer; font-family:"Cormorant Garamond",sans-serif; box-shadow:0 4px 13px rgba(67,37,20,0.24); }
+.nav-login{
+  padding:10px 22px;
+  border-radius:30px;
+  background:var(--brown);
+  color:#fff;
+  font-size:18px;
+  font-weight:600;
+  text-decoration:none;
+  transition:all .24s;
+  border:none;
+  cursor:pointer;
+  font-family:"Cormorant Garamond",sans-serif;
+  box-shadow:0 4px 13px rgba(67,37,20,.24);
+}
+
+.cart-btn{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:11px 22px;
+  border-radius:30px;
+  background:linear-gradient(135deg,#1a6b3a 0%,#22a05a 60%,#00c98c 100%);
+  color:#fff;
+  font-size:18px;
+  font-weight:600;
+  border:none;
+  cursor:pointer;
+  font-family:"Cormorant Garamond",sans-serif;
+  transition:all .24s;
+  box-shadow:0 4px 13px rgba(26,107,58,.26);
+  white-space:nowrap;
+}
+.cart-btn:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(26,107,58,0.38); }
+.cart-count{
+  min-width:26px;
+  height:26px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.22);
+  font-size:14px;
+  font-weight:700;
+  padding:0;
+}.hamburger{ display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:5px; z-index:1010; flex-shrink:0; }
+.hamburger span{ display:block; width:23px; height:2px; background:var(--brown); border-radius:2px; transition:all 0.28s; }
+.hamburger.open span:nth-child(1){ transform:rotate(45deg) translate(5px,5px); }
+.hamburger.open span:nth-child(2){ opacity:0; transform:scaleX(0); }
+.hamburger.open span:nth-child(3){ transform:rotate(-45deg) translate(5px,-5px); }
+.mob-menu{ position:fixed; top:var(--nav-h); left:0; width:100%; background:rgba(254,249,244,0.99); backdrop-filter:blur(14px); border-bottom:1.5px solid rgba(202,185,167,0.4); box-shadow:0 14px 38px rgba(67,37,20,0.1); z-index:998; flex-direction:column; padding:12px 22px 20px; gap:2px; opacity:0; transform:translateY(-6px); transition:all 0.28s cubic-bezier(0.4,0,0.2,1); pointer-events:none; display:flex; }
+.mob-menu.open{ opacity:1; transform:translateY(0); pointer-events:auto; }
+.mob-menu a,.mob-toggle{ display:flex; align-items:center; justify-content:space-between; padding:12px 2px; border:none; border-bottom:1px solid rgba(202,185,167,0.22); color:var(--brown); font-size:15.5px; font-weight:600; text-decoration:none; transition:color 0.2s; background:none; font-family:"Cormorant Garamond",sans-serif; cursor:pointer; width:100%; text-align:left; }
+.mob-menu a:hover,.mob-toggle:hover{ color:var(--brown3); }
+.mob-bottom{ display:flex; gap:9px; margin-top:12px; }
+.mob-bottom .nav-login{ flex:1; text-align:center; display:flex; align-items:center; justify-content:center; }
+.mob-bottom .cart-btn{ flex:1; justify-content:center; text-align:center; }
+@media(max-width:880px){
+  .hamburger{ display:flex; }
+  .nav-links,.nav-right>.profile-wrap,.nav-right>.nav-login{ display:none!important; }
+  .navbar{ padding:0 18px; }
+}
+@media(max-width:480px){
+  .nav-logo img{
+    height:64px;
+  }
+
+  .navbar{
+    padding:0 14px;
+  }
+}
+/* ══ PAGE CONTENT ══ */
+.page-wrap{ max-width:960px; margin:0 auto; padding:calc(var(--nav-h) + 40px) 24px 60px; }
+
+.page-hero{ margin-bottom:36px; }
+.page-hero h1{ font-family:"Playfair Display",serif; font-size:38px; color:var(--brown); margin-bottom:8px; }
+.page-hero p{ color:#9a8070; font-size:15px; }
+.breadcrumb{ display:flex; align-items:center; gap:8px; font-size:13px; color:#9a8070; margin-bottom:16px; }
+.breadcrumb a{ color:var(--brown); text-decoration:none; font-weight:500; }
+.breadcrumb a:hover{ text-decoration:underline; }
+
+/* STATS ROW */
+.stats-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:32px; }
+.stat-box{ background:#fff; border-radius:16px; padding:20px 22px; box-shadow:0 4px 20px rgba(67,37,20,0.06); border:1px solid rgba(202,185,167,0.3); display:flex; align-items:center; gap:14px; }
+.stat-icon{ width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+.stat-icon.brown{ background:rgba(67,37,20,0.1); }
+.stat-icon.orange{ background:rgba(255,107,0,0.1); }
+.stat-icon.green{ background:rgba(26,160,90,0.1); }
+.stat-val{ font-size:24px; font-weight:700; color:var(--brown); font-family:"Playfair Display",serif; line-height:1; }
+.stat-lbl{ font-size:12px; color:#9a8070; margin-top:3px; }
+
+/* ORDER CARD */
+.order-card{ background:#fff; border-radius:20px; box-shadow:0 6px 28px rgba(67,37,20,0.08); margin-bottom:20px; overflow:hidden; border:1px solid rgba(202,185,167,0.25); animation:fadeUp 0.4s ease both; }
+@keyframes fadeUp{ from{ opacity:0; transform:translateY(14px); } to{ opacity:1; transform:translateY(0); } }
+
+.order-header{ padding:20px 28px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; background:linear-gradient(135deg,#fffdf9,#faf5ee); border-bottom:1px solid rgba(202,185,167,0.3); }
+.order-id-badge{ background:var(--brown); color:#fff; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:5px 14px; border-radius:20px; display:inline-block; margin-bottom:6px; }
+.order-date{ font-size:13px; color:#9a8070; display:flex; align-items:center; gap:5px; }
+.order-address-line{ font-size:12px; color:#b09880; margin-top:4px; display:flex; align-items:flex-start; gap:5px; max-width:340px; }
+.order-right{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.order-total{ background:linear-gradient(135deg,var(--brown),var(--brown2)); color:#fff; padding:10px 22px; border-radius:30px; font-size:20px; font-weight:800; box-shadow:0 4px 16px rgba(67,37,20,0.28); white-space:nowrap; }
+
+.download-btn{ display:flex; align-items:center; gap:8px; background:linear-gradient(135deg,var(--orange),#ff8533); color:#fff; border:none; border-radius:12px; padding:10px 18px; font-size:13px; font-weight:700; font-family:"Cormorant Garamond",sans-serif; cursor:pointer; transition:0.3s; box-shadow:0 4px 14px rgba(255,107,0,0.35); }
+.download-btn:hover{ transform:translateY(-2px); box-shadow:0 8px 22px rgba(255,107,0,0.45); }
+
+/* ORDER ITEMS INSIDE CARD */
+.order-items-wrap{ padding:18px 28px; }
+.order-items-title{ font-size:12px; font-weight:700; color:var(--brown); text-transform:uppercase; letter-spacing:1px; margin-bottom:12px; }
+.order-items-list{ display:flex; flex-direction:column; gap:10px; }
+.order-item-row{ display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:var(--cream); border-radius:10px; border:1px solid rgba(202,185,167,0.2); }
+.item-name{ font-size:14px; font-weight:600; color:var(--brown); }
+.item-meta{ font-size:12px; color:#9a8070; margin-top:2px; }
+.item-total{ font-size:15px; font-weight:700; color:var(--brown); white-space:nowrap; }
+
+/* EMPTY / ERROR */
+.empty-state{ text-align:center; padding:80px 20px; background:#fff; border-radius:20px; box-shadow:0 6px 28px rgba(67,37,20,0.08); }
+.empty-state .empty-icon{ font-size:72px; margin-bottom:20px; }
+.empty-state h3{ font-family:"Playfair Display",serif; font-size:26px; color:var(--brown); margin-bottom:10px; }
+.empty-state p{ color:#9a8070; font-size:15px; margin-bottom:28px; }
+.empty-state a{ display:inline-block; padding:13px 32px; background:var(--brown); color:#fff; border-radius:30px; text-decoration:none; font-weight:600; transition:0.3s; }
+.empty-state a:hover{ background:var(--brown2); }
+
+/* LOADING */
+.loading{ text-align:center; padding:60px; color:#9a8070; }
+.loading-dots{ display:inline-flex; gap:8px; margin-top:16px; }
+.loading-dots span{ width:10px; height:10px; border-radius:50%; background:var(--sand); animation:bounce 1.2s infinite; }
+.loading-dots span:nth-child(2){ animation-delay:0.2s; }
+.loading-dots span:nth-child(3){ animation-delay:0.4s; }
+@keyframes bounce{ 0%,80%,100%{ transform:scale(0.8); opacity:0.5; } 40%{ transform:scale(1.2); opacity:1; } }
+
+/* TOAST */
+.toast{ position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(100px); background:var(--brown); color:#fff; padding:14px 28px; border-radius:40px; font-size:14px; font-weight:600; box-shadow:0 10px 30px rgba(67,37,20,0.3); transition:0.4s; z-index:9999; white-space:nowrap; }
+.toast.show{ transform:translateX(-50%) translateY(0); }
+
+/* ══ FOOTER ══ */
+/* base */
+.footer-contact-item{
+  transition: all .35s cubic-bezier(.4,0,.2,1);
+  border-radius: 14px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+/* hover effect */
+.footer-contact-item:hover{
+  background: rgba(201,168,76,.12);
+  transform: translateX(8px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(201,168,76,.15);
+}
+
+/* icon animation */
+.footer-contact-icon{
+  transition: all .35s ease;
+}
+
+.footer-contact-item:hover .footer-contact-icon{
+  transform: rotate(-6deg) scale(1.15);
+  background: var(--gold);
+  color: #000;
+}
+
+/* text highlight */
+.footer-contact-item:hover .footer-contact-text{
+  color: #fff;
+}
+.gamtu-footer{background:linear-gradient(160deg,#1a0c05 0%,#2e1408 50%,#1a0c05 100%);color:var(--sand);position:relative;overflow:hidden;}
+.footer-top-bar{background:linear-gradient(90deg,rgba(201,168,76,.15),rgba(201,168,76,.05),rgba(201,168,76,.15));border-bottom:1px solid rgba(201,168,76,.2);padding:20px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+.footer-top-tagline{font-size:14px;color:rgba(202,185,167,.75);letter-spacing:.5px;}
+.footer-top-tagline strong{color:var(--gold2);}
+.footer-trust-badges{display:flex;gap:24px;align-items:center;flex-wrap:wrap;}
+.trust-badge{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:rgba(202,185,167,.7);letter-spacing:.3px;}
+.trust-badge-icon{width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.25);display:flex;align-items:center;justify-content:center;font-size:13px;}
+.footer-main{padding:64px 60px 48px;display:grid;grid-template-columns:1.8fr 1fr 1fr 1.2fr;gap:56px;max-width:1400px;margin:0 auto;}
+.footer-logo-wrap{margin-bottom:10px;margin-left:-25px;}
+.footer-logo-wrap img{height:100px;display:block;}
+.footer-brand-desc{font-size:15px;line-height:1.9;color:rgba(202,185,167,.7);margin-bottom:28px;max-width:370px;}
+.footer-social{display:flex;gap:10px;flex-wrap:wrap;}
+.social-btn{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(202,185,167,.15);display:flex;align-items:center;justify-content:center;font-size:17px;color:rgba(202,185,167,.7);transition:all .35s;text-decoration:none;}
+.social-btn:hover{transform:translateY(-4px);border-color:rgba(201,168,76,.5);background:rgba(201,168,76,.12);}
+.social-btn:hover .fa-instagram{color:#e1306c;}
+.social-btn:hover .fa-whatsapp{color:#25d366;}
+.social-btn:hover .fa-facebook-f{color:#1877f2;}
+.social-btn:hover .fa-envelope{color:#ea4335;}
+.social-btn:hover .fa-youtube{color:#ff0000;}
+.footer-col h4{color:#fff;font-size:13px;font-weight:700;margin-bottom:22px;text-transform:uppercase;letter-spacing:2px;display:flex;align-items:center;gap:10px;}
+.footer-col h4::after{content:"";flex:1;height:1px;background:rgba(201,168,76,.2);}
+.footer-links{display:flex;flex-direction:column;gap:10px;}
+.footer-links a{color:rgba(202,185,167,.65);text-decoration:none;font-size:14px;transition:all .25s;display:flex;align-items:center;gap:8px;padding:4px 0;}
+.footer-links a::before{content:"→";font-size:11px;opacity:0;transform:translateX(-6px);transition:all .25s;}
+.footer-links a:hover{color:#fff;padding-left:4px;}
+.footer-links a:hover::before{opacity:.6;transform:translateX(0);}
+.footer-contact-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;}
+.footer-contact-icon{width:36px;height:36px;border-radius:10px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.footer-contact-text{font-size:14px;color:rgba(202,185,167,.75);line-height:1.5;padding-top:6px;}
+.footer-contact-text strong{display:block;color:#fff;font-size:12px;font-weight:700;margin-bottom:2px;letter-spacing:.5px;}
+.footer-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.35),rgba(201,168,76,.5),rgba(201,168,76,.35),transparent);margin:0 60px;}
+.footer-bottom{padding:24px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+.footer-bottom-copy{font-size:13px;color:rgba(202,185,167,.45);}
+.footer-bottom-copy span{color:rgba(201,168,76,.7);}
+.footer-bottom-links{display:flex;gap:22px;flex-wrap:wrap;}
+.footer-bottom-links a{font-size:12.5px;color:rgba(202,185,167,.4);text-decoration:none;transition:color .25s;}
+.footer-bottom-links a:hover{color:rgba(202,185,167,.8);}
+.footer-deco{position:absolute;right:-80px;top:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,.06),transparent 70%);pointer-events:none;}
+.footer-deco2{position:absolute;left:-60px;bottom:-60px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,.05),transparent 70%);pointer-events:none;}
+@media(max-width:1200px){.footer-main{grid-template-columns:1fr 1fr;gap:40px;padding:52px 40px 40px;}.footer-top-bar{padding:18px 40px;}}
+@media(max-width:768px){.footer-main{grid-template-columns:1fr 1fr;gap:32px;padding:40px 24px 32px;}.footer-top-bar{padding:14px 24px;}.footer-divider{margin:0 24px;}.footer-bottom{padding:20px 24px;flex-direction:column;text-align:center;}}
+@media(max-width:520px){.footer-main{grid-template-columns:1fr;gap:28px;padding:36px 20px 28px;}.footer-top-bar{flex-direction:column;gap:12px;text-align:center;}.footer-trust-badges{justify-content:center;}.footer-bottom-links{justify-content:center;}.footer-divider{margin:0 20px;}.footer-bottom{padding:16px 20px;}}
+.credit{
+  color: rgba(202,185,167,.5);
+  font-size: 12px;
+  margin-left: 6px;
+  transition: all .3s;
+}
+
+.credit:hover{
+  color: var(--gold);
+  cursor: pointer;
+}
+</style>
+<script src="assets/title-case.js" defer></script>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="mainNav">
+  <div class="nav-logo">
+    <img src="https://gamtuindia.com/wp-content/uploads/2026/03/Gamtu-Logo-PNG-1.png" alt="Gamtu">
+  </div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+        <a href="product.html">Products</a>
+    <a href="about.html">About Us</a>
+       <a href="orders.html" class="active">My Orders</a>
+  </div>
+  <div class="nav-right" id="navRight">
+    <div class="profile-wrap" id="profileWrap" style="display:none">
+      <button class="profile-btn" id="profileBtn">
+        <div class="profile-avatar">👤</div>
+        <span class="profile-name" id="profileName">User</span>
+        <span style="font-size:9px;opacity:0.45;margin-left:2px">▾</span>
+      </button>
+      <div class="profile-drop">
+        <a href="profile.html">👤 My Profile</a>
+        <a href="orders.html">📦 My Orders</a>
+        <a href="#" id="logoutBtn">🚪 Logout</a>
+      </div>
+    </div>
+    <a href="sign-up.html" id="loginLink" class="nav-login" style="display:none">Login</a>
+    <button class="cart-btn" onclick="window.location.href='cart.html'">🛒 Cart <span class="cart-count">0</span></button>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mob-menu" id="mobMenu">
+  <a href="index.html">Home</a>
+    <a href="product.html">Products</a>
+  <a href="about.html">About Us</a>
+  <a href="orders.html" class="active">My Orders</a>
+  <div class="mob-bottom">
+    <a href="sign-up.html" id="mobLoginLink" class="nav-login" style="display:none">Login</a>
+    <button class="cart-btn" onclick="window.location.href='cart.html'" style="width:100%">🛒 Cart</button>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page-wrap">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> <span>›</span> <span>My Orders</span>
+  </div>
+  <div class="page-hero">
+    <h1>My Orders</h1>
+    <p>Track your purchases and download detailed invoices</p>
+  </div>
+
+  <div class="stats-row" id="statsRow" style="display:none">
+    <div class="stat-box">
+      <div class="stat-icon brown">📦</div>
+      <div>
+        <div class="stat-val" id="statTotal">0</div>
+        <div class="stat-lbl">Total Orders</div>
+      </div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-icon orange">💰</div>
+      <div>
+        <div class="stat-val" id="statSpend">₹0</div>
+        <div class="stat-lbl">Total Spent</div>
+      </div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-icon green">✅</div>
+      <div>
+        <div class="stat-val" id="statItems">0</div>
+        <div class="stat-lbl">Items Ordered</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="ordersContainer">
+    <div class="loading">
+      Fetching your orders...
+      <div class="loading-dots"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="gamtu-footer">
+  <div class="footer-deco"></div>
+  <div class="footer-deco2"></div>
+  <div class="footer-top-bar">
+    <div class="footer-top-tagline"><strong>Gamtu India</strong> — Because peace  start on your plate </div>
+    <div class="footer-trust-badges">
+      <div class="trust-badge"></div>Organic | Kansa | Jain | Satvik | Instant | Healthy</div>
+      
+  </div>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <div class="footer-logo-wrap">
+        <img src="https://gamtuindia.com/wp-content/uploads/2026/04/Screenshot_2026-04-22_at_12.04.49_AM-removebg-preview.png" alt="Gamtu"/>
+      </div>
+      <p class="footer-brand-desc">Organic | Kansa | Jain | Satvik | Instant | Healthy</p>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/gamtuindia/" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://whatsapp.com/channel/0029VbBlKHCDeONGN7mjrY0A" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://www.facebook.com/profile.php?id=61582659989921" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+        <a href="mailto:info@gamtuindia.com" class="social-btn"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <div class="footer-links">
+        <a href="index.html">Home</a><a href="about.html">About Us</a>
+        <a href="product.html">All Products</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Our Products</h4>
+      <div class="footer-links">
+        <a href="product.html#sec-instant-jain-soup">Instant Jain Soups</a>
+        <a href="product.html#sec-instant-premix-sauce">Instant Premix Sauce</a>
+        <a href="product.html#sec-dry-sharbat">Dry Sharbat</a>
+        <a href="product.html#sec-kansa-products">Kansa Products</a>
+      </div>
+    </div>
+  <div class="footer-col">
+  <h4>Get in Touch</h4>
+
+  <!-- 📍 Location -->
+  <div class="footer-contact-item"
+       onclick="window.open('https://maps.app.goo.gl/QyRpjeofE9UbsdQx5','_blank')">
+    <div class="footer-contact-icon">📍</div>
+    <div class="footer-contact-text">
+      <strong>Location</strong>
+      Surat, Gujarat, India
+    </div>
+  </div>
+
+  <!-- 📞 Phone -->
+  <div class="footer-contact-item"
+       onclick="window.location.href='tel:+919712621143'">
+    <div class="footer-contact-icon">📞</div>
+    <div class="footer-contact-text">
+      <strong>Phone</strong>
+      +91 9712621143
+    </div>
+  </div>
+
+  <!-- ✉️ Email -->
+  <div class="footer-contact-item"
+       onclick="window.location.href='mailto:info@gamtuindia.com'">
+    <div class="footer-contact-icon">✉️</div>
+    <div class="footer-contact-text">
+      <strong>Email</strong>
+      info@gamtuindia.com
+    </div>
+  </div>
+
+  <!-- 🕐 Support -->
+  <div class="footer-contact-item">
+    <div class="footer-contact-icon">🕐</div>
+    <div class="footer-contact-text">
+      <strong>Support Hours</strong>
+      Mon – Sun, 10 AM – 9 PM
+    </div>
+  </div>
+</div>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-copy">© 2026 All Rights Reserved - <span onclick="openTaleWhatsApp()">Designed by Tale Light Media</span> </div>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy Policy</a><a href="#">Terms of Service</a>
+      <a href="#">Shipping Policy</a><a href="#">Refund Policy</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* AUTH */
+const user = JSON.parse(localStorage.getItem("user"));
+if(!user) window.location.href = "sign-up.html";
+
+// Navbar auth
+(function(){
+  if(user){
+    document.getElementById("profileName").textContent = user.name || "User";
+    document.getElementById("profileWrap").style.display = "flex";
+    document.getElementById("loginLink").style.display = "none";
+    if(document.getElementById("mobLoginLink")) document.getElementById("mobLoginLink").style.display = "none";
+  } else {
+    document.getElementById("profileWrap").style.display = "none";
+    document.getElementById("loginLink").style.display = "";
+  }
+  document.getElementById("logoutBtn").addEventListener("click", e => {
+    e.preventDefault();
+    localStorage.removeItem("user");
+    window.location.href = "sign-up.html";
+  });
+})();
+
+/* NAVBAR */
+const mainNav = document.getElementById("mainNav");
+window.addEventListener("scroll", () => mainNav.classList.toggle("scrolled", window.scrollY > 40));
+
+const profileWrap = document.getElementById("profileWrap");
+const profileBtn = document.getElementById("profileBtn");
+if(profileBtn){
+  profileBtn.addEventListener("click", e => { e.stopPropagation(); profileWrap.classList.toggle("open"); });
+  document.addEventListener("click", e => { if(!profileWrap.contains(e.target)) profileWrap.classList.remove("open"); });
+}
+const hamburger = document.getElementById("hamburger");
+const mobMenu = document.getElementById("mobMenu");
+hamburger.addEventListener("click", e => { e.stopPropagation(); hamburger.classList.toggle("open"); mobMenu.classList.toggle("open"); });
+document.addEventListener("click", e => { if(!mobMenu.contains(e.target) && !hamburger.contains(e.target)){ hamburger.classList.remove("open"); mobMenu.classList.remove("open"); } });
+
+/* FETCH ORDERS + ITEMS */
+let allOrderItems = {}; // keyed by order_id
+
+Promise.all([
+  fetch(`https://gamtuindia.com/api/get-orders.php?user_id=${user.id}`).then(r => r.json()),
+  fetch(`https://gamtuindia.com/api/get-order-items.php?user_id=${user.id}`).then(r => r.json()).catch(() => [])
+]).then(([orders, items]) => {
+  // Index items by order_id
+  if(Array.isArray(items)){
+    items.forEach(item => {
+      if(!allOrderItems[item.order_id]) allOrderItems[item.order_id] = [];
+      allOrderItems[item.order_id].push(item);
+    });
+  }
+  renderOrders(orders);
+}).catch(() => {
+  // Fallback: fetch orders only
+  fetch(`https://gamtuindia.com/api/get-orders.php?user_id=${user.id}`)
+    .then(r => r.json())
+    .then(renderOrders)
+    .catch(() => {
+      document.getElementById("ordersContainer").innerHTML = `<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Couldn't Load Orders</h3><p>Please check your connection and try again.</p><a href="orders.html">Retry</a></div>`;
+    });
+});
+
+function renderOrders(data){
+  const container = document.getElementById("ordersContainer");
+
+  if(!data || !data.length){
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">📦</div><h3>No Orders Yet</h3><p>You haven't placed any orders. Start shopping!</p><a href="index.html">Browse Products</a></div>`;
+    return;
+  }
+
+  // Stats
+  const totalSpend = data.reduce((s,o) => s + parseFloat(o.total||0), 0);
+  const totalItems = Object.values(allOrderItems).reduce((s,arr) => s + arr.reduce((a,i) => a + parseInt(i.quantity||0), 0), 0);
+  document.getElementById("statTotal").textContent = data.length;
+  document.getElementById("statSpend").textContent = "₹" + totalSpend.toFixed(0);
+  document.getElementById("statItems").textContent = totalItems || "—";
+  document.getElementById("statsRow").style.display = "grid";
+
+  let html = "";
+  data.forEach((order, i) => {
+    const date = new Date(order.created_at).toLocaleDateString("en-IN", { day:"2-digit", month:"short", year:"numeric" });
+    const addressShort = order.address ? order.address.substring(0, 90) + (order.address.length > 90 ? "…" : "") : "N/A";
+    const items = allOrderItems[order.id] || [];
+
+    let itemsHtml = "";
+    if(items.length){
+      itemsHtml = `<div class="order-items-wrap"><div class="order-items-title">🛍 Items Ordered</div><div class="order-items-list">` +
+        items.map(it => `<div class="order-item-row">
+          <div>
+            <div class="item-name">${it.product_name}</div>
+            <div class="item-meta">Qty: ${it.quantity} × ₹${parseFloat(it.price).toFixed(2)}</div>
+          </div>
+          <div class="item-total">₹${(it.quantity * parseFloat(it.price)).toFixed(2)}</div>
+        </div>`).join("") +
+        `</div></div>`;
+    }
+
+    const orderJson = JSON.stringify(order).replace(/"/g, '&quot;');
+    const itemsJson = JSON.stringify(items).replace(/"/g, '&quot;');
+
+    html += `
+      <div class="order-card" style="animation-delay:${i*0.07}s">
+        <div class="order-header">
+          <div>
+            <div class="order-id-badge">Order #${order.id}</div>
+            <div class="order-date">📅 ${date} &nbsp;·&nbsp; 💳 Cash on Delivery</div>
+            <div class="order-address-line">📍 ${addressShort}</div>
+          </div>
+          <div class="order-right">
+            <div class="order-total">₹${parseFloat(order.total).toFixed(0)}</div>
+            <button class="download-btn" onclick='downloadInvoice(${orderJson}, ${itemsJson})'>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+              Invoice
+            </button>
+          </div>
+        </div>
+        ${itemsHtml}
+      </div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+/* PDF INVOICE */
+function downloadInvoice(order, items){
+  showToast("📄 Generating invoice...");
+  setTimeout(() => {
+    try {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit:"mm", format:"a4" });
+      const W = 210, ml = 18, mr = 18, cw = W - ml - mr;
+      const BROWN=[67,37,20], SAND=[202,185,167], ORANGE=[255,107,0], LIGHT=[250,248,244];
+      const date = new Date(order.created_at).toLocaleDateString("en-IN", { day:"2-digit", month:"long", year:"numeric" });
+
+      // HEADER
+      doc.setFillColor(...BROWN); doc.rect(0,0,W,44,"F");
+      doc.setTextColor(255,255,255); doc.setFontSize(24); doc.setFont("helvetica","bold"); doc.text("GAMTU",ml,18);
+      doc.setFontSize(8.5); doc.setFont("helvetica","normal"); doc.setTextColor(...SAND);
+      doc.text("Pure. Traditional. Wholesome.",ml,25);
+      doc.text("gamtuindia.com  |  info@gamtuindia.com",ml,31);
+      doc.setFontSize(18); doc.setFont("helvetica","bold"); doc.setTextColor(255,255,255);
+      doc.text("TAX INVOICE",W-mr,17,{align:"right"});
+      doc.setFontSize(9); doc.setFont("helvetica","normal"); doc.setTextColor(...SAND);
+      doc.text("Invoice #"+order.id,W-mr,25,{align:"right"});
+      doc.text("Date: "+date,W-mr,31,{align:"right"});
+
+      doc.setFillColor(...ORANGE); doc.rect(0,44,W,3,"F");
+      let y = 58;
+
+      // BILL TO
+      doc.setFillColor(...LIGHT); doc.roundedRect(ml,y,80,40,4,4,"F");
+      doc.setFontSize(7.5); doc.setFont("helvetica","bold"); doc.setTextColor(...ORANGE); doc.text("BILL TO",ml+6,y+9);
+      doc.setFontSize(9.5); doc.setFont("helvetica","bold"); doc.setTextColor(...BROWN); doc.text(user.name||"Customer",ml+6,y+18);
+      doc.setFontSize(8.5); doc.setFont("helvetica","normal"); doc.setTextColor(90,80,70);
+      const addrLines = doc.splitTextToSize(order.address||"N/A",68);
+      addrLines.slice(0,3).forEach((ln,i) => doc.text(ln,ml+6,y+26+i*7));
+
+      // ORDER INFO
+      doc.setFillColor(...LIGHT); doc.roundedRect(ml+88,y,104,40,4,4,"F");
+      doc.setFontSize(7.5); doc.setFont("helvetica","bold"); doc.setTextColor(...ORANGE); doc.text("ORDER DETAILS",ml+94,y+9);
+      doc.setFontSize(8.5); doc.setFont("helvetica","normal"); doc.setTextColor(90,80,70);
+      doc.text("Order ID: #"+order.id,ml+94,y+18);
+      doc.text("Date: "+date,ml+94,y+26);
+      doc.text("Payment: Cash on Delivery",ml+94,y+34);
+      y += 52;
+
+      // ITEMS TABLE HEADER
+      doc.setFillColor(...BROWN); doc.rect(ml,y,cw,11,"F");
+      doc.setFontSize(8); doc.setFont("helvetica","bold"); doc.setTextColor(255,255,255);
+      doc.text("#",ml+4,y+7.5);
+      doc.text("PRODUCT",ml+14,y+7.5);
+      doc.text("QTY",ml+110,y+7.5);
+      doc.text("UNIT PRICE",ml+126,y+7.5);
+      doc.text("TOTAL",ml+158,y+7.5);
+      y += 11;
+
+      const rowBgs = [[255,255,255],[250,248,244]];
+      let grandTotal = 0;
+
+      if(items && items.length){
+        items.forEach((it, idx) => {
+          const lineTotal = parseFloat(it.price) * parseInt(it.quantity);
+          grandTotal += lineTotal;
+          doc.setFillColor(...rowBgs[idx%2]); doc.rect(ml,y,cw,12,"F");
+          doc.setFontSize(9); doc.setFont("helvetica","normal"); doc.setTextColor(...BROWN);
+          doc.text(String(idx+1),ml+4,y+8);
+          const nameLines = doc.splitTextToSize(it.product_name,90);
+          doc.text(nameLines[0],ml+14,y+8);
+          doc.text(String(it.quantity),ml+113,y+8);
+          doc.text("₹"+parseFloat(it.price).toFixed(2),ml+126,y+8);
+          doc.text("₹"+lineTotal.toFixed(2),ml+158,y+8);
+          y += 12;
+        });
+      } else {
+        // Fallback row
+        grandTotal = parseFloat(order.total);
+        doc.setFillColor(255,255,255); doc.rect(ml,y,cw,12,"F");
+        doc.setFontSize(9); doc.setFont("helvetica","normal"); doc.setTextColor(...BROWN);
+        doc.text("1",ml+4,y+8);
+        doc.text("Order #"+order.id+" — Items",ml+14,y+8);
+        doc.text("—",ml+113,y+8); doc.text("—",ml+126,y+8);
+        doc.text("₹"+grandTotal.toFixed(2),ml+158,y+8);
+        y += 12;
+      }
+
+      doc.setDrawColor(...BROWN); doc.setLineWidth(0.8); doc.line(ml,y,ml+cw,y);
+      y += 14;
+
+      // TOTALS
+      const totX = ml+cw*0.54, totW = cw*0.46;
+      doc.setFillColor(...LIGHT); doc.roundedRect(totX,y-4,totW,56,4,4,"F");
+      function totRow(label,val){
+        doc.setFontSize(9); doc.setFont("helvetica","normal"); doc.setTextColor(90,80,70);
+        doc.text(label,totX+8,y+5);
+        doc.setTextColor(...BROWN);
+        doc.text(val,totX+totW-8,y+5,{align:"right"});
+        y += 10;
+      }
+      const subtotal = grandTotal || parseFloat(order.total);
+      totRow("Subtotal","₹"+subtotal.toFixed(2));
+      totRow("GST (included)","—");
+      totRow("Discount","₹0.00");
+      y += 4;
+      doc.setFillColor(...BROWN); doc.roundedRect(totX,y-2,totW,16,4,4,"F");
+      doc.setFontSize(11); doc.setFont("helvetica","bold"); doc.setTextColor(255,255,255);
+      doc.text("GRAND TOTAL",totX+8,y+9);
+      doc.text("₹"+subtotal.toFixed(2),totX+totW-8,y+9,{align:"right"});
+      y += 26;
+
+      // NOTES
+      y = Math.max(y+10,240);
+      doc.setFillColor(...LIGHT); doc.roundedRect(ml,y,cw/2-4,28,4,4,"F");
+      doc.setFontSize(7.5); doc.setFont("helvetica","bold"); doc.setTextColor(...ORANGE); doc.text("NOTES",ml+6,y+8);
+      doc.setFontSize(8); doc.setFont("helvetica","normal"); doc.setTextColor(90,80,70);
+      doc.text("Thank you for shopping with Gamtu!",ml+6,y+16);
+      doc.text("For queries: info@gamtuindia.com",ml+6,y+22);
+
+      doc.setFillColor(...LIGHT); doc.roundedRect(ml+cw/2+4,y,cw/2-4,28,4,4,"F");
+      doc.setFontSize(7.5); doc.setFont("helvetica","bold"); doc.setTextColor(...ORANGE); doc.text("FOR GAMTU INDIA",ml+cw/2+10,y+8);
+      doc.setDrawColor(...SAND); doc.setLineWidth(0.5); doc.line(ml+cw/2+10,y+22,ml+cw-4,y+22);
+      doc.setFontSize(7.5); doc.setFont("helvetica","normal"); doc.setTextColor(90,80,70); doc.text("Authorised Signatory",ml+cw/2+10,y+26);
+
+      // FOOTER
+      doc.setFillColor(...ORANGE); doc.rect(0,282,W,2,"F");
+      doc.setFillColor(...BROWN); doc.rect(0,284,W,13,"F");
+      doc.setFontSize(8); doc.setFont("helvetica","normal"); doc.setTextColor(...SAND);
+      doc.text("Gamtu India  ·  gamtuindia.com  ·  info@gamtuindia.com  ·  Ahmedabad, Gujarat",W/2,292,{align:"center"});
+
+      doc.save("Gamtu_Invoice_"+order.id+".pdf");
+      showToast("✅ Invoice downloaded!");
+    } catch(e){ console.error(e); showToast("Could not generate PDF. Please try again."); }
+  }, 200);
+}
+
+function openTaleWhatsApp(){
+  window.open("https://talelightmedia.in/", "_blank");
+}
+
+
+function showToast(msg){
+  const t = document.getElementById("toast");
+  t.innerText = msg; t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 3000);
+}
+</script>
+</body>
+</html>

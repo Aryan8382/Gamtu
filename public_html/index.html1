@@ -1,0 +1,2112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gamtu — Pure. Traditional. Wholesome.</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --brown:#432514;--brown2:#5a3a28;--brown3:#2e1a0e;
+  --sand:#cab9a7;--sand-light:rgba(202,185,167,0.3);
+  --cream:#faf6f1;--white:#fff;--gold:#c9a84c;--gold2:#e8c97a;
+  --btn-qty-bg:linear-gradient(135deg,#ff6b2b 0%,#f5a623 60%,#ffd700 100%);
+  --btn-qty-hover:linear-gradient(135deg,#e85a1a 0%,#e09510 60%,#f0c800 100%);
+  --btn-qty-color:#3a1800;
+  --btn-cart-bg:linear-gradient(135deg,#1a6b3a 0%,#22a05a 60%,#00c98c 100%);
+  --btn-cart-hover:linear-gradient(135deg,#145a2e 0%,#1a8a48 60%,#00b07a 100%);
+  --btn-cart-color:#fff;
+  --btn-count-bg:linear-gradient(135deg,#1e3d2f 0%,#1a5e3a 100%);
+  --nav-h:78px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:"Cormorant Garamond",sans-serif;background:#fff;overflow-x:hidden;}
+body.intro-active{overflow:hidden;}
+/* Add this new rule right after */
+body.intro-active #introOverlay ~ *{
+  visibility:visible;
+}
+
+@keyframes slideLeft{
+  from{opacity:0;transform:translateX(-50px);}
+  to{opacity:1;transform:translateX(0);}
+}
+
+@keyframes slideRight{
+  from{opacity:0;transform:translateX(50px);}
+  to{opacity:1;transform:translateX(0);}
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-12px);}
+}
+
+@keyframes marquee{
+  from{transform:translateX(0);}
+  to{transform:translateX(-50%);}
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(24px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg);}
+}
+
+#introOverlay{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:transparent;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:opacity 1.6s ease, visibility 1.6s ease;
+  overflow:hidden;
+}
+
+#introOverlay.fade-out{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+
+/* VIDEO */
+#introOverlay video{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  z-index:1;
+}
+
+/* Stop excessive scaling on very large screens */
+@media (min-width: 1400px) {
+  #introOverlay video{
+    object-fit:contain;
+  }
+}
+
+#introProgress{
+  position:absolute;
+  bottom:0;
+  left:0;
+  height:3px;
+  width:0%;
+  background:linear-gradient(90deg,var(--gold),#fff8);
+  z-index:3;
+  transition:none;
+}
+
+#introProgress.run{
+  transition:width 5s linear;
+  width:100%;
+}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ══ NAVBAR ══ */
+.navbar{position:fixed;top:0;width:100%;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:#fef9f4;border-bottom:1.5px solid rgba(202,185,167,0.55);box-shadow:0 2px 18px rgba(67,37,20,0.07);z-index:1000;transition:box-shadow .3s,background .3s;}
+.navbar.scrolled{background:rgba(254,249,244,.97);box-shadow:0 4px 28px rgba(67,37,20,.12);backdrop-filter:blur(10px);}
+.nav-logo img{height:100px;display:block;transition:transform .3s;}
+.nav-logo img:hover{transform:scale(1.05);}
+body.intro-active .nav-logo img{
+  opacity:0;
+  transform:scale(0.85);
+  transition:opacity .6s ease, transform .6s ease;
+}
+/* Show logo when intro ends (intro-active removed) */
+.nav-logo img {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.nav-links{display:flex;align-items:center;gap:30px;flex:1;justify-content:center;}
+.nav-links a{text-decoration:none;color:var(--brown);font-size:22px;font-weight:500;position:relative;transition:color .25s;white-space:nowrap;}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:-4px;width:0;height:2px;background:var(--gold);transition:width .28s;border-radius:2px;}
+.nav-links a:hover{color:var(--brown3);}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+.nav-links a.active{color:var(--brown3);font-weight:700;}
+.nav-dd{position:relative;}
+.nav-dd-btn{display:flex;align-items:center;gap:4px;color:var(--brown);font-size:22px;font-weight:500;cursor:pointer;transition:color .25s;white-space:nowrap;background:none;border:none;font-family:"Cormorant Garamond",sans-serif;padding:0;position:relative;}
+.nav-dd-btn::after{content:"";position:absolute;left:0;bottom:-4px;width:0;height:2px;background:var(--gold);transition:width .28s;border-radius:2px;}
+.nav-dd:hover .nav-dd-btn::after,.nav-dd.open .nav-dd-btn::after{width:calc(100% - 14px);}
+.nav-dd:hover .nav-dd-btn,.nav-dd.open .nav-dd-btn{color:var(--brown3);}
+.chevron{font-size:9px;opacity:.5;transition:transform .28s;}
+.nav-dd.open .chevron{transform:rotate(180deg);}
+.nav-dd-menu{position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%) translateY(5px);min-width:196px;background:#fff;border-radius:15px;padding:8px;box-shadow:0 16px 44px rgba(67,37,20,.16),0 3px 10px rgba(0,0,0,.06);border:1px solid rgba(202,185,167,.3);opacity:0;visibility:hidden;transition:all .24s cubic-bezier(.4,0,.2,1);z-index:9999;pointer-events:none;}
+.nav-dd-menu::before{content:"";position:absolute;top:-5px;left:50%;transform:translateX(-50%) rotate(45deg);width:10px;height:10px;background:#fff;border-left:1px solid rgba(202,185,167,.3);border-top:1px solid rgba(202,185,167,.3);}
+.nav-dd:hover .nav-dd-menu,.nav-dd.open .nav-dd-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);pointer-events:auto;}
+.nav-dd-menu a{display:flex;align-items:center;gap:8px;padding:10px 13px;font-size:14px;font-weight:500;color:var(--brown);text-decoration:none;border-radius:9px;transition:all .2s;}
+.nav-dd-menu a:hover{background:var(--cream);color:var(--brown3);}
+.nav-right{display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.profile-wrap{position:relative;}
+.profile-btn{display:flex;align-items:center;gap:8px;cursor:pointer;padding:7px 13px 7px 9px;border-radius:24px;background:none;border:none;font-family:"Cormorant Garamond",sans-serif;font-size:14px;font-weight:600;color:var(--brown);transition:all .22s;}
+.profile-btn{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    padding:10px 16px 10px 12px;
+    border-radius:30px;
+    background:none;
+    border:none;
+    font-family:"Cormorant Garamond",sans-serif;
+    font-size:18px;
+    font-weight:600;
+    color:var(--brown);
+    transition:all .22s;
+}
+
+.profile-avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--brown),var(--gold));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    color:#fff;
+    flex-shrink:0;
+}
+
+.profile-name{
+    max-width:130px;
+    font-size:18px;
+    font-weight:600;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.profile-drop{position:absolute;top:calc(100% + 10px);right:0;min-width:166px;background:#fff;border-radius:13px;padding:7px;box-shadow:0 16px 44px rgba(67,37,20,.15);border:1px solid rgba(202,185,167,.28);opacity:0;visibility:hidden;transition:all .24s cubic-bezier(.4,0,.2,1);z-index:9999;pointer-events:none;transform:translateY(5px);}
+.profile-wrap:hover .profile-drop,.profile-wrap.open .profile-drop{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto;}
+.profile-drop a{display:flex;align-items:center;gap:8px;padding:10px 12px;font-size:13.5px;font-weight:500;color:var(--brown);text-decoration:none;border-radius:8px;transition:all .2s;}
+.profile-drop a:hover{background:var(--cream);}
+.nav-login{padding:8px 19px;border-radius:22px;background:var(--brown);color:#fff;font-size:14px;font-weight:600;text-decoration:none;transition:all .24s;border:none;cursor:pointer;font-family:"Cormorant Garamond",sans-serif;box-shadow:0 4px 13px rgba(67,37,20,.24);}
+.nav-login:hover{background:var(--brown3);transform:translateY(-2px);}
+.cart-btn{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:11px 22px;
+    border-radius:30px;
+    background:var(--btn-cart-bg);
+    color:#fff;
+    font-size:18px;
+    font-weight:600;
+    border:none;
+    cursor:pointer;
+    font-family:"Cormorant Garamond",sans-serif;
+    transition:all .24s;
+    box-shadow:0 4px 13px rgba(26,107,58,.26);
+    white-space:nowrap;
+}
+
+.cart-count{
+    min-width:26px;
+    height:26px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,.22);
+    font-size:14px;
+    font-weight:700;
+    padding:0;
+}
+.cart-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(26,107,58,.38);}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:5px;z-index:1010;flex-shrink:0;}
+.hamburger span{display:block;width:23px;height:2px;background:var(--brown);border-radius:2px;transition:all .28s;}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+.mob-menu{position:fixed;top:var(--nav-h);left:0;width:100%;background:rgba(254,249,244,.99);backdrop-filter:blur(14px);border-bottom:1.5px solid rgba(202,185,167,.4);box-shadow:0 14px 38px rgba(67,37,20,.1);z-index:998;flex-direction:column;padding:12px 22px 20px;gap:2px;opacity:0;transform:translateY(-6px);transition:all .28s cubic-bezier(.4,0,.2,1);pointer-events:none;display:flex;visibility:hidden;}
+.mob-menu.open{opacity:1;transform:translateY(0);pointer-events:auto;visibility:visible;}
+.mob-menu a,.mob-toggle{display:flex;align-items:center;justify-content:space-between;padding:12px 2px;border:none;border-bottom:1px solid rgba(202,185,167,.22);color:var(--brown);font-size:15.5px;font-weight:600;text-decoration:none;transition:color .2s;background:none;font-family:"Cormorant Garamond",sans-serif;cursor:pointer;width:100%;text-align:left;}
+.mob-menu a:hover,.mob-toggle:hover{color:var(--brown3);}
+.mob-menu a.active{color:var(--gold);font-weight:700;}
+.mob-sub{display:none;flex-direction:column;padding:2px 0 4px 14px;gap:1px;border-bottom:1px solid rgba(202,185,167,.18);}
+.mob-sub.open{display:flex;}
+.mob-sub a{border:none;padding:9px 2px;font-size:14px;font-weight:500;color:#7a5a3a;}
+.mob-bottom{display:flex;gap:9px;margin-top:12px;}
+.mob-bottom .nav-login{flex:1;text-align:center;}
+.mob-bottom .cart-btn{flex:1;}
+@media(max-width:880px){.hamburger{display:flex;}.nav-links,.nav-right>.profile-wrap,.nav-right>.nav-login{display:none!important;}.navbar{padding:0 18px;}}
+@media(max-width:480px){.nav-logo img{height:46px;}.navbar{padding:0 14px;}}
+
+/* ══ CAROUSEL ══ */
+.hero-section{position:relative;margin-top:var(--nav-h);}
+.carousel-wrap{position:relative;overflow:hidden;width:100%;height:520px;}
+.carousel-track{display:flex;height:100%;transition:transform .8s cubic-bezier(.4,0,.2,1);will-change:transform;}
+.carousel-slide{min-width:100%;height:520px;display:flex;align-items:center;justify-content:flex-start;padding:50px 8%;position:relative;overflow:hidden;flex-shrink:0;}
+.slide-bg-1{background:linear-gradient(120deg,#f5ede3 0%,#e3cbb8 55%,#d0af94 100%);}
+.slide-bg-2{background:linear-gradient(120deg,#e5f0e0 0%,#c3d9ae 55%,#a8c88a 100%);}
+.slide-bg-3{background:linear-gradient(120deg,#fdf3e3 0%,#f5ddb0 55%,#e8c36a 100%);}
+.slide-bg-4{background:linear-gradient(120deg,#ede8f5 0%,#ccc0ea 55%,#b0a2d9 100%);}
+.slide-bg-5{background:linear-gradient(120deg,#fde8ea 0%,#f5bdc3 55%,#e898a2 100%);}
+.carousel-slide::before{content:"";position:absolute;right:-100px;top:-100px;width:450px;height:450px;border-radius:50%;background:rgba(255,255,255,.14);pointer-events:none;z-index:1;}
+.carousel-slide::after{content:"";position:absolute;left:-80px;bottom:-80px;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.1);pointer-events:none;z-index:1;}
+.slide-content{position:relative;z-index:3;flex:1;padding-right:40px;text-align:left;max-width:600px;}
+.slide-tag{display:inline-flex;align-items:center;gap:7px;background:var(--brown);color:#fff;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 16px;border-radius:30px;margin-bottom:18px;box-shadow:0 4px 14px rgba(67,37,20,.3);}
+.slide-content h2{font-family:"Cormorant Garamond",serif;font-size:52px;line-height:1.12;color:var(--brown);margin-bottom:14px;font-weight:700;}
+.slide-content p{font-size:15px;color:#7a6a5c;line-height:1.8;margin-bottom:24px;max-width:420px;}
+.slide-price{font-size:30px;font-weight:700;color:var(--brown);margin-bottom:26px;font-family:"Cormorant Garamond",serif;}
+.slide-price span{font-size:14px;font-weight:400;color:#9a8070;}
+.slide-btns{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.slide-btn-primary{padding:14px 34px;border-radius:30px;background:var(--brown);color:#fff;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:all .3s;box-shadow:0 6px 20px rgba(67,37,20,.3);}
+.slide-btn-primary:hover{background:var(--brown3);transform:translateY(-3px);}
+.slide-btn-secondary{padding:14px 28px;border-radius:30px;background:transparent;color:var(--brown);font-size:14px;font-weight:600;border:2px solid var(--brown);cursor:pointer;transition:all .3s;}
+.slide-btn-secondary:hover{background:var(--brown);color:#fff;}
+.slide-image{flex-shrink:0;position:relative;z-index:3;cursor:pointer;}
+.slide-image img{width:320px;height:320px;object-fit:contain;filter:drop-shadow(0 22px 44px rgba(67,37,20,.22));animation:float 4s ease-in-out infinite;}
+.carousel-slide.is-active .slide-content{animation:slideLeft .65s ease both;}
+.carousel-slide.is-active .slide-image{animation:slideRight .65s ease both;}
+.carousel-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.94);color:var(--brown);border:none;width:50px;height:50px;border-radius:50%;cursor:pointer;z-index:10;font-size:20px;font-weight:800;box-shadow:0 6px 22px rgba(0,0,0,.14);transition:all .3s;display:flex;align-items:center;justify-content:center;}
+.carousel-arrow:hover{background:var(--brown);color:#fff;transform:translateY(-50%) scale(1.1);}
+.arrow-prev{left:22px;}
+.arrow-next{right:22px;}
+.carousel-dots{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:9px;z-index:10;}
+.carousel-dots span{width:9px;height:9px;border-radius:50%;background:rgba(67,37,20,.28);cursor:pointer;transition:all .4s;display:inline-block;}
+.carousel-dots span.active{background:var(--brown);width:30px;border-radius:5px;}
+.carousel-progress{position:absolute;bottom:0;left:0;height:3px;background:var(--brown);width:0%;z-index:10;transition:none;}
+.carousel-progress.run{transition:width 4.5s linear;width:100%;}
+
+@media(max-width:1024px){
+  .carousel-wrap{height:460px;}
+  .carousel-slide{height:460px;padding:40px 6%;}
+  .slide-content h2{font-size:38px;}
+  .slide-image img{width:240px;height:240px;}
+}
+@media(max-width:767px){
+  .carousel-wrap{height:auto;min-height:420px;}
+  .carousel-slide{padding:32px 20px 70px;flex-direction:column;gap:16px;height:auto;min-height:420px;text-align:center;align-items:center;justify-content:center;}
+  .slide-content{padding-right:0;order:2;width:100%;}
+  .slide-image{order:1;}
+  .slide-content h2{font-size:26px;margin-bottom:8px;}
+  .slide-content p{font-size:13px;max-width:100%;margin-bottom:14px;}
+  .slide-price{font-size:22px;margin-bottom:16px;}
+  .slide-tag{font-size:10px;padding:5px 12px;margin-bottom:10px;}
+  .slide-image img{width:140px;height:140px;}
+  .slide-btns{justify-content:center;gap:10px;}
+  .slide-btn-primary{padding:11px 24px;font-size:13px;}
+  .slide-btn-secondary{padding:11px 20px;font-size:13px;}
+  .carousel-arrow{width:34px;height:34px;font-size:14px;}
+  .arrow-prev{left:8px;}
+  .arrow-next{right:8px;}
+  .carousel-dots{bottom:16px;}
+}
+@media(max-width:420px){
+  .carousel-slide{padding:24px 16px 60px;gap:12px;min-height:380px;}
+  .slide-content h2{font-size:22px;}
+  .slide-image img{width:120px;height:120px;}
+  .slide-btn-primary,.slide-btn-secondary{padding:10px 18px;font-size:12px;}
+}
+
+/* ══ MARQUEE ══ */
+.marquee-bar{background:var(--brown);padding:13px 0;overflow:hidden;}
+.marquee-inner{display:flex;gap:0;width:max-content;animation:marquee 28s linear infinite;}
+.marquee-item{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.9);font-size:13px;font-weight:500;white-space:nowrap;padding:0 44px;border-right:1px solid rgba(255,255,255,.15);}
+.marquee-item .mi{color:var(--gold2);font-size:17px;}
+@media(max-width:600px){.marquee-item{padding:0 28px;font-size:12px;}}
+
+/* ══ SECTION COMMONS ══ */
+.section-eyebrow{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--gold);opacity:.85;margin-bottom:10px;}
+.section-title{font-family:"Cormorant Garamond",serif;font-size:45px;color:var(--brown);margin-bottom:10px;line-height:1.2;font-weight:700;}
+.section-sub{font-size:14px;color:#9a8070;margin-bottom:48px;}
+.underline-bar{width:54px;height:2px;background:linear-gradient(90deg,var(--gold),var(--brown));margin:12px auto 0;border-radius:2px;}
+.section-header{text-align:center;margin-bottom:48px;}
+@media(max-width:600px){.section-title{font-size:30px;}.section-header{margin-bottom:32px;}}
+
+/* ══ FILTER PILLS ══ */
+.filter-pills-section{
+  padding:32px 40px 0;
+  background:#fff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:0;
+}
+.filter-pills-label{
+  font-family:"Cormorant Garamond",serif;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:#111;
+  margin-bottom:16px;
+  opacity:1;
+}
+.filter-pills{
+  display:flex;
+  flex-wrap:nowrap;
+  gap:12px;
+  justify-content:center;
+  max-width:1100px;
+  width:100%;
+}
+.filter-pill{
+  display:inline-flex;
+  flex-direction:row;
+  align-items:center;
+  gap:8px;
+  padding:12px 22px;
+  border-radius:50px;
+  border:none;
+  text-decoration:none;
+  cursor:pointer;
+  transition:all .3s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 4px 16px rgba(0,0,0,.12);
+  white-space:nowrap;
+  position:relative;
+  overflow:hidden;
+}
+.filter-pill::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(255,255,255,.12);
+  opacity:0;
+  transition:opacity .3s;
+}
+.filter-pill:hover::before{opacity:1;}
+.filter-pill:hover{transform:translateY(-5px);box-shadow:0 12px 30px rgba(0,0,0,.18);}
+.filter-pill .pill-icon{font-size:20px;line-height:1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.15));}
+.filter-pill .pill-name{
+  font-family:"Cormorant Garamond",serif;
+  font-size:17px;
+  font-weight:700;
+  color:#fff;
+  letter-spacing:.3px;
+}
+.filter-pill.pill-organic{background:linear-gradient(135deg,#2e7d32 0%,#66bb6a 100%);}
+.filter-pill.pill-kansa{background:linear-gradient(135deg,#7a5c00 0%,#e8c97a 100%);}
+.filter-pill.pill-jain{background:linear-gradient(135deg,#e65100 0%,#ffa726 100%);}
+.filter-pill.pill-satvik{background:linear-gradient(135deg,#6a1b9a 0%,#ce93d8 100%);}
+.filter-pill.pill-instant{background:linear-gradient(135deg,#01579b 0%,#4fc3f7 100%);}
+.filter-pill.pill-healthy{background:linear-gradient(135deg,#00695c 0%,#4db6ac 100%);}
+@media(max-width:768px){
+  .filter-pills-section{padding:24px 16px 0;}
+  .filter-pills{gap:8px;}
+  .filter-pill{padding:10px 16px;border-radius:50px;}
+  .filter-pill .pill-icon{font-size:17px;}
+  .filter-pill .pill-name{font-size:14px;}
+}
+@media(max-width:480px){
+  .filter-pills-section{padding:16px 10px 0;}
+  .filter-pills{gap:6px;flex-wrap:wrap;}
+  .filter-pill{padding:8px 14px;}
+  .filter-pill .pill-icon{font-size:15px;}
+  .filter-pill .pill-name{font-size:13px;}
+}
+
+/* ══ CATEGORIES ══ */
+.cat-section{padding:28px 40px 60px;text-align:center;background:#fff;}
+.cat-circles{display:grid;grid-template-columns:repeat(8,1fr);gap:24px 20px;max-width:1200px;margin:0 auto;}
+.cat-circle{display:flex;flex-direction:column;align-items:center;gap:11px;cursor:pointer;transition:all .38s;}
+.cat-circle:hover{transform:translateY(-9px);}
+.cat-circle-img{width:90px;height:90px;border-radius:50%;overflow:hidden;border:2px solid rgba(202,185,167,.5);box-shadow:0 8px 28px rgba(67,37,20,.08);transition:all .38s;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:36px;}
+.cat-circle:hover .cat-circle-img{border-color:var(--brown);box-shadow:0 18px 45px rgba(67,37,20,.2);}
+.cat-circle-img img{width:100%;height:100%;object-fit:contain;transition:transform .42s;padding:10px;}
+.cat-circle:hover .cat-circle-img img{transform:scale(1.13);}
+.cat-circle-name{font-size:11px;font-weight:700;color:var(--brown);text-transform:uppercase;letter-spacing:.9px;line-height:1.3;text-align:center;}
+@media(max-width:1100px){.cat-circles{grid-template-columns:repeat(6,1fr);}}
+@media(max-width:768px){.cat-section{padding:56px 20px 40px;}.cat-circles{grid-template-columns:repeat(4,1fr);gap:18px 14px;}.cat-circle-img{width:72px;height:72px;font-size:28px;}.cat-circle-name{font-size:10px;}}
+@media(max-width:480px){.cat-circles{grid-template-columns:repeat(3,1fr);gap:14px 10px;}.cat-circle-img{width:64px;height:64px;}.cat-section{padding:44px 16px 32px;}}
+
+/* ══ BEST SELLERS ══ */
+.bestsellers-section{padding:36px 40px 76px;background:var(--cream);}
+.bestsellers-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;max-width:1300px;margin:0 auto;}
+
+/* ── NEW PRODUCT CARD (shared by bestsellers + all-products) ── */
+.pc2{
+  background:#fff;border-radius:16px;overflow:hidden;
+  transition:box-shadow .38s,transform .38s;
+  box-shadow:0 4px 22px rgba(67,37,20,.07);
+  border:1px solid rgba(202,185,167,.22);
+  display:flex;flex-direction:column;position:relative;
+}
+.pc2:hover{transform:translateY(-7px);box-shadow:0 20px 52px rgba(67,37,20,.15);}
+
+/* Badge */
+.pc2-badge{
+  position:absolute;top:10px;left:10px;
+  background:var(--brown);color:#fff;
+  font-size:9px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;
+  padding:4px 11px;border-radius:20px;z-index:2;
+  box-shadow:0 3px 10px rgba(67,37,20,.3);
+}
+
+/* Image area */
+.pc2-img{
+  height:200px;overflow:hidden;background:var(--cream);
+  flex-shrink:0;position:relative;
+}
+.pc2-img img{
+  width:100%;height:100%;object-fit:contain;
+  padding:12px;transition:transform .5s;
+}
+.pc2:hover .pc2-img img{transform:scale(1.06);}
+
+/* Safety: hide images on non-Dry-Sharbat cards */
+.pc2:not([data-ds]) .pc2-img img{display:none!important;}
+
+/* Image fallback — product name as text */
+.pc2-img-fallback{
+  display:flex;align-items:center;justify-content:center;
+  width:100%;height:100%;
+  background:linear-gradient(135deg,#faf6f1,#f0e6d8);
+  font-family:"Cormorant Garamond",serif;
+  font-size:17px;font-weight:700;color:var(--brown);
+  text-align:center;padding:18px;line-height:1.35;
+}
+
+/* ── Card body ── */
+.pc2-body{padding:12px 14px 14px;flex:1;display:flex;flex-direction:column;}
+
+/* Name — full width, top */
+.pc2-name{
+  font-size:13px;font-weight:700;color:#1a1a1a;
+  line-height:1.4;margin-bottom:6px;
+  text-transform:uppercase;letter-spacing:.15px;
+}
+
+/* Stars row */
+.pc2-stars{display:flex;align-items:center;gap:5px;margin-bottom:10px;}
+.pc2-stars-icons{color:#f5a623;font-size:13px;letter-spacing:1px;}
+.pc2-reviews{font-size:11px;color:#888;font-weight:500;}
+
+/* Mid row: pills on RIGHT, price on LEFT — side by side */
+.pc2-mid{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:12px;
+  flex-wrap:wrap;
+}
+
+/* Price sits on the left of mid row */
+.pc2-price-col{display:flex;flex-direction:column;justify-content:center;gap:2px;}
+.pc2-price{
+  font-size:20px;font-weight:800;color:var(--brown);
+  font-family:"Cormorant Garamond",serif;line-height:1;
+}
+
+/* Pills sit on the right of mid row */
+.pc2-pills{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;}
+.pc2-pill{
+  padding:4px 11px;border-radius:20px;
+  border:1.5px solid #d0c8c0;
+  font-size:11.5px;font-weight:700;color:#555;
+  cursor:pointer;background:#fff;
+  transition:all .2s;white-space:nowrap;
+  font-family:"Cormorant Garamond",sans-serif;
+}
+.pc2-pill.active{border-color:var(--brown);background:var(--brown);color:#fff;}
+.pc2-pill:hover:not(.active){border-color:var(--brown);color:var(--brown);}
+
+/* Variant dropdown (4+ variants) */
+.pc2-select-wrap{margin-bottom:10px;}
+.pc2-select{
+  width:100%;padding:7px 10px;border-radius:10px;
+  border:1.5px solid #d9cfc7;font-size:13px;font-weight:600;
+  color:#333;background:#fff;cursor:pointer;
+  font-family:"Cormorant Garamond",sans-serif;
+  outline:none;transition:border-color .2s;
+}
+.pc2-select:focus{border-color:var(--brown);}
+
+/* ADD TO CART — full width, bottom */
+.pc2-cart-btn{
+  width:100%;padding:11px;margin-top:auto;
+  background:var(--btn-cart-bg);color:#fff;
+  border:none;border-radius:10px;
+  font-size:13px;font-weight:700;letter-spacing:.5px;
+  cursor:pointer;transition:all .28s;
+  box-shadow:0 4px 14px rgba(26,107,58,.28);
+  font-family:"Cormorant Garamond",sans-serif;
+}
+.pc2-cart-btn:hover{background:var(--btn-cart-hover);transform:translateY(-2px);box-shadow:0 8px 20px rgba(26,107,58,.42);}
+.pc2-cart-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* QTY COUNTER — replaces ADD TO CART when qty > 0 */
+.pc2-qty-wrap{
+  width:100%;margin-top:auto;
+  display:none; /* hidden by default; shown via JS */
+  align-items:center;justify-content:space-between;
+  background:var(--btn-cart-bg);
+  border-radius:10px;overflow:hidden;
+  box-shadow:0 4px 14px rgba(26,107,58,.28);
+}
+.pc2-qty-wrap.active{display:flex;}
+.pc2-qty-btn{
+  width:44px;height:44px;flex-shrink:0;
+  border:none;background:rgba(0,0,0,.18);color:#fff;
+  font-size:20px;font-weight:800;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;
+  font-family:"Cormorant Garamond",sans-serif;
+  -webkit-tap-highlight-color:transparent;
+}
+.pc2-qty-btn:hover{background:rgba(0,0,0,.3);}
+.pc2-qty-num{
+  flex:1;text-align:center;color:#fff;
+  font-size:16px;font-weight:800;
+  font-family:"Cormorant Garamond",sans-serif;
+  user-select:none;
+}
+
+/* legacy class kept for compat */
+.bs-card{background:#fff;border-radius:16px;overflow:hidden;transition:all .42s;box-shadow:0 4px 22px rgba(67,37,20,.07);position:relative;border:1px solid rgba(202,185,167,.22);display:flex;flex-direction:column;}
+@media(max-width:1200px){.bestsellers-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:768px){.bestsellers-section{padding:30px 20px 52px;}.bestsellers-grid{grid-template-columns:repeat(2,1fr);gap:16px;}}
+@media(max-width:480px){.bestsellers-grid{grid-template-columns:repeat(2,1fr);gap:12px;}.bestsellers-section{padding:28px 16px 46px;}}
+
+/* ══ PROMO BANNER ══ */
+@keyframes floatCircle1 {
+  0%   { transform: translate(0, 0) scale(1); }
+  25%  { transform: translate(-180px, 60px) scale(1.08); }
+  50%  { transform: translate(-80px, 130px) scale(0.95); }
+  75%  { transform: translate(60px, 40px) scale(1.05); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+@keyframes floatCircle2 {
+  0%   { transform: translate(0, 0) scale(1); }
+  25%  { transform: translate(120px, -80px) scale(0.92); }
+  50%  { transform: translate(200px, 60px) scale(1.1); }
+  75%  { transform: translate(60px, 120px) scale(0.96); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+@keyframes floatCircle3 {
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(140px, -100px) scale(1.12); }
+  66%  { transform: translate(-100px, -60px) scale(0.9); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+.promo-banner{margin:0 40px 76px;background:linear-gradient(120deg,#ff8c00 0%,#ff6b00 40%,#e85d00 100%);border-radius:30px;padding:58px 74px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap;position:relative;overflow:hidden;min-height:320px;align-items:flex-start;}
+.promo-banner::before {
+  content: "";
+  position: absolute;
+  top: -110px;
+  right: -110px;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.12);
+  pointer-events: none;
+  animation: floatCircle1 9s ease-in-out infinite;
+}
+.promo-banner::after {
+  content: "";
+  position: absolute;
+  bottom: -70px;
+  left: 320px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.10);
+  pointer-events: none;
+  animation: floatCircle2 7s ease-in-out infinite;
+}
+.promo-circle3 {
+  position: absolute;
+  bottom: -120px;
+  left: -80px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.07);
+  pointer-events: none;
+  animation: floatCircle3 11s ease-in-out infinite;
+}
+/* GREEN THEME */
+.promo-banner.theme-green {
+  background: linear-gradient(120deg,#2e7d32 0%,#43a047 40%,#66bb6a 100%);
+}
+#promoDesc {
+  min-height: 5em;
+  max-height: 5em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+/* PINK / ROSE THEME */
+.promo-banner.theme-purple {
+  background: linear-gradient(120deg,#4a148c 0%,#6a1b9a 40%,#9c27b0 100%);
+}
+.promo-deco{position:absolute;top:10px;right:42%;font-size:130px;opacity:.06;pointer-events:none;line-height:1;}
+.promo-text{position:relative;z-index:2;}
+.promo-title{font-family:"Cormorant Garamond",serif;font-size:40px;color:#fff;line-height:1.2;margin-bottom:14px;font-weight:700;min-height:2.5em;max-height: 2.5em;
+  overflow: hidden;}
+.promo-title em{color:#ffe5b0;font-style:italic;}
+.promo-desc{font-size:15px;color:rgba(255,240,210,.92);max-width:430px;line-height:1.8;min-height:3.5em;}
+.typewriter-cursor{display:inline-block;width:2px;height:1em;background:#fff;margin-left:3px;vertical-align:middle;animation:blink .7s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.promo-flavours{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+.promo-flavour-pill{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:11px;font-weight:600;padding:5px 13px;border-radius:20px;backdrop-filter:blur(4px);}
+.promo-cta{position:relative;z-index:2;flex-shrink:0;}
+.promo-btn{display:inline-block;padding:16px 46px;background:#fff;color:#c25000;font-size:15px;font-weight:700;border-radius:30px;text-decoration:none;transition:all .3s;border:none;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.18);}
+.promo-btn:hover{background:#ffe5b0;transform:translateY(-3px);}
+.promo-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);color:#fff;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:6px 14px;border-radius:20px;margin-bottom:14px;}
+@media(max-width:1024px){.promo-banner{margin:0 24px 60px;padding:46px 44px;}.promo-title{font-size:32px;}}
+@media(max-width:768px){.promo-banner{margin:0 20px 52px;padding:40px 32px;}.promo-title{font-size:28px;}}
+@media(max-width:600px){.promo-banner{margin:0 16px 44px;padding:36px 24px;text-align:center;justify-content:center;}.promo-flavours{justify-content:center;}.promo-deco{display:none;}.promo-title{font-size:24px;}.promo-btn{padding:14px 32px;font-size:14px;}}
+
+/* ══ ALL PRODUCTS ══ */
+.all-products-section{padding:36px 40px 96px;background:#fff;}
+.products-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;max-width:1300px;margin:0 auto;}
+/* Cards use the shared .pc2 class */
+@media(max-width:1200px){.products-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:900px){.products-grid{grid-template-columns:repeat(2,1fr);}.all-products-section{padding:30px 20px 72px;}}
+@media(max-width:480px){.products-grid{grid-template-columns:repeat(2,1fr);gap:12px;}.all-products-section{padding:28px 16px 56px;}}
+
+/* ══ STORY ══ */
+.story-section{padding:80px 40px;background:linear-gradient(135deg,#ff0088 0%,#c0106e 40%,#80298b 100%);position:relative;overflow:hidden;}
+.story-section::before{content:"";position:absolute;top:-130px;left:-130px;width:430px;height:430px;border-radius:50%;background:rgba(255,255,255,.08);pointer-events:none;z-index:0;}
+.story-section::after{content:"";position:absolute;bottom:-110px;right:-110px;width:380px;height:380px;border-radius:50%;background:rgba(255,255,255,.06);pointer-events:none;z-index:0;}
+.story-layout{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:60px;position:relative;z-index:2;}
+.story-video-wrap{
+  flex:0 0 420px;
+  border-radius:24px;
+  overflow:hidden;
+  position:relative;
+
+  /* VERY LIGHT PURPLE */
+  background: linear-gradient(
+    135deg,
+    rgba(206,39,176,0.06),
+    rgba(243,229,245,0.02)
+  );
+
+  box-shadow:
+    0 28px 72px rgba(0,0,0,.5),
+    0 0 0 1.5px rgba(156,39,176,0.15);
+}
+
+.story-video-wrap video{
+  width:100%;
+  display:block;
+  object-fit:cover;
+  max-height:420px;
+}
+.story-inner{flex:1;text-align:center;position:relative;z-index:2;}
+.story-eyebrow{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:rgba(255,220,240,.85);margin-bottom:10px;}
+.story-title{font-family:"Cormorant Garamond",serif;font-size:48px;color:#fff;line-height:1.2;margin-bottom:22px;font-weight:700;}
+.story-title em{color:#ffd6f0;font-style:italic;}
+.story-text{font-size:16px;color:rgba(255,220,240,.88);line-height:1.9;max-width:520px;margin:0 auto 52px;}
+.story-stats{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;}
+.stat-item{text-align:center;min-width:100px;}
+.stat-num{font-family:"Cormorant Garamond",serif;font-size:56px;color:#fff;line-height:1;font-weight:700;display:block;}
+.stat-label{font-size:13px;color:rgba(255,220,240,.75);margin-top:8px;display:block;}
+@media(max-width:1100px){.story-video-wrap{flex:0 0 320px;}.story-layout{gap:40px;}.story-title{font-size:38px;}.stat-num{font-size:44px;}.story-stats{gap:28px;}}
+@media(max-width:768px){.story-section{padding:64px 24px;}.story-layout{flex-direction:column;gap:36px;}.story-video-wrap{flex:none;width:100%;max-width:480px;margin:0 auto;}.story-title{font-size:32px;}.story-text{font-size:14px;max-width:100%;}.stat-num{font-size:38px;}}
+@media(max-width:480px){.story-section{padding:52px 20px;}.story-stats{gap:20px;}.stat-num{font-size:30px;}.story-title{font-size:26px;}}
+
+/* ══ BENEFITS ══ */
+.benefits-section{background:var(--cream);padding:76px 40px;}
+.benefits-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;max-width:1200px;margin:44px auto 0;}
+.benefit-card{text-align:center;padding:36px 26px;background:#fff;border-radius:22px;transition:all .38s;border:1px solid rgba(202,185,167,.22);position:relative;overflow:hidden;}
+.benefit-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--brown));transform:scaleX(0);transform-origin:left;transition:transform .42s;}
+.benefit-card:hover::before{transform:scaleX(1);}
+.benefit-card:hover{transform:translateY(-8px);box-shadow:0 20px 54px rgba(67,37,20,.12);}
+.benefit-icon{width:68px;height:68px;border-radius:50%;background:rgba(202,185,167,.25);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 18px;transition:all .38s;}
+.benefit-card:hover .benefit-icon{background:var(--brown);transform:scale(1.12);}
+.benefit-card h4{color:var(--brown);font-size:15px;font-weight:600;margin-bottom:9px;}
+.benefit-card p{font-size:13px;color:#9a8070;line-height:1.7;}
+@media(max-width:1024px){.benefits-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:768px){.benefits-section{padding:52px 20px;}.benefits-grid{gap:16px;margin-top:32px;}}
+@media(max-width:480px){.benefits-grid{grid-template-columns:1fr;gap:14px;}}
+
+/* ══ TESTIMONIALS TABS ══ */
+.testi-tab-row{display:flex;align-items:center;justify-content:center;gap:10px;margin:20px 0 32px;}
+.testi-tab{display:inline-flex;align-items:center;gap:7px;padding:10px 28px;border-radius:50px;border:2px solid rgba(202,185,167,.5);background:#fff;color:var(--brown);font-family:"Cormorant Garamond",serif;font-size:16px;font-weight:600;cursor:pointer;transition:all .28s;box-shadow:0 2px 10px rgba(67,37,20,.06);}
+.testi-tab:hover{border-color:var(--brown);}
+.testi-tab.active{background:var(--brown);color:#fff;border-color:var(--brown);box-shadow:0 6px 20px rgba(67,37,20,.25);}
+.testi-tab .tab-icon{font-size:17px;}
+/* Gallery carousel */
+.testi-gallery{display:none;padding:0 0 20px;}
+.testi-gallery.active{display:block;}
+.gallery-carousel-wrap{position:relative;overflow:hidden;width:100%;padding:10px 0;}
+.gallery-carousel-wrap::before,.gallery-carousel-wrap::after{content:"";position:absolute;top:0;bottom:0;width:100px;z-index:10;pointer-events:none;}
+.gallery-carousel-wrap::before{left:0;background:linear-gradient(to right,rgba(255,255,255,.9),transparent);}
+.gallery-carousel-wrap::after{right:0;background:linear-gradient(to left,rgba(255,255,255,.9),transparent);}
+.gallery-track{display:flex;gap:24px;padding:10px 80px;transition:none;will-change:transform;user-select:none;}
+.gallery-track.smooth{transition:transform .55s cubic-bezier(.4,0,.2,1);}
+.gallery-slide{flex-shrink:0;width:360px;height:320px;border-radius:24px;overflow:hidden;box-shadow:0 8px 32px rgba(67,37,20,.08);border:1px solid rgba(202,185,167,.3);cursor:pointer;transition:transform .4s cubic-bezier(.4,0,.2,1),box-shadow .4s,border-color .4s,opacity .4s;background:#faf6f1;position:relative;display:flex;align-items:center;justify-content:center;}
+.gallery-slide img,.gallery-slide video{width:100%;height:100%;object-fit:contain;display:block;border-radius:20px;}
+.gallery-slide.center{transform:translateY(-10px) scale(1.025);box-shadow:0 28px 72px rgba(67,37,20,.18);border-color:rgba(202,185,167,.6);}
+.gallery-slide.side{opacity:.7;transform:translateY(0) scale(.97);}
+.gallery-video-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;}
+.gallery-play-btn{width:58px;height:58px;border-radius:50%;background:rgba(67,37,20,.72);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;padding-left:4px;box-shadow:0 4px 20px rgba(0,0,0,.3);border:2px solid rgba(255,255,255,.4);transition:transform .3s,background .3s;}
+.gallery-slide-video:hover .gallery-play-btn{background:var(--brown);transform:scale(1.12);}
+.gallery-arrow{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:2px solid rgba(202,185,167,.5);background:#fff;color:var(--brown);font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;box-shadow:0 4px 16px rgba(67,37,20,.1);z-index:20;}
+.gallery-arrow:hover{background:var(--brown);color:#fff;border-color:var(--brown);}
+.gallery-prev{left:18px;}
+.gallery-next{right:18px;}
+.gallery-dots-row{display:flex;justify-content:center;margin-top:18px;}
+/* Reviews panel */
+.testi-reviews-panel{display:none;}
+.testi-reviews-panel.active{display:block;}
+/* Lightbox */
+.gallery-lightbox{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:99999;display:none;align-items:center;justify-content:center;padding:20px;}
+.gallery-lightbox.open{display:flex;}
+.gallery-lightbox img,.gallery-lightbox video{max-width:90vw;max-height:88vh;border-radius:14px;object-fit:contain;}
+.gallery-lightbox-close{position:absolute;top:20px;right:28px;color:#fff;font-size:36px;cursor:pointer;line-height:1;font-weight:300;transition:opacity .2s;}
+.gallery-lightbox-close:hover{opacity:.6;}
+@media(max-width:768px){.testi-tab{padding:9px 20px;font-size:14px;}.gallery-slide{width:300px;height:260px;}.gallery-track{padding:10px 40px;}.gallery-carousel-wrap::before,.gallery-carousel-wrap::after{width:50px;}}
+@media(max-width:480px){.gallery-slide{width:272px;height:240px;}.gallery-track{padding:10px 24px;}}.testimonials-section{padding:84px 0 100px;background:#fff;overflow:hidden;}
+.testimonials-section .section-header{padding:0 40px;}
+.testi-track-wrap{position:relative;overflow:hidden;width:100%;padding:30px 0 20px;}
+.testi-track-wrap::before,.testi-track-wrap::after{content:"";position:absolute;top:0;bottom:0;width:140px;z-index:10;pointer-events:none;}
+.testi-track-wrap::before{left:0;background:linear-gradient(90deg,#fff 40%,transparent);}
+.testi-track-wrap::after{right:0;background:linear-gradient(270deg,#fff 40%,transparent);}
+.testi-track{display:flex;gap:24px;padding:10px 80px;will-change:transform;user-select:none;transition:none;}
+.testi-track.smooth{transition:transform .55s cubic-bezier(.4,0,.2,1);}
+.testi-card{flex-shrink:0;width:360px;background:#fff;border-radius:24px;padding:36px 32px;border:1px solid rgba(202,185,167,.3);box-shadow:0 8px 32px rgba(67,37,20,.08);transition:transform .4s cubic-bezier(.4,0,.2,1),box-shadow .4s,border-color .4s,opacity .4s;position:relative;cursor:grab;display:flex;flex-direction:column;}
+.testi-card:active{cursor:grabbing;}
+.testi-card.center{transform:translateY(-10px) scale(1.025);box-shadow:0 28px 72px rgba(67,37,20,.18);border-color:rgba(202,185,167,.6);}
+.testi-card.side{opacity:.7;transform:translateY(0) scale(.97);}
+.testi-card::before{content:"\201C";position:absolute;top:20px;right:28px;font-size:72px;color:rgba(201,168,76,.18);font-family:"Cormorant Garamond",serif;line-height:1;pointer-events:none;}
+.testi-stars{color:var(--gold);font-size:16px;margin-bottom:16px;letter-spacing:2px;}
+.testi-text{font-size:17px;font-weight:700;color:#6b4b35;line-height:1.85;margin-bottom:24px;flex:1;}
+.testi-author{display:flex;align-items:center;gap:14px;border-top:1px solid rgba(202,185,167,.3);padding-top:16px;margin-top:auto;}
+.testi-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--sand),var(--brown));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.testi-name{font-size:15px;font-weight:700;color:var(--brown);white-space:nowrap;}
+.testi-nav-row{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:28px;}
+.testi-arrow{width:44px;height:44px;border-radius:50%;border:2px solid rgba(202,185,167,.5);background:#fff;color:var(--brown);font-size:18px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;box-shadow:0 4px 16px rgba(67,37,20,.1);flex-shrink:0;}
+.testi-arrow:hover{background:var(--brown);color:#fff;border-color:var(--brown);transform:scale(1.1);}
+.testi-dots{display:flex;gap:8px;}
+.testi-dots span{width:8px;height:8px;border-radius:50%;background:rgba(67,37,20,.18);cursor:pointer;transition:all .35s;display:inline-block;}
+.testi-dots span.active{background:var(--brown);width:28px;border-radius:4px;}
+@media(max-width:768px){.testi-card{width:300px;padding:28px 24px;}.testimonials-section{padding:60px 0 80px;}.testi-track{padding:10px 40px;}.testi-track-wrap::before,.testi-track-wrap::after{width:60px;}}
+@media(max-width:480px){.testi-card{width:272px;}.testi-track{padding:10px 24px;}.testimonials-section .section-header{padding:0 20px;}}
+
+/* ══ NEWSLETTER ══ */
+/* Pulse glow animation */
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37,211,102, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 18px rgba(37,211,102, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37,211,102, 0);
+  }
+}
+
+/* Shine effect */
+.whatsapp-subscribe button::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-100%;
+  width:100%;
+  height:100%;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,0.4),transparent);
+  transition:all .6s;
+}
+
+/* Apply animation */
+.whatsapp-subscribe button{
+  position:relative;
+  overflow:hidden;
+  animation:pulseGlow 2.5s infinite;
+}
+
+/* Shine on hover */
+.whatsapp-subscribe button:hover::before{
+  left:100%;
+}
+.whatsapp-subscribe{
+  display:flex;
+  justify-content:center;
+  margin-top:10px;
+}
+
+.whatsapp-subscribe button{
+  padding:18px 40px;
+  border-radius:40px;
+  background:linear-gradient(135deg,#25d366,#128c7e);
+  color:#fff;
+  border:none;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+  transition:all .3s;
+  box-shadow:0 8px 24px rgba(37,211,102,.35);
+}
+
+.whatsapp-subscribe button:hover{
+  transform:translateY(-3px) scale(1.03);
+  box-shadow:0 12px 32px rgba(37,211,102,.5);
+}
+.newsletter-section{padding:84px 40px;background:var(--cream);text-align:center;}
+.newsletter-inner{max-width:540px;margin:0 auto;}
+.newsletter-inner p{font-size:15px;color:#7a6a5c;margin-bottom:32px;line-height:1.75;}
+.newsletter-form{display:flex;gap:12px;max-width:470px;margin:0 auto;}
+.newsletter-form input{flex:1;padding:15px 22px;border-radius:30px;border:1.5px solid rgba(202,185,167,.5);font-family:"Cormorant Garamond",sans-serif;font-size:14px;background:#fff;outline:none;color:#333;transition:border-color .3s;}
+.newsletter-form input:focus{border-color:var(--brown);}
+.newsletter-form button{padding:15px 30px;border-radius:30px;background:var(--btn-cart-bg);color:#fff;border:none;font-size:14px;font-weight:600;cursor:pointer;transition:all .3s;font-family:"Cormorant Garamond",sans-serif;white-space:nowrap;box-shadow:0 4px 14px rgba(26,107,58,.35);}
+.newsletter-form button:hover{background:var(--btn-cart-hover);transform:translateY(-2px);}
+@media(max-width:600px){.newsletter-form{flex-direction:column;}.newsletter-section{padding:60px 20px;}.newsletter-form input,.newsletter-form button{width:100%;}}
+
+/* ══ FOOTER ══ */
+/* base */
+.footer-contact-item{
+  transition: all .35s cubic-bezier(.4,0,.2,1);
+  border-radius: 14px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+/* hover effect */
+.footer-contact-item:hover{
+  background: rgba(201,168,76,.12);
+  transform: translateX(8px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(201,168,76,.15);
+}
+
+/* icon animation */
+.footer-contact-icon{
+  transition: all .35s ease;
+}
+
+.footer-contact-item:hover .footer-contact-icon{
+  transform: rotate(-6deg) scale(1.15);
+  background: var(--gold);
+  color: #000;
+}
+
+/* text highlight */
+.footer-contact-item:hover .footer-contact-text{
+  color: #fff;
+}
+.gamtu-footer{background:linear-gradient(160deg,#1a0c05 0%,#2e1408 50%,#1a0c05 100%);color:var(--sand);position:relative;overflow:hidden;}
+.footer-top-bar{background:linear-gradient(90deg,rgba(201,168,76,.15),rgba(201,168,76,.05),rgba(201,168,76,.15));border-bottom:1px solid rgba(201,168,76,.2);padding:20px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+.footer-top-tagline{font-size:14px;color:rgba(202,185,167,.75);letter-spacing:.5px;}
+.footer-top-tagline strong{color:var(--gold2);}
+.footer-trust-badges{display:flex;gap:24px;align-items:center;flex-wrap:wrap;}
+.trust-badge{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:rgba(202,185,167,.7);letter-spacing:.3px;}
+.trust-badge-icon{width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.25);display:flex;align-items:center;justify-content:center;font-size:13px;}
+.footer-main{padding:64px 60px 48px;display:grid;grid-template-columns:1.8fr 1fr 1fr 1.2fr;gap:56px;max-width:1400px;margin:0 auto;}
+.footer-logo-wrap{margin-bottom:10px;margin-left:-25px;}
+.footer-logo-wrap img{height:100px;display:block;}
+.footer-brand-desc{font-size:15px;line-height:1.9;color:rgba(202,185,167,.7);margin-bottom:28px;max-width:370px;}
+.footer-social{display:flex;gap:10px;flex-wrap:wrap;}
+.social-btn{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(202,185,167,.15);display:flex;align-items:center;justify-content:center;font-size:17px;color:rgba(202,185,167,.7);transition:all .35s;text-decoration:none;}
+.social-btn:hover{transform:translateY(-4px);border-color:rgba(201,168,76,.5);background:rgba(201,168,76,.12);}
+.social-btn:hover .fa-instagram{color:#e1306c;}
+.social-btn:hover .fa-whatsapp{color:#25d366;}
+.social-btn:hover .fa-facebook-f{color:#1877f2;}
+.social-btn:hover .fa-envelope{color:#ea4335;}
+.social-btn:hover .fa-youtube{color:#ff0000;}
+.footer-col h4{color:#fff;font-size:13px;font-weight:700;margin-bottom:22px;text-transform:uppercase;letter-spacing:2px;display:flex;align-items:center;gap:10px;}
+.footer-col h4::after{content:"";flex:1;height:1px;background:rgba(201,168,76,.2);}
+.footer-links{display:flex;flex-direction:column;gap:10px;}
+.footer-links a{color:rgba(202,185,167,.65);text-decoration:none;font-size:14px;transition:all .25s;display:flex;align-items:center;gap:8px;padding:4px 0;}
+.footer-links a::before{content:"→";font-size:11px;opacity:0;transform:translateX(-6px);transition:all .25s;}
+.footer-links a:hover{color:#fff;padding-left:4px;}
+.footer-links a:hover::before{opacity:.6;transform:translateX(0);}
+.footer-contact-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;}
+.footer-contact-icon{width:36px;height:36px;border-radius:10px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.footer-contact-text{font-size:14px;color:rgba(202,185,167,.75);line-height:1.5;padding-top:6px;}
+.footer-contact-text strong{display:block;color:#fff;font-size:12px;font-weight:700;margin-bottom:2px;letter-spacing:.5px;}
+.footer-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.35),rgba(201,168,76,.5),rgba(201,168,76,.35),transparent);margin:0 60px;}
+.footer-bottom{padding:24px 60px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+.footer-bottom-copy{font-size:13px;color:rgba(202,185,167,.45);}
+.footer-bottom-copy span{color:rgba(201,168,76,.7);}
+.footer-bottom-links{display:flex;gap:22px;flex-wrap:wrap;}
+.footer-bottom-links a{font-size:12.5px;color:rgba(202,185,167,.4);text-decoration:none;transition:color .25s;}
+.footer-bottom-links a:hover{color:rgba(202,185,167,.8);}
+.footer-deco{position:absolute;right:-80px;top:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,.06),transparent 70%);pointer-events:none;}
+.footer-deco2{position:absolute;left:-60px;bottom:-60px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,.05),transparent 70%);pointer-events:none;}
+@media(max-width:1200px){.footer-main{grid-template-columns:1fr 1fr;gap:40px;padding:52px 40px 40px;}.footer-top-bar{padding:18px 40px;}}
+@media(max-width:768px){.footer-main{grid-template-columns:1fr 1fr;gap:32px;padding:40px 24px 32px;}.footer-top-bar{padding:14px 24px;}.footer-divider{margin:0 24px;}.footer-bottom{padding:20px 24px;flex-direction:column;text-align:center;}}
+@media(max-width:520px){.footer-main{grid-template-columns:1fr;gap:28px;padding:36px 20px 28px;}.footer-top-bar{flex-direction:column;gap:12px;text-align:center;}.footer-trust-badges{justify-content:center;}.footer-bottom-links{justify-content:center;}.footer-divider{margin:0 20px;}.footer-bottom{padding:16px 20px;}}
+.credit{
+  color: rgba(202,185,167,.5);
+  font-size: 12px;
+  margin-left: 6px;
+  transition: all .3s;
+}
+
+.credit:hover{
+  color: var(--gold);
+  cursor: pointer;
+}
+/* ══ CART TOAST ══ */
+.cart-toast{position:fixed;bottom:30px;right:30px;z-index:99999;display:flex;align-items:center;gap:14px;background:#fff;border-radius:18px;padding:16px 22px 16px 18px;box-shadow:0 20px 60px rgba(67,37,20,.22),0 4px 16px rgba(0,0,0,.08);border-left:5px solid var(--brown);min-width:300px;max-width:380px;transform:translateX(140%) scale(.92);opacity:0;transition:all .42s cubic-bezier(.34,1.56,.64,1);pointer-events:none;}
+.cart-toast.show{transform:translateX(0) scale(1);opacity:1;pointer-events:auto;}
+.cart-toast-img{width:56px;height:56px;border-radius:12px;object-fit:contain;flex-shrink:0;background:var(--cream);padding:4px;}
+.cart-toast-img-placeholder{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--sand),#e8ddd3);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;}
+.cart-toast-body{flex:1;min-width:0;}
+.cart-toast-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#22c55e;margin-bottom:3px;display:flex;align-items:center;gap:5px;}
+.cart-toast-label::before{content:"";width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;}
+.cart-toast-name{font-size:15px;font-weight:700;color:var(--brown);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cart-toast-price{font-size:13px;color:#7a6a5c;font-weight:500;}
+.cart-toast-go{background:var(--btn-cart-bg);color:#fff;border:none;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:700;font-family:"Cormorant Garamond",sans-serif;cursor:pointer;transition:.2s;flex-shrink:0;box-shadow:0 3px 10px rgba(26,107,58,.3);}
+.cart-toast-go:hover{background:var(--btn-cart-hover);}
+@media(max-width:500px){.cart-toast{bottom:16px;right:10px;left:10px;min-width:unset;max-width:unset;}}
+</style>
+</head>
+<body class="intro-active">
+
+<!-- ══════════════════════════════════════════
+     INTRO VIDEO SPLASH OVERLAY
+     — Shows only on first visit per session
+     — Fades out after 10 seconds (or on skip)
+     — Body scroll locked during playback
+══════════════════════════════════════════ -->
+<div id="introOverlay">
+<video
+    id="introVideo"
+    autoplay
+    muted
+    playsinline
+    preload="auto"
+    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"
+></video>
+
+  <!-- Logo centered at top -->
+ 
+
+  <!-- Progress bar at bottom -->
+  <div id="introProgress"></div>
+
+ 
+</div>
+
+<!-- CART TOAST -->
+<div class="cart-toast" id="cartToast">
+  <div class="cart-toast-img-placeholder" id="cartToastImg">🛒</div>
+  <div class="cart-toast-body">
+    <div class="cart-toast-label">Added to Cart</div>
+    <div class="cart-toast-name" id="cartToastName">Product Name</div>
+    <div class="cart-toast-price" id="cartToastPrice">₹0</div>
+  </div>
+  <button class="cart-toast-go" onclick="window.location.href='cart.html'">View Cart →</button>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="mainNav">
+  <div class="nav-logo">
+    <img src="https://gamtuindia.com/wp-content/uploads/2026/03/Gamtu-Logo-PNG-1.png" alt="Gamtu"/>
+  </div>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html" class="active">Home</a>
+        <a href="product.html">Products</a>
+        
+    <a href="about.html">About Us</a>
+     </div>
+  <div class="nav-right" id="navRight">
+    <div class="profile-wrap" id="profileWrap" style="display:none;">
+      <button class="profile-btn" id="profileBtn">
+        <div class="profile-avatar">👤</div>
+        <span class="profile-name" id="profileName">User</span>
+        <span style="font-size:9px;opacity:.45;margin-left:2px;">▾</span>
+      </button>
+      <div class="profile-drop">
+        <a href="profile.html">👤 My Profile</a>
+        <a href="orders.html">📦 My Orders</a>
+        <a href="#" id="logoutBtn">🚪 Logout</a>
+      </div>
+    </div>
+    <a href="sign-up.html" id="loginLink" class="nav-login" style="display:none;">Login</a>
+    <button class="cart-btn" onclick="window.location.href='cart.html'">
+      🛒 Cart <span class="cart-count" id="cartCount">0</span>
+    </button>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mob-menu" id="mobMenu">
+  <a href="index.html" class="active">Home</a>
+    <a href="product.html">Products</a>
+  <a href="about.html">About Us</a>
+   <div class="mob-bottom">
+    <a href="sign-up.html" id="mobLoginLink" class="nav-login" style="display:none;">Login</a>
+    <button class="cart-btn" onclick="window.location.href='cart.html'" style="width:100%;">
+      🛒 Cart <span class="cart-count" id="mobCartCount">0</span>
+    </button>
+  </div>
+</div>
+
+<!-- CAROUSEL — sits right below navbar (margin-top added via .hero-section) -->
+<section class="hero-section">
+  <div class="carousel-wrap">
+    <div class="carousel-track" id="carouselTrack"></div>
+    <button class="carousel-arrow arrow-prev" id="carouselPrev">&#8592;</button>
+    <button class="carousel-arrow arrow-next" id="carouselNext">&#8594;</button>
+    <div class="carousel-dots" id="carouselDots"></div>
+    <div class="carousel-progress" id="carouselProgress"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-inner">
+    <div class="marquee-item"><span class="mi">🌿</span>Free From Artificial Color</div>
+    <div class="marquee-item"><span class="mi">🚚</span>Fast Delivery Across India</div>
+    <div class="marquee-item"><span class="mi">🙏</span>Organic | Kansa | Jain | Satvik | Instant | Healthy</div>
+    <div class="marquee-item"><span class="mi">🏺</span>100% Jayna Purvak Products</div>
+    <div class="marquee-item"><span class="mi">⭐</span>Trusted by 10,000+ Families</div>
+    <div class="marquee-item"><span class="mi">🌿</span>Free From Artificial Color</div>
+    <div class="marquee-item"><span class="mi">🚚</span>Fast Delivery Across India</div>
+    <div class="marquee-item"><span class="mi">🙏</span>Organic | Kansa | Jain | Satvik | Instant | Healthy</div>
+    <div class="marquee-item"><span class="mi">🏺</span>100% Jayna Purvak Products</div>
+    <div class="marquee-item"><span class="mi">⭐</span>Trusted by 10,000+ Families</div>
+  </div>
+</div>
+
+<!-- FILTER PILLS -->
+<div class="filter-pills-section">
+  <span class="filter-pills-label">Shop by Values</span>
+  <div class="filter-pills">
+    <a href="product.html#sec-ghee" class="filter-pill pill-organic reveal">
+      <span class="pill-icon">🌿</span>
+      <span class="pill-name">Organic</span>
+    </a>
+    <a href="product.html#sec-kansa-products" class="filter-pill pill-kansa reveal">
+      <span class="pill-icon">🏺</span>
+      <span class="pill-name">Kansa</span>
+    </a>
+    <a href="product.html#sec-vegetable-powders" class="filter-pill pill-jain reveal">
+      <span class="pill-icon">🙏</span>
+      <span class="pill-name">Jain</span>
+    </a>
+    <a href="product.html#sec-pulses" class="filter-pill pill-satvik reveal">
+      <span class="pill-icon">🌸</span>
+      <span class="pill-name">Satvik</span>
+    </a>
+    <a href="product.html#sec-instant-premix-sauce" class="filter-pill pill-instant reveal">
+      <span class="pill-icon">⚡</span>
+      <span class="pill-name">Instant</span>
+    </a>
+    <a href="product.html#sec-special-customer-favorite-items" class="filter-pill pill-healthy reveal">
+      <span class="pill-icon">💚</span>
+      <span class="pill-name">Healthy</span>
+    </a>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="cat-section" id="categories">
+  <h2 class="section-title reveal">Shop by Category</h2>
+  <p class="section-sub reveal">23 curated collections of pure jain products, crafted with love</p>
+  <div class="cat-circles" id="catCircles"></div>
+</section>
+
+<!-- BEST SELLERS -->
+<section class="bestsellers-section">
+  <div class="section-header reveal">
+    <h2 class="section-title">Best Sellers</h2>
+    <div class="underline-bar"></div>
+  </div>
+  <div class="bestsellers-grid" id="bestsellersGrid">
+    <div style="grid-column:1/-1;text-align:center;padding:40px;color:#9a8070;">Loading...</div>
+  </div>
+</section>
+
+<!-- ALL PRODUCTS -->
+<section class="all-products-section">
+  <div class="section-header reveal">
+    <h2 class="section-title">Gamtu Product Range</h2>
+    <div class="underline-bar"></div>
+  </div>
+  <div class="products-grid" id="productsGrid">
+    <div style="grid-column:1/-1;text-align:center;padding:40px;color:#9a8070;">Loading products...</div>
+  </div>
+</section>
+
+<!-- STORY with COUNTERS -->
+<section class="story-section">
+  <div class="story-layout">
+    <div class="story-video-wrap reveal">
+      <video src="https://gamtuindia.com/wp-content/uploads/2026/04/1e92f27fba9741be9baf9a35278bc79e.webm" autoplay loop muted playsinline preload="auto"></video>
+    </div>
+    <div class="story-inner reveal" style="transition-delay:.14s">
+      <h2 class="story-title">Quality You Can Trust<br/></h2>
+      <p class="story-text">At Gamtu we source our products directly from the roots from farmers across the india. 
+Our founder personally selects and takes care of every small detail, ensuring that each batch is carefully crafted in small quantities so you receive pure, natural ingredients!</p>
+      <div class="story-stats">
+        <div class="stat-item"><span class="stat-num counter" data-target="10000" data-suffix="+" data-display="10K+">0</span><span class="stat-label">Happy Families</span></div>
+        <div class="stat-item"><span class="stat-num counter" data-target="100" data-suffix="%" data-display="100%">0</span><span class="stat-label">Natural Ingredients</span></div>
+         <div class="stat-item"><span class="stat-num counter" data-target="100" data-suffix="%" data-display="100%">0</span><span class="stat-label">Jayna Purvak</span></div>
+        <div class="stat-item"><span class="stat-num counter" data-target="23" data-suffix="" data-display="23">0</span><span class="stat-label">Product Categories</span></div>
+       
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="benefits-section">
+  <div class="section-header reveal">
+    <h2 class="section-title">What Makes Gamtu Different</h2>
+    <div class="underline-bar"></div>
+  </div>
+  <div class="benefits-grid">
+    <div class="benefit-card reveal" style="transition-delay:.05s"><div class="benefit-icon">✅</div><h4>Quality Commitment</h4><p>Small-batch production for consistent quality and freshness</p></div>
+    <div class="benefit-card reveal" style="transition-delay:.1s"><div class="benefit-icon">🌿</div><h4>100% Natural & Organic</h4><p>No preservatives, no artificial additives, just pure organic goodness</p></div>
+    <div class="benefit-card reveal" style="transition-delay:.15s"><div class="benefit-icon">🙏</div><h4>100% Jayna Purvak</h4><p>Made with strict Jain principles, clean and pure</p></div>
+    <div class="benefit-card reveal" style="transition-delay:.2s"><div class="benefit-icon">❤️</div><h4>Rooted with Farmers</h4><p>Directly sourced from farmers across India</p></div>
+  </div>
+</section>
+
+<!-- PROMO BANNER -->
+<div class="promo-banner reveal" id="promoBanner">
+    <div class="promo-circle3"></div>
+
+  <div class="promo-text">
+    <div class="promo-badge">🍹 Just Add Water, Add Happiness</div>
+    <h3 class="promo-title" id="promoTitle"></h3>
+    <p class="promo-desc" id="promoDesc"></p>
+    <div class="promo-flavours">
+      <span class="promo-flavour-pill">Kokam</span><span class="promo-flavour-pill"> Aam Panna</span>
+      <span class="promo-flavour-pill">Rose</span><span class="promo-flavour-pill">Limbu</span>
+      <span class="promo-flavour-pill">Thandai</span><span class="promo-flavour-pill">Litchi</span>
+      <span class="promo-flavour-pill">Jamfal</span><span class="promo-flavour-pill">+ 7 More</span>
+    </div>
+  </div>
+  <div class="promo-deco">🍹</div>
+  <div class="promo-cta">
+    <button class="promo-btn" onclick="window.location.href='product.html#sec-dry-sharbat'">Shop Sharbat Now →</button>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <div class="section-header reveal">
+    <h2 class="section-title">What Gamtu Customers Say</h2>
+    <div class="underline-bar"></div>
+  </div>
+
+  <!-- TAB SWITCHER -->
+  <div class="testi-tab-row">
+    <button class="testi-tab active" id="tabReviews" onclick="switchTestiTab('reviews')">
+      <span class="tab-icon">💬</span> Customer Reviews
+    </button>
+    <button class="testi-tab" id="tabGallery" onclick="switchTestiTab('gallery')">
+      <span class="tab-icon">📸</span> Gallery
+    </button>
+  </div>
+
+  <!-- REVIEWS PANEL -->
+  <div class="testi-reviews-panel active" id="reviewsPanel">
+    <div class="testi-track-wrap" id="testiWrap">
+      <div class="testi-track" id="testiTrack">
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">Best store for Organic products in Surat. I loved their Coffee and Sharbat range. I also ordered from their WhatsApp number. Good 👌🏻</p><div class="testi-author"><div class="testi-avatar">🙎‍♀️</div><div><div class="testi-name">Nidhi Gajjar</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">I ordered the chocolates and they were totally delicious and everyone loved it. Looking forward to try more things. Must recommended to everyone 🥰</p><div class="testi-author"><div class="testi-avatar">🙎‍♀️</div><div><div class="testi-name">Preksha Jain</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">We've tried many products from Gamtu, and they're truly impressive. They offer a wide range of both seasonal and everyday food items, along with an excellent selection of copper and bronze items. Their organic powders and juices are definitely worth trying.</p><div class="testi-author"><div class="testi-avatar">👨</div><div><div class="testi-name">Parth Shah</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">Products are very good, organic. Healthy for health and also organic.</p><div class="testi-author"><div class="testi-avatar">🙎‍♀️</div><div><div class="testi-name">Prahi Jain</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">Jayna Purvak anne Badhu Pure Bantu — Tamne malse Only at Gamtu. Wide varieties of products made under supervision. TOMATO Powder without color — natural dark pinkish, which shows no color addition. Each product reflects true purity. Badhi Junk Food Items ne Convert Kari sako cho in Healthy Options. GREAT JOB GAMTU! 🙏</p><div class="testi-author"><div class="testi-avatar">🙎‍♀️</div><div><div class="testi-name">Dhara Sanghavi</div></div></div></div>
+      </div>
+    </div>
+    <div class="testi-nav-row">
+      <button class="testi-arrow" id="testiPrev">&#8592;</button>
+      <div class="testi-dots" id="testiDots"></div>
+      <button class="testi-arrow" id="testiNext">&#8594;</button>
+    </div>
+  </div>
+
+  <!-- GALLERY PANEL (carousel) -->
+  <div class="testi-gallery" id="galleryPanel">
+    <div class="gallery-carousel-wrap">
+      <div class="gallery-track" id="galleryTrack">
+        <div class="gallery-slide" onclick="openLightbox(this)">
+          <img src="assets/WhatsApp Image 2026-07-08 at 4.18.38 PM.jpeg" alt="Gamtu Gallery" loading="lazy">
+        </div>
+        <div class="gallery-slide" onclick="openLightbox(this)">
+          <img src="assets/WhatsApp Image 2026-07-08 at 4.18.40 PM.jpeg" alt="Gamtu Gallery" loading="lazy">
+        </div>
+        <div class="gallery-slide" onclick="openLightbox(this)">
+          <img src="assets/WhatsApp Image 2026-07-08 at 4.18.41 PM.jpeg" alt="Gamtu Gallery" loading="lazy">
+        </div>
+        <div class="gallery-slide" onclick="openLightbox(this)">
+          <img src="assets/WhatsApp Image 2026-07-08 at 4.18.41 PM (1).jpeg" alt="Gamtu Gallery" loading="lazy">
+        </div>
+        <div class="gallery-slide" onclick="openLightbox(this)">
+          <img src="assets/WhatsApp Image 2026-07-08 at 5.05.24 PM.jpeg" alt="Gamtu Gallery" loading="lazy">
+        </div>
+        <div class="gallery-slide" onclick="openLightbox(this)">
+          <img src="assets/WhatsApp Image 2026-07-08 at 5.05.24 PM (1).jpeg" alt="Gamtu Gallery" loading="lazy">
+        </div>
+        <div class="gallery-slide" onclick="openLightbox(this)">
+          <img src="assets/WhatsApp Image 2026-07-08 at 5.05.25 PM.jpeg" alt="Gamtu Gallery" loading="lazy">
+        </div>
+        <div class="gallery-slide" onclick="openLightbox(this)">
+          <img src="assets/WhatsApp Image 2026-07-08 at 5.05.25 PM (1).jpeg" alt="Gamtu Gallery" loading="lazy">
+        </div>
+        <div class="gallery-slide" onclick="openLightbox(this)">
+          <img src="assets/WhatsApp Image 2026-07-08 at 5.05.25 PM (2).jpeg" alt="Gamtu Gallery" loading="lazy">
+        </div>
+        <div class="gallery-slide" onclick="openLightbox(this)">
+          <img src="assets/WhatsApp Image 2026-07-08 at 5.05.25 PM (3).jpeg" alt="Gamtu Gallery" loading="lazy">
+        </div>
+        <div class="gallery-slide" onclick="openLightbox(this)">
+          <img src="assets/WhatsApp Image 2026-07-08 at 5.05.26 PM.jpeg" alt="Gamtu Gallery" loading="lazy">
+        </div>
+        <div class="gallery-slide" onclick="openLightbox(this)">
+          <img src="assets/WhatsApp Image 2026-07-08 at 5.05.26 PM (1).jpeg" alt="Gamtu Gallery" loading="lazy">
+        </div>
+        <div class="gallery-slide gallery-slide-video" onclick="openLightbox(this)">
+          <video src="assets/WhatsApp Video 2026-07-08 at 4.18.39 PM.mp4" muted playsinline></video>
+          <div class="gallery-video-icon">
+            <div class="gallery-play-btn">&#9654;</div>
+          </div>
+        </div>
+      </div>
+      <button class="gallery-arrow gallery-prev" id="galleryPrev">&#8592;</button>
+      <button class="gallery-arrow gallery-next" id="galleryNext">&#8594;</button>
+    </div>
+    <div class="gallery-dots-row">
+      <div class="testi-dots" id="galleryDots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="gallery-lightbox" id="galleryLightbox" onclick="closeLightbox()">
+  <span class="gallery-lightbox-close" onclick="closeLightbox()">&times;</span>
+  <div id="lightboxContent"></div>
+</div>
+
+<!-- NEWSLETTER -->
+<section class="newsletter-section reveal">
+  <div class="newsletter-inner">
+    <h2 class="section-title">Stay Updated with Gamtu Products</h2>
+    <p>Join the Gamtu Whatsapp channel</p>
+    <div class="whatsapp-subscribe">
+    <button onclick="openWhatsAppChannel()">
+       Tap to Join
+    </button>
+  </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="gamtu-footer">
+  <div class="footer-deco"></div>
+  <div class="footer-deco2"></div>
+  <div class="footer-top-bar">
+    <div class="footer-top-tagline"><strong>Gamtu India</strong> — Because peace  start on your plate </div>
+    <div class="footer-trust-badges">
+      <div class="trust-badge"></div>Organic | Kansa | Jain | Satvik | Instant | Healthy</div>
+      
+  </div>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <div class="footer-logo-wrap">
+        <img src="https://gamtuindia.com/wp-content/uploads/2026/04/Screenshot_2026-04-22_at_12.04.49_AM-removebg-preview.png" alt="Gamtu"/>
+      </div>
+      <p class="footer-brand-desc">Organic | Kansa | Jain | Satvik | Instant | Healthy</p>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/gamtuindia/" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="https://whatsapp.com/channel/0029VbBlKHCDeONGN7mjrY0A" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://www.facebook.com/profile.php?id=61582659989921" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+        <a href="mailto:info@gamtuindia.com" class="social-btn"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <div class="footer-links">
+        <a href="index.html">Home</a><a href="about.html">About Us</a>
+        <a href="product.html">All Products</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Our Products</h4>
+      <div class="footer-links">
+        <a href="product.html#sec-instant-jain-soup">Instant Jain Soups</a>
+        <a href="product.html#sec-instant-premix-sauce">Instant Premix Sauce</a>
+        <a href="product.html#sec-dry-sharbat">Dry Sharbat</a>
+        <a href="product.html#sec-kansa-products">Kansa Products</a>
+      </div>
+    </div>
+  <div class="footer-col">
+  <h4>Get in Touch</h4>
+
+  <!-- 📍 Location -->
+  <div class="footer-contact-item"
+       onclick="window.open('https://maps.app.goo.gl/QyRpjeofE9UbsdQx5','_blank')">
+    <div class="footer-contact-icon">📍</div>
+    <div class="footer-contact-text">
+      <strong>Location</strong>
+      Surat, Gujarat, India
+    </div>
+  </div>
+
+  <!-- 📞 Phone -->
+  <div class="footer-contact-item"
+       onclick="window.location.href='tel:+919712621143'">
+    <div class="footer-contact-icon">📞</div>
+    <div class="footer-contact-text">
+      <strong>Phone</strong>
+      +91 9712621143
+    </div>
+  </div>
+
+  <!-- ✉️ Email -->
+  <div class="footer-contact-item"
+       onclick="window.location.href='mailto:info@gamtuindia.com'">
+    <div class="footer-contact-icon">✉️</div>
+    <div class="footer-contact-text">
+      <strong>Email</strong>
+      info@gamtuindia.com
+    </div>
+  </div>
+
+  <!-- 🕐 Support -->
+  <div class="footer-contact-item">
+    <div class="footer-contact-icon">🕐</div>
+    <div class="footer-contact-text">
+      <strong>Support Hours</strong>
+      Mon – Sun, 10 AM – 9 PM
+    </div>
+  </div>
+</div>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-copy">© 2026 All Rights Reserved - <span onclick="openTaleWhatsApp()">Designed by Tale Light Media</span> </div>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy Policy</a><a href="#">Terms of Service</a>
+      <a href="#">Shipping Policy</a><a href="#">Refund Policy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════════
+   INTRO VIDEO SPLASH LOGIC
+   - Shows full screen on first visit (per session)
+   - Auto-dismisses after 10 seconds with fade
+   - Skip button with live countdown
+   - Sound toggle (starts muted, user can unmute)
+══════════════════════════════════════════ */
+const _isMob = window.innerWidth <= 768;
+if(!sessionStorage.getItem('gamtu_intro_shown')){
+  document.getElementById('introVideo').src = _isMob
+    ? 'https://gamtuindia.com/wp-content/uploads/2026/05/mobgam.webm'
+    : 'https://gamtuindia.com/wp-content/uploads/2026/06/gammf.webm';
+}
+(function(){
+  const overlay   = document.getElementById('introOverlay');
+  const video     = document.getElementById('introVideo');
+  const prog      = document.getElementById('introProgress');
+   video.addEventListener('playing', () => {
+  setTimeout(() => {
+    document.querySelector('.nav-logo img').style.opacity = '1';
+    document.querySelector('.nav-logo img').style.transform = 'scale(1)';
+  }, 2800);
+}, { once: true });
+
+  let dismissed = false;
+  let dismissTimer = null;
+
+  function dismissIntro(){
+    if(dismissed) return;
+    dismissed = true;
+    clearTimeout(dismissTimer);
+
+    window.removeEventListener('wheel',   onWheel);
+    window.removeEventListener('keydown', onKey);
+    document.removeEventListener('touchstart', onTouchStart);
+    document.removeEventListener('touchend',   onTouchEnd);
+
+    document.body.classList.remove('intro-active');
+    document.body.style.overflow        = '';
+    document.documentElement.style.overflow = '';
+
+    video.style.transition = 'opacity 1.6s ease';
+    video.style.opacity    = '0';
+
+    overlay.style.transition    = 'opacity 1.6s ease, visibility 1.6s ease';
+    overlay.style.opacity       = '0';
+    overlay.style.visibility    = 'hidden';
+    overlay.style.pointerEvents = 'none';
+
+    setTimeout(()=>{
+      video.pause();
+      video.src            = '';
+      overlay.style.display = 'none';
+      window.dispatchEvent(new Event('resize'));
+      window.dispatchEvent(new Event('scroll'));
+    }, 1700);
+  }
+
+  if(sessionStorage.getItem('gamtu_intro_shown')){
+    overlay.style.display = 'none';
+    document.body.classList.remove('intro-active');
+    document.body.style.overflow        = '';
+    document.documentElement.style.overflow = '';
+    return;
+  }
+  sessionStorage.setItem('gamtu_intro_shown','1');
+
+  document.documentElement.style.overflow = 'hidden';
+overlay.style.background = 'transparent';
+
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{ prog.classList.add('run'); });
+  });
+
+  dismissTimer = setTimeout(dismissIntro, 5000);
+
+  function onWheel(e){ if(Math.abs(e.deltaY) > 3) dismissIntro(); }
+  function onKey(e){ if([32,33,34,38,40].includes(e.keyCode)) dismissIntro(); }
+
+  let _ty = 0;
+  function onTouchStart(e){ _ty = e.touches[0].clientY; }
+  function onTouchEnd(e){
+    if(_ty - e.changedTouches[0].clientY > 25) dismissIntro();
+  }
+
+  window.addEventListener('wheel',        onWheel,      { passive:true });
+  window.addEventListener('keydown',      onKey);
+  document.addEventListener('touchstart', onTouchStart, { passive:true });
+  document.addEventListener('touchend',   onTouchEnd,   { passive:true });
+
+  window.dismissIntro = dismissIntro;
+
+  video.play().catch(()=>{
+    video.muted = true;
+    video.play().catch(()=>{});
+  });
+})();
+/* ── CATEGORIES ── */
+function sid(n){return n.replace(/[^a-z0-9]/gi,"-").toLowerCase();}
+function getCatUrl(cat){return cat ? "product.html#sec-"+sid(cat) : "product.html";}
+
+const CATEGORIES=[
+    {name:"Instant Jain Soup",cat:"Instant Jain Soup",emoji:"🍲"},
+  {name:"Dry Sharbat",cat:"Dry Sharbat",emoji:"🍹"},
+  {name:"Liquid Sharbat",cat:"Liquid Sharbat",emoji:"🥤"},
+  {name:"Vegetable Powder",cat:"Vegetable Powder",emoji:"🥬"},
+  {name:"Food Masala",cat:"Food Masala",emoji:"🌶️"},
+  {name:"Ark",cat:"Ark",emoji:"🧪"},
+  {name:"Kansa Products",cat:"Kansa Products",emoji:"🏺"},
+  {name:"Most Popular Products",cat:"Most Popular Products",emoji:"⭐"},
+];
+document.getElementById("catCircles").innerHTML=CATEGORIES.map((c,i)=>`
+  <div class="cat-circle reveal" style="transition-delay:${(i%8)*.04}s" onclick="window.location.href='${getCatUrl(c.cat)}'">
+    <div class="cat-circle-img">${c.emoji}</div>
+    <div class="cat-circle-name">${c.name}</div>
+  </div>`).join("");
+
+/* ── AUTH ── */
+(function(){
+  const u=JSON.parse(localStorage.getItem("user"));
+  if(u){
+    document.getElementById("profileName").textContent=u.name||"User";
+    document.getElementById("profileWrap").style.display="flex";
+    document.getElementById("loginLink").style.display="none";
+    document.getElementById("mobLoginLink").style.display="none";
+  } else {
+    document.getElementById("profileWrap").style.display="none";
+    document.getElementById("loginLink").style.display="";
+    document.getElementById("mobLoginLink").style.display="";
+  }
+  document.getElementById("logoutBtn").addEventListener("click",e=>{e.preventDefault();localStorage.removeItem("user");window.location.href="sign-up.html";});
+})();
+
+/* ── NAVBAR ── */
+const mainNav=document.getElementById("mainNav");
+window.addEventListener("scroll",()=>mainNav.classList.toggle("scrolled",window.scrollY>40));
+
+const profileWrap=document.getElementById("profileWrap");
+const profileBtn=document.getElementById("profileBtn");
+if(profileBtn){
+  profileBtn.addEventListener("click",e=>{e.stopPropagation();profileWrap.classList.toggle("open");});
+  document.addEventListener("click",e=>{if(!profileWrap.contains(e.target))profileWrap.classList.remove("open");});
+}
+const hamburger=document.getElementById("hamburger");
+const mobMenu=document.getElementById("mobMenu");
+hamburger.addEventListener("click",e=>{e.stopPropagation();hamburger.classList.toggle("open");mobMenu.classList.toggle("open");});
+document.addEventListener("click",e=>{if(!mobMenu.contains(e.target)&&!hamburger.contains(e.target)){hamburger.classList.remove("open");mobMenu.classList.remove("open");}});
+
+/* ── REVEAL ── */
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible");}),{threshold:.1});
+function observeReveal(){document.querySelectorAll(".reveal:not(.observed)").forEach(el=>{el.classList.add("observed");obs.observe(el);});}
+observeReveal();
+
+/* ── PROMO TYPEWRITER ── */
+const PROMO_DATA=[
+  {title:"Dry Sharbat,<br>Made with Khari Sakkar Only",desc:"14 authentic sharbat flavors made with natural khari sakkar, no refined sugar, no artificial colors."},
+  {title:"Traditional Taste,<br>Instant Refreshment",desc:"No preservatives, no artificial colours. Just real, organic Indian ingredients blended in water for the most refreshing, Jain-friendly drink you’ve ever tasted."},
+  {title:"From Nature,<br>To Your Glass",desc:"100% organic & Jain sharbat blends"},
+];
+let promoAnimating=false,promoTimeout=null,promoIndex=0;
+function typewriterHTML(el,str,sp,cb){
+  el.innerHTML="";
+  const plain=str.replace(/<br\s*\/?>/gi,"\n").replace(/<[^>]+>/g,"");
+  let i=0;
+  const cur=document.createElement("span");cur.className="typewriter-cursor";el.appendChild(cur);
+  function tick(){if(i<plain.length){const ch=plain[i];if(ch==="\n")cur.before(document.createElement("br"));else cur.before(document.createTextNode(ch));i++;promoTimeout=setTimeout(tick,sp);}else{cur.remove();if(cb)cb();}}
+  tick();
+}
+const banner = document.getElementById("promoBanner");
+const themes = ["", "theme-green", "theme-purple"]; 
+// 0 = orange (default), 1 = green, 2 = pink
+
+function typewriterText(el, txt, sp, cb){
+  el.textContent="";
+  let i=0;
+
+  const cur=document.createElement("span");
+  cur.className="typewriter-cursor";
+  el.appendChild(cur);
+
+  function tick(){
+    if(i<txt.length){
+      cur.before(document.createTextNode(txt[i]));
+      i++;
+      promoTimeout=setTimeout(tick,sp);
+    }else{
+      cur.remove();
+      if(cb) cb();
+    }
+  }
+  tick();
+}
+
+function runPromo(){
+  if(promoAnimating) return;
+  promoAnimating = true;
+
+  clearTimeout(promoTimeout);
+
+  const currentIndex = promoIndex % PROMO_DATA.length;
+  const d = PROMO_DATA[currentIndex];
+  promoIndex++;
+
+  const t = document.getElementById("promoTitle");
+  const de = document.getElementById("promoDesc");
+
+  /* 🔥 THEME SWITCH (THIS IS THE MAIN ADDITION) */
+  banner.classList.remove("theme-green", "theme-purple");
+  if(themes[currentIndex]){
+    banner.classList.add(themes[currentIndex]);
+  }
+
+  t.innerHTML="";
+  de.textContent="";
+
+  typewriterHTML(t, d.title, 38, () => {
+    promoTimeout = setTimeout(() => {
+      typewriterText(de, d.desc, 18, () => {
+        promoAnimating = false;
+      });
+    }, 200);
+  });
+}
+const promoObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){promoAnimating=false;clearTimeout(promoTimeout);runPromo();}});},{threshold:.4});
+promoObs.observe(document.getElementById("promoBanner"));
+
+/* ── COUNTERS ── */
+const cntObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting&&!e.target.dataset.counted){
+      e.target.dataset.counted="1";
+      const tgt=parseInt(e.target.dataset.target),disp=e.target.dataset.display,suf=e.target.dataset.suffix||"",dur=1800,st=Date.now();
+      function tick(){const el=Date.now()-st,pr=Math.min(el/dur,1),ease=1-Math.pow(1-pr,3),val=Math.round(tgt*ease);
+        if(tgt===10000)e.target.textContent=val>=10000?"10K+":val>=1000?(val/1000).toFixed(1)+"K":val+suf;
+        else e.target.textContent=val+suf;
+        if(pr<1)requestAnimationFrame(tick);else e.target.textContent=disp;
+      }
+      tick();
+    }
+  });
+},{threshold:.3});
+document.querySelectorAll(".counter").forEach(el=>cntObs.observe(el));
+
+/* ── INGREDIENT BAR ── */
+const ING_C=["#D85A30","#1D9E75","#378ADD","#D4537E","#7F77DD","#BA7517","#639922","#E24B4A","#2D9FA0","#C06C3A"];
+function buildIngredientBar(ings){
+  if(!ings||!ings.length)return"";
+  const segs=ings.map((g,i)=>{const r=i===0?"6px 0 0 6px":i===ings.length-1?"0 6px 6px 6px":"0";return`<div style="flex:${g.percentage};height:100%;background:${ING_C[i%ING_C.length]};border-radius:${r};" title="${g.name}:${g.percentage}%"></div>`;}).join("");
+  const pills=ings.map((g,i)=>`<div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555;padding:3px 9px;background:#faf8f5;border-radius:20px;border:1px solid #e8e0d8;"><div style="width:8px;height:8px;border-radius:50%;background:${ING_C[i%ING_C.length]};flex-shrink:0;"></div><span style="font-weight:500;">${g.name}</span><span style="font-weight:700;color:#432514;">${g.percentage}%</span></div>`).join("");
+  return`<div style="margin-top:12px;padding-top:10px;border-top:1px solid #f0e8e0;"><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:#a08060;margin-bottom:7px;">Composition</div><div style="display:flex;height:10px;border-radius:8px;overflow:hidden;gap:2px;margin-bottom:8px;">${segs}</div><div style="display:flex;flex-wrap:wrap;gap:5px;justify-content:center;">${pills}</div></div>`;
+}
+
+const SLIDE_BG=["slide-bg-1","slide-bg-2","slide-bg-3","slide-bg-4","slide-bg-5"];
+const SLIDE_TAGS=["⭐ Best Seller","🌿 Pure & Natural","🐄 Traditional","🍃 Organic","🙏 Wellness"];
+
+/* ── FETCH PRODUCTS ── */
+/* Group same-name products as variants on one card */
+function groupProducts(products){
+  const map=new Map();
+  products.forEach(p=>{
+    const key=p.name.trim();
+    if(!map.has(key)){
+      map.set(key,{...p, variants:[]});
+    }
+    map.get(key).variants.push({
+      label:`${p.grams}${p.unit||'g'}`,
+      price:parseFloat(p.price),
+      grams:p.grams,
+      unit:p.unit||'g',
+      stock:p.stock,
+      image:p.image||''
+    });
+  });
+  /* For each grouped product: use lowest-price variant as base price,
+     pick first variant that has an image */
+  const out=[];
+  map.forEach(p=>{
+    p.variants.sort((a,b)=>a.price-b.price);
+    p.price=p.variants[0].price;
+    p.grams=p.variants[0].grams;
+    p.unit=p.variants[0].unit;
+    const imgVariant=p.variants.find(v=>v.image)||p.variants[0];
+    p.image=imgVariant.image||'';
+    out.push(p);
+  });
+  return out;
+}
+
+fetch("https://api.totalkaro.com/api/public/products/6")
+  .then(r=>r.json())
+  .then(raw=>{
+    const products=groupProducts(raw);
+    buildCarousel(raw); /* carousel uses raw for category matching */
+    buildBestsellers(products);
+    buildAllProducts(products);
+    loadAllQty();
+  });
+
+/* ── CAROUSEL ── */
+function buildCarousel(products){
+  const track=document.getElementById("carouselTrack"),dots=document.getElementById("carouselDots");
+  track.innerHTML="";dots.innerHTML="";
+  // Slide 1: Instant Jain Soup, Slide 2: Coffee, Slide 3: Instant Premix Sauce, then next 2 from list
+  const soup=products.find(p=>p.category==='Instant Jain Soup')
+           ||products.find(p=>p.category&&p.category.toLowerCase().includes('soup'))
+           ||products.find(p=>p.name&&p.name.toLowerCase().includes('soup'));
+  const coffee=products.find(p=>p.name==='Coffee (without chicory)')
+              ||products.find(p=>p.category&&p.category.toLowerCase().includes('coffee'))
+              ||products.find(p=>p.name&&p.name.toLowerCase().includes('coffee'));
+  const premix=products.find(p=>p.category==='Instant Premix Sauce')
+              ||products.find(p=>p.category&&p.category.toLowerCase().includes('premix'))
+              ||products.find(p=>p.category&&p.category.toLowerCase().includes('sauce'));
+  // Debug: log what was found
+  console.log('Soup:',soup?.name,'|','Coffee:',coffee?.name,'|','Premix:',premix?.name);
+  console.log('All categories:',[...new Set(products.map(p=>p.category))]);
+  const picked=[soup,coffee,premix].filter(Boolean);
+  const usedIds=new Set(picked.map(p=>p.id||p.name));
+  const rest=products.filter(p=>!usedIds.has(p.id||p.name)).slice(0,5-picked.length);
+  const carouselProducts=[...picked,...rest].slice(0,5);
+  carouselProducts.forEach((p,i)=>{
+    const img=p.image||"";
+    const catUrl=getCatUrl(p.category);
+    const div=document.createElement("div");
+    div.className=`carousel-slide ${SLIDE_BG[i%SLIDE_BG.length]}`;
+    if(i===0)div.classList.add("is-active");
+    div.innerHTML=`
+      <div class="slide-content">
+        <div class="slide-tag">${SLIDE_TAGS[i%SLIDE_TAGS.length]}</div>
+        <h2>${p.name}</h2>
+        <div class="slide-price">₹ ${p.price} <span>/ ${p.grams||0} ${p.unit||'g'}</span></div>
+        <div class="slide-btns">
+          <button class="slide-btn-primary" onclick="handleBuy('${p.name}',${p.price},'${img}',${p.grams||0})">Add to Cart</button>
+          <button class="slide-btn-secondary" onclick="window.location.href='${catUrl}'">View Details</button>
+        </div>
+      </div>
+     `;
+    track.appendChild(div);
+    const dot=document.createElement("span");
+    if(i===0)dot.classList.add("active");
+    dot.addEventListener("click",()=>window.goSlide(i));
+    dots.appendChild(dot);
+  });
+  initCarousel(carouselProducts.slice(0,5).length);
+}
+
+function initCarousel(total){
+  let idx=0,autoTimer=null;
+  const track=document.getElementById("carouselTrack");
+  const allDots=()=>document.querySelectorAll("#carouselDots span");
+  const allSlides=()=>document.querySelectorAll(".carousel-slide");
+  const prog=document.getElementById("carouselProgress");
+  function goSlide(n){
+    allSlides().forEach(s=>s.classList.remove("is-active"));
+    idx=(n+total)%total;
+    track.style.transform=`translateX(-${idx*100}%)`;
+    allDots().forEach((d,i)=>d.classList.toggle("active",i===idx));
+    allSlides()[idx].classList.add("is-active");
+    prog.className="carousel-progress";
+    void prog.offsetWidth;
+    prog.classList.add("run");
+  }
+  window.goSlide=goSlide;
+  function startAuto(){clearInterval(autoTimer);autoTimer=setInterval(()=>goSlide(idx+1),4500);}
+  function stopAuto(){clearInterval(autoTimer);}
+  document.getElementById("carouselNext").onclick=()=>{goSlide(idx+1);stopAuto();startAuto();};
+  document.getElementById("carouselPrev").onclick=()=>{goSlide(idx-1);stopAuto();startAuto();};
+  let startX=0;
+  track.addEventListener("touchstart",e=>{startX=e.touches[0].clientX;},{passive:true});
+  track.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-startX;if(Math.abs(dx)>50){dx<0?goSlide(idx+1):goSlide(idx-1);stopAuto();startAuto();}});
+  track.addEventListener("mouseenter",stopAuto);
+  track.addEventListener("mouseleave",startAuto);
+  goSlide(0);
+  startAuto();
+}
+
+function getSafeId(n){return n.replace(/\s+/g,"-").toLowerCase();}
+
+/* ── SHARED CARD BUILDER ── */
+/* Rating data per product name (stars out of 5, review count) */
+const RATINGS={
+  'Kokam Dry Sharbat':{stars:4.8,count:124},'Lemonade Dry Sharbat':{stars:4.7,count:98},
+  'Coconut Dry Sharbat':{stars:4.9,count:211},'Kalakhatta Dry Sharbat':{stars:4.6,count:76},
+};
+function getRating(name){
+  if(RATINGS[name])return RATINGS[name];
+  /* deterministic pseudo-random from name length so same product always gets same rating */
+  const base=4.3+(name.length%5)*0.1;
+  const cnt=30+(name.charCodeAt(0)%8)*17;
+  return{stars:+base.toFixed(1),count:cnt};
+}
+function starsHtml(stars){
+  const full=Math.floor(stars),hasHalf=stars-full>=0.4;
+  let h='';
+  for(let i=0;i<full;i++)h+='★';
+  if(hasHalf)h+='★'; // show as filled for visual cleanliness
+  for(let i=full+(hasHalf?1:0);i<5;i++)h+='☆';
+  return h;
+}
+/* Build a single pc2 card. variants = [{label, price, grams}]  */
+function buildCard(p, badge, delay){
+  const safeId=getSafeId(p.name);
+  const rat=getRating(p.name);
+
+  /* Real variants from groupProducts() */
+  const variants=(p.variants&&p.variants.length)
+    ? p.variants.map(v=>({label:`${v.grams}${v.unit||'g'}`,price:parseFloat(v.price),grams:v.grams,image:v.image||''}))
+    : [{label:`${p.grams||0}${p.unit||'g'}`,price:parseFloat(p.price),grams:p.grams||0,image:p.image||''}];
+
+  const firstPrice=variants[0].price;
+
+  /* Build pills HTML (used inside .pc2-mid) */
+  let pillsHtml='';
+  let dropdownHtml='';
+  if(variants.length===1){
+    pillsHtml=`<span class="pc2-pill active">${variants[0].label}</span>`;
+  } else if(variants.length<=4){
+    pillsHtml=variants.map((v,vi)=>
+      `<button class="pc2-pill${vi===0?' active':''}" data-card="${safeId}" data-vi="${vi}" onclick="selectVariant('${safeId}',${vi})">${v.label}</button>`
+    ).join('');
+  } else {
+    dropdownHtml=`<div class="pc2-select-wrap"><select class="pc2-select" id="sel-${safeId}" onchange="selectVariantDrop('${safeId}',this.value)">${
+      variants.map((v,vi)=>`<option value="${vi}">${v.label} — ₹${v.price}</option>`).join('')
+    }</select></div>`;
+  }
+
+  /* Image — only Dry Sharbat shows image, all others show product name text */
+  const isDrySharbat=(p.category||'').trim()==='Dry Sharbat';
+  const img=p.image||'';
+  const imgHtml=isDrySharbat && img
+    ? `<img src="${img}" alt="${p.name}" loading="lazy"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+       <div class="pc2-img-fallback" style="display:none;">${p.name}</div>`
+    : `<div class="pc2-img-fallback">${p.name}</div>`;
+
+  return `<div class="pc2 reveal"${isDrySharbat?' data-ds="1"':''} style="transition-delay:${delay}s" id="card-${safeId}">
+    ${badge?`<div class="pc2-badge">${badge}</div>`:''}
+    <div class="pc2-img">${imgHtml}</div>
+    <div class="pc2-body">
+      <div class="pc2-name">${p.name}</div>
+      <div class="pc2-stars">
+        <span class="pc2-stars-icons">${starsHtml(rat.stars)}</span>
+        <span class="pc2-reviews">(${rat.count})</span>
+      </div>
+      ${dropdownHtml}
+      <div class="pc2-mid">
+        <div class="pc2-price-col"><span class="pc2-price" id="price-${safeId}">₹${firstPrice}</span></div>
+        ${pillsHtml?`<div class="pc2-pills">${pillsHtml}</div>`:''}
+      </div>
+      <button class="pc2-cart-btn" id="cartbtn-${safeId}"
+        onclick="addVariantToCart('${safeId}','${p.name}')">
+        ADD TO CART
+      </button>
+      <div class="pc2-qty-wrap" id="qtywrap-${safeId}">
+        <button class="pc2-qty-btn" onclick="pcDec('${safeId}','${p.name}')">−</button>
+        <span class="pc2-qty-num" id="qtynum-${safeId}">1</span>
+        <button class="pc2-qty-btn" onclick="pcInc('${safeId}','${p.name}')">+</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* Variant data store — keyed by safeId */
+const VARIANT_STORE={};
+function registerVariants(p){
+  const safeId=getSafeId(p.name);
+  /* p.variants is already built by groupProducts() */
+  const variants=(p.variants&&p.variants.length)
+    ? p.variants.map(v=>({
+        label:`${v.grams}${v.unit||'g'}`,
+        price:parseFloat(v.price),
+        grams:v.grams,
+        image:v.image||p.image||''
+      }))
+    : [{label:`${p.grams||0}${p.unit||'g'}`,price:parseFloat(p.price),grams:p.grams||0,image:p.image||''}];
+  VARIANT_STORE[safeId]={variants,selectedIndex:0};
+}
+function selectVariant(safeId,vi){
+  if(!VARIANT_STORE[safeId])return;
+  VARIANT_STORE[safeId].selectedIndex=vi;
+  const v=VARIANT_STORE[safeId].variants[vi];
+  /* update price */
+  const priceEl=document.getElementById('price-'+safeId);
+  if(priceEl)priceEl.textContent='₹'+v.price;
+  /* toggle pills */
+  document.querySelectorAll(`[data-card="${safeId}"]`).forEach((el,i)=>{
+    el.classList.toggle('active',i===vi);
+  });
+}
+function selectVariantDrop(safeId,vi){
+  selectVariant(safeId,parseInt(vi));
+}
+function addVariantToCart(safeId,name){
+  const store=VARIANT_STORE[safeId];
+  const v=store?store.variants[store.selectedIndex||0]:{price:0,grams:0,image:''};
+  increaseQty(name,v.price,v.image,v.grams);
+  _syncCardQty(safeId,name);
+}
+function pcInc(safeId,name){
+  const store=VARIANT_STORE[safeId];
+  const v=store?store.variants[store.selectedIndex||0]:{price:0,grams:0,image:''};
+  increaseQty(name,v.price,v.image,v.grams);
+  _syncCardQty(safeId,name);
+}
+function pcDec(safeId,name){
+  decreaseQty(name);
+  _syncCardQty(safeId,name);
+}
+function _syncCardQty(safeId,name){
+  const cart=JSON.parse(localStorage.getItem('cart'))||{};
+  const qty=cart[name]?.qty||0;
+  const btn=document.getElementById('cartbtn-'+safeId);
+  const wrap=document.getElementById('qtywrap-'+safeId);
+  const num=document.getElementById('qtynum-'+safeId);
+  if(!btn||!wrap)return;
+  if(qty>0){
+    btn.style.display='none';
+    wrap.classList.add('active');
+    if(num)num.textContent=qty;
+  }else{
+    btn.style.display='';
+    wrap.classList.remove('active');
+  }
+}
+
+/* ── BEST SELLERS ── */
+function buildBestsellers(products){
+  const grid=document.getElementById("bestsellersGrid");
+  const bsList=['Kokam Dry Sharbat','Lemonade Dry Sharbat','Coconut Dry Sharbat','Kalakhatta Dry Sharbat'];
+  const cards=bsList.map(name=>products.find(p=>p.name===name)).filter(Boolean);
+  cards.forEach(p=>registerVariants(p));
+  grid.innerHTML=cards.map((p,i)=>buildCard(p,'⭐ Best Seller',i*.08)).join('');
+  observeReveal();
+}
+
+/* ── ALL PRODUCTS ── */
+function buildAllProducts(products){
+  const grid=document.getElementById("productsGrid");
+  products.forEach(p=>registerVariants(p));
+  grid.innerHTML=products.map((p,i)=>buildCard(p,null,(i%4)*.06)).join('');
+  observeReveal();loadAllQty();
+}
+/* ── TESTIMONIALS SLIDER ── */
+/* Tab switcher */
+function switchTestiTab(tab){
+  const reviewsPanel=document.getElementById("reviewsPanel");
+  const galleryPanel=document.getElementById("galleryPanel");
+  const tabReviews=document.getElementById("tabReviews");
+  const tabGallery=document.getElementById("tabGallery");
+  if(tab==="reviews"){
+    reviewsPanel.classList.add("active");
+    galleryPanel.classList.remove("active");
+    tabReviews.classList.add("active");
+    tabGallery.classList.remove("active");
+  } else {
+    galleryPanel.classList.add("active");
+    reviewsPanel.classList.remove("active");
+    tabGallery.classList.add("active");
+    tabReviews.classList.remove("active");
+  }
+}
+/* Lightbox */
+function openLightbox(el){
+  const lb=document.getElementById("galleryLightbox");
+  const content=document.getElementById("lightboxContent");
+  const img=el.querySelector("img");
+  const vid=el.querySelector("video");
+  if(img){content.innerHTML=`<img src="${img.src}" alt="${img.alt}">`;}
+  else if(vid){content.innerHTML=`<video src="${vid.src}" controls autoplay playsinline style="max-width:90vw;max-height:88vh;border-radius:14px;"></video>`;}
+  lb.classList.add("open");
+  document.body.style.overflow="hidden";
+}
+function closeLightbox(){
+  document.getElementById("galleryLightbox").classList.remove("open");
+  document.getElementById("lightboxContent").innerHTML="";
+  document.body.style.overflow="";
+}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeLightbox();});
+
+/* ── GALLERY CAROUSEL ── */
+(function(){
+  const track=document.getElementById("galleryTrack");
+  const dotsWrap=document.getElementById("galleryDots");
+  const prevBtn=document.getElementById("galleryPrev");
+  const nextBtn=document.getElementById("galleryNext");
+  if(!track)return;
+  const slides=Array.from(track.querySelectorAll(".gallery-slide"));
+  const total=slides.length;
+  let current=0,isDragging=false,dragStartX=0,dragStartOffset=0,currentOffset=0;
+
+  slides.forEach((_,i)=>{
+    const d=document.createElement("span");
+    if(i===0)d.classList.add("active");
+    d.addEventListener("click",()=>goGallery(i,true));
+    dotsWrap.appendChild(d);
+  });
+
+  function getSlideWidth(){return slides[0].offsetWidth+20;}
+  function getTargetOffset(idx){
+    const sw=getSlideWidth(),ww=track.parentElement.offsetWidth;
+    const raw=idx*sw-(ww/2-slides[0].offsetWidth/2)+80;
+    return Math.max(0,raw);
+  }
+  function updateClasses(){
+    slides.forEach((s,i)=>{
+      s.classList.remove("center","side");
+      s.classList.add(i===current?"center":"side");
+    });
+    dotsWrap.querySelectorAll("span").forEach((d,i)=>d.classList.toggle("active",i===current));
+  }
+  function applyOffset(o,anim){
+    currentOffset=o;
+    track.classList.toggle("smooth",anim);
+    track.style.transform=`translateX(-${o}px)`;
+  }
+  function goGallery(n,anim=true){
+    current=((n%total)+total)%total;
+    applyOffset(getTargetOffset(current),anim);
+    updateClasses();
+  }
+
+  prevBtn.addEventListener("click",e=>{e.stopPropagation();goGallery(current-1,true);});
+  nextBtn.addEventListener("click",e=>{e.stopPropagation();goGallery(current+1,true);});
+
+  track.addEventListener("mousedown",e=>{isDragging=true;dragStartX=e.clientX;dragStartOffset=currentOffset;track.classList.remove("smooth");e.preventDefault();});
+  window.addEventListener("mousemove",e=>{if(!isDragging)return;track.style.transform=`translateX(-${dragStartOffset-(e.clientX-dragStartX)}px)`;});
+  window.addEventListener("mouseup",e=>{if(!isDragging)return;isDragging=false;const dx=e.clientX-dragStartX;if(Math.abs(dx)>50)dx<0?goGallery(current+1,true):goGallery(current-1,true);else goGallery(current,true);});
+  track.addEventListener("touchstart",e=>{dragStartX=e.touches[0].clientX;dragStartOffset=currentOffset;isDragging=true;track.classList.remove("smooth");},{passive:true});
+  track.addEventListener("touchmove",e=>{if(!isDragging)return;track.style.transform=`translateX(-${dragStartOffset-(e.touches[0].clientX-dragStartX)}px)`;},{passive:true});
+  track.addEventListener("touchend",e=>{isDragging=false;const dx=e.changedTouches[0].clientX-dragStartX;if(Math.abs(dx)>50)dx<0?goGallery(current+1,true):goGallery(current-1,true);else goGallery(current,true);});
+
+  goGallery(0,false);
+})();
+(function(){
+  const track=document.getElementById("testiTrack"),dotsWrap=document.getElementById("testiDots");
+  const prevBtn=document.getElementById("testiPrev"),nextBtn=document.getElementById("testiNext");
+  const cards=Array.from(track.querySelectorAll(".testi-card"));
+  const total=cards.length;
+  let current=0,autoTimer=null,isHovered=false,isDragging=false,dragStartX=0,dragStartOffset=0,currentOffset=0;
+  cards.forEach((_,i)=>{const d=document.createElement("span");if(i===0)d.classList.add("active");d.addEventListener("click",()=>goTesti(i,true));dotsWrap.appendChild(d);});
+  function getCardWidth(){return cards[0].offsetWidth+24;}
+  function getTargetOffset(idx){const cw=getCardWidth(),ww=track.parentElement.offsetWidth,raw=idx*cw-(ww/2-cards[0].offsetWidth/2)+80;return Math.max(0,raw);}
+  function updateClasses(){cards.forEach((c,i)=>{c.classList.remove("center","side");if(i===current)c.classList.add("center");else c.classList.add("side");});document.querySelectorAll("#testiDots span").forEach((d,i)=>d.classList.toggle("active",i===current));}
+  function applyOffset(o,anim){currentOffset=o;if(anim)track.classList.add("smooth");else track.classList.remove("smooth");track.style.transform=`translateX(-${o}px)`;}
+  function goTesti(n,anim=true){current=((n%total)+total)%total;applyOffset(getTargetOffset(current),anim);updateClasses();}
+  function startAuto(){clearInterval(autoTimer);autoTimer=setInterval(()=>{if(!isHovered&&!isDragging)goTesti(current+1,true);},3000);}
+  prevBtn.addEventListener("click",()=>{goTesti(current-1,true);clearInterval(autoTimer);startAuto();});
+  nextBtn.addEventListener("click",()=>{goTesti(current+1,true);clearInterval(autoTimer);startAuto();});
+  track.addEventListener("mouseenter",()=>{isHovered=true;});
+  track.addEventListener("mouseleave",()=>{isHovered=false;});
+  track.addEventListener("mousedown",e=>{isDragging=true;dragStartX=e.clientX;dragStartOffset=currentOffset;track.classList.remove("smooth");e.preventDefault();});
+  window.addEventListener("mousemove",e=>{if(!isDragging)return;track.style.transform=`translateX(-${dragStartOffset-(e.clientX-dragStartX)}px)`;});
+  window.addEventListener("mouseup",e=>{if(!isDragging)return;isDragging=false;const dx=e.clientX-dragStartX;if(Math.abs(dx)>50)dx<0?goTesti(current+1,true):goTesti(current-1,true);else goTesti(current,true);startAuto();});
+  track.addEventListener("touchstart",e=>{dragStartX=e.touches[0].clientX;dragStartOffset=currentOffset;isDragging=true;track.classList.remove("smooth");},{passive:true});
+  track.addEventListener("touchmove",e=>{if(!isDragging)return;track.style.transform=`translateX(-${dragStartOffset-(e.touches[0].clientX-dragStartX)}px)`;},{passive:true});
+  track.addEventListener("touchend",e=>{isDragging=false;const dx=e.changedTouches[0].clientX-dragStartX;if(Math.abs(dx)>50)dx<0?goTesti(current+1,true):goTesti(current-1,true);else goTesti(current,true);startAuto();});
+  goTesti(0,false);startAuto();
+})();
+
+/* ── CART ── */
+let toastTimer=null;
+function showCartToast(name,price,image){
+  const t=document.getElementById("cartToast");
+  document.getElementById("cartToastName").innerText=name;
+  document.getElementById("cartToastPrice").innerText="₹"+price+" each";
+  const el=document.getElementById("cartToastImg");
+  if(image&&el){if(el.tagName==="DIV")el.outerHTML=`<img class="cart-toast-img" id="cartToastImg" src="${image}" onerror="this.outerHTML='<div class=cart-toast-img-placeholder id=cartToastImg>🛒</div>'">`;else el.src=image;}
+  t.classList.add("show");
+  if(toastTimer)clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove("show"),3200);
+}
+function increaseQty(name,price,image,grams){
+  let cart=JSON.parse(localStorage.getItem("cart"))||{};
+  if(!cart[name])cart[name]={qty:1,price,image,grams};else cart[name].qty++;
+  localStorage.setItem("cart",JSON.stringify(cart));updateQtyUI(name);updateCartCount();showCartToast(name,price,image);
+}
+function decreaseQty(name){
+  let cart=JSON.parse(localStorage.getItem("cart"))||{};
+  if(!cart[name])return;cart[name].qty--;
+  if(cart[name].qty<=0)delete cart[name];
+  localStorage.setItem("cart",JSON.stringify(cart));updateQtyUI(name);updateCartCount();
+}
+function updateQtyUI(name){
+  const cart=JSON.parse(localStorage.getItem("cart"))||{};
+  const safeId=getSafeId(name);const qty=cart[name]?.qty||0;
+  document.querySelectorAll(`[id="qty-${safeId}"],[id="qty-bs-${safeId}"]`).forEach(el=>el.innerText=qty);
+}
+function updateCartCount(){
+  const cart=JSON.parse(localStorage.getItem("cart"))||{};
+  let t=0;Object.values(cart).forEach(i=>t+=i.qty);
+  document.querySelectorAll("#cartCount,#mobCartCount").forEach(el=>el.textContent=t);
+}
+function loadAllQty(){
+  const cart=JSON.parse(localStorage.getItem("cart"))||{};
+  Object.keys(cart).forEach(name=>{
+    updateQtyUI(name);
+    /* restore qty counter on cards */
+    const safeId=getSafeId(name);
+    _syncCardQty(safeId,name);
+  });
+  updateCartCount();
+}
+
+function openWhatsAppChannel(){
+  window.open(
+    "https://whatsapp.com/channel/0029VbBlKHCDeONGN7mjrY0A",
+    "_blank"
+  );
+}
+
+function openTaleWhatsApp(){
+  window.open("https://talelightmedia.in/", "_blank");
+}
+
+function handleBuy(n,p,img,g){increaseQty(n,p,img,g);}
+window.onload=loadAllQty;
+</script>
+</body>
+</html>

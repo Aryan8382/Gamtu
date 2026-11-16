@@ -1,0 +1,51 @@
+# BEGIN LSCACHE
+## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteRule litespeed/debug/.*\.log$ - [F,L]
+RewriteRule \.litespeed_conf\.dat - [F,L]
+</IfModule>
+<IfModule LiteSpeed>
+CacheLookup on
+RewriteRule .* - [E=Cache-Control:no-autoflush]
+
+### marker ASYNC start ###
+RewriteCond %{REQUEST_URI} /wp-admin/admin-ajax\.php
+RewriteCond %{QUERY_STRING} action=async_litespeed
+RewriteRule .* - [E=noabort:1]
+### marker ASYNC end ###
+
+### marker DROPQS start ###
+CacheKeyModify -qs:fbclid
+CacheKeyModify -qs:gclid
+CacheKeyModify -qs:utm*
+CacheKeyModify -qs:_ga
+### marker DROPQS end ###
+
+</IfModule>
+## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
+# END LSCACHE
+# BEGIN NON_LSCACHE
+## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
+## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
+# END NON_LSCACHE
+RewriteEngine On
+
+# Redirect root → /home
+RewriteCond %{THE_REQUEST} \s/+\s [NC]
+RewriteRule ^$ /home [L,R=301]
+
+# Home
+RewriteRule ^home$ index.html [L]
+
+# Static pages
+RewriteRule ^about$ about.html [L]
+RewriteRule ^cart$ cart.html [L]
+RewriteRule ^choose-us$ choose-us.html [L]
+RewriteRule ^ghee$ ghee.html [L]
+RewriteRule ^gir-cow-ghee$ gir-cow-ghee.html [L]
+RewriteRule ^orders$ orders.html [L]
+RewriteRule ^product$ product.html [L]
+RewriteRule ^profile$ profile.html [L]
+RewriteRule ^red-chilly-sauce$ red-chilly-sauce.html [L]
+RewriteRule ^sign-up$ sign-up.html [L]

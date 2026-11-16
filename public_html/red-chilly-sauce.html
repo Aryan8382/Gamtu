@@ -1,0 +1,513 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Red Chilly Sauce — Gamtu India</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --brown:#432514;--brown2:#5a3a28;
+  --sand:#cab9a7;--sand-light:rgba(202,185,167,0.25);
+  --cream:#faf6f1;--white:#fff;
+  --red:#c0392b;--red-light:#fde8e8;
+}
+body{font-family:"Poppins",sans-serif;background:#fff;overflow-x:hidden;color:#333;}
+
+.navbar{position:fixed;top:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:10px 40px;background:var(--sand);z-index:1000;transition:box-shadow 0.3s,background 0.3s;}
+.navbar.scrolled{box-shadow:0 4px 24px rgba(67,37,20,0.18);background:rgba(202,185,167,0.96);backdrop-filter:blur(10px);}
+.navbar-logo img{height:56px;display:block;}
+.nav-menu{display:flex;align-items:center;gap:28px;}
+.nav-menu a{text-decoration:none;color:var(--brown);font-size:15px;font-weight:500;transition:0.3s;}
+.nav-menu a:hover{opacity:0.7;}
+.cart-icon{font-size:15px;font-weight:600;color:var(--brown);cursor:pointer;display:flex;align-items:center;gap:4px;}
+.menu-toggle{display:none;flex-direction:column;justify-content:center;cursor:pointer;width:30px;height:22px;position:relative;z-index:1001;}
+.menu-toggle span{position:absolute;width:100%;height:2.5px;background:var(--brown);border-radius:2px;transition:all 0.3s;}
+.menu-toggle span:nth-child(1){top:0;}.menu-toggle span:nth-child(2){top:9px;}.menu-toggle span:nth-child(3){top:18px;}
+@media(max-width:900px){
+  .navbar{padding:10px 20px;}.menu-toggle{display:flex;}
+  .nav-menu{position:absolute;top:76px;left:0;width:100%;background:var(--sand);flex-direction:column;align-items:center;padding:20px 0;gap:12px;opacity:0;visibility:hidden;transform:translateY(-10px);transition:0.3s;z-index:999;}
+  .nav-menu.active{opacity:1;visibility:visible;transform:translateY(0);}
+}
+
+.breadcrumb{margin-top:76px;padding:14px 40px;background:var(--cream);font-size:13px;color:#9a8070;}
+.breadcrumb a{color:var(--brown);text-decoration:none;font-weight:500;}
+.breadcrumb a:hover{text-decoration:underline;}
+.breadcrumb span{margin:0 7px;color:#c0b0a0;}
+@media(max-width:600px){.breadcrumb{padding:14px 20px;}}
+
+/* HERO — red accent gradient */
+.product-hero{padding:48px 40px 64px;background:linear-gradient(135deg,#fdf4f3 0%,#f5e0de 50%,#ecc8c5 100%);position:relative;overflow:hidden;}
+.product-hero::before{content:"";position:absolute;top:-120px;right:-120px;width:500px;height:500px;border-radius:50%;background:rgba(192,57,43,0.06);pointer-events:none;}
+.product-hero-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;position:relative;z-index:2;}
+
+.product-gallery{display:flex;flex-direction:column;gap:16px;}
+.gallery-main{border-radius:28px;overflow:hidden;background:#fff;box-shadow:0 20px 60px rgba(192,57,43,0.14);position:relative;}
+.gallery-main img{width:100%;height:440px;object-fit:contain;padding:32px;display:block;transition:transform 0.6s ease;}
+.gallery-main:hover img{transform:scale(1.04);}
+.gallery-badge{position:absolute;top:20px;left:20px;background:var(--red);color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:6px 15px;border-radius:20px;z-index:3;box-shadow:0 4px 14px rgba(192,57,43,0.35);}
+.gallery-thumbs{display:flex;gap:10px;}
+.gallery-thumb{width:72px;height:72px;border-radius:12px;overflow:hidden;border:2px solid transparent;cursor:pointer;transition:all 0.3s;background:#fff;box-shadow:0 4px 12px rgba(67,37,20,0.1);}
+.gallery-thumb img{width:100%;height:100%;object-fit:contain;padding:6px;}
+.gallery-thumb.active,.gallery-thumb:hover{border-color:var(--red);}
+
+.product-info{padding:8px 0;}
+.product-category-tag{display:inline-flex;align-items:center;gap:6px;background:var(--red-light);color:var(--red);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;padding:6px 16px;border-radius:20px;margin-bottom:16px;border:1px solid rgba(192,57,43,0.2);}
+.product-title{font-family:"Playfair Display",serif;font-size:42px;color:var(--brown);line-height:1.15;margin-bottom:12px;font-weight:700;}
+.product-sku{font-size:12px;color:#a09080;margin-bottom:16px;}
+.product-rating{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.stars{color:#f59e0b;font-size:18px;letter-spacing:2px;}
+.rating-count{font-size:13px;color:#9a8070;}
+.rating-count a{color:var(--brown);text-decoration:none;font-weight:600;}
+.product-price-block{background:#fff;border-radius:18px;padding:20px 24px;margin-bottom:24px;box-shadow:0 4px 20px rgba(67,37,20,0.06);border:1px solid rgba(202,185,167,0.3);}
+.price-main{font-size:38px;font-weight:700;color:var(--brown);line-height:1;}
+.price-per{font-size:13px;color:#9a8070;margin-top:4px;}
+.price-savings{display:inline-block;background:#fde8e8;color:var(--red);font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;margin-top:8px;}
+
+/* Heat level indicator */
+.heat-selector{margin-bottom:24px;}
+.selector-label{font-size:13px;font-weight:600;color:var(--brown);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.8px;}
+.heat-indicator{display:flex;align-items:center;gap:12px;}
+.heat-dots{display:flex;gap:5px;}
+.heat-dot{width:20px;height:20px;border-radius:50%;background:#e0d5cc;transition:background 0.3s;}
+.heat-dot.active{background:var(--red);}
+.heat-label{font-size:14px;font-weight:600;color:var(--red);}
+
+.weight-selector{margin-bottom:24px;}
+.weight-options{display:flex;gap:10px;flex-wrap:wrap;}
+.weight-opt{padding:10px 20px;border-radius:25px;border:2px solid rgba(202,185,167,0.5);font-size:13px;font-weight:600;color:var(--brown);cursor:pointer;transition:all 0.25s;background:#fff;font-family:"Poppins",sans-serif;}
+.weight-opt:hover,.weight-opt.active{border-color:var(--brown);background:var(--brown);color:#fff;}
+
+.cart-section{display:flex;gap:14px;align-items:center;margin-bottom:28px;}
+.qty-wrap{display:flex;align-items:center;border:2px solid var(--brown);border-radius:30px;overflow:hidden;}
+.qty-wrap button{width:44px;height:50px;border:none;background:var(--brown);color:#fff;font-size:22px;font-weight:700;cursor:pointer;transition:background 0.2s;display:flex;align-items:center;justify-content:center;}
+.qty-wrap button:hover{background:var(--brown2);}
+.qty-wrap span{min-width:50px;text-align:center;font-size:17px;font-weight:700;color:var(--brown);}
+.add-cart-btn{flex:1;padding:15px 24px;background:var(--brown);color:#fff;border:none;border-radius:30px;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.3s;font-family:"Poppins",sans-serif;box-shadow:0 8px 24px rgba(67,37,20,0.3);display:flex;align-items:center;justify-content:center;gap:8px;}
+.add-cart-btn:hover{background:var(--brown2);transform:translateY(-3px);}
+.wishlist-btn{width:52px;height:52px;border-radius:50%;border:2px solid rgba(202,185,167,0.5);background:#fff;cursor:pointer;font-size:22px;display:flex;align-items:center;justify-content:center;transition:all 0.3s;flex-shrink:0;}
+.wishlist-btn:hover{border-color:var(--brown);transform:scale(1.1);}
+
+.trust-inline{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
+.trust-badge{display:flex;align-items:center;gap:6px;background:var(--cream);border:1px solid rgba(202,185,167,0.4);border-radius:20px;padding:7px 14px;font-size:12px;font-weight:500;color:var(--brown);}
+.highlights{border-radius:18px;border:1px solid rgba(202,185,167,0.35);overflow:hidden;}
+.highlight-item{display:flex;align-items:flex-start;gap:13px;padding:14px 18px;border-bottom:1px solid rgba(202,185,167,0.2);transition:background 0.2s;}
+.highlight-item:last-child{border-bottom:none;}
+.highlight-item:hover{background:var(--cream);}
+.hi-icon{font-size:22px;flex-shrink:0;margin-top:1px;}
+.hi-text strong{display:block;font-size:13px;font-weight:600;color:var(--brown);margin-bottom:2px;}
+.hi-text span{font-size:12px;color:#9a8070;}
+
+@media(max-width:1000px){.product-hero-inner{grid-template-columns:1fr;gap:40px;}}
+@media(max-width:600px){
+  .product-hero{padding:32px 20px 48px;}
+  .product-title{font-size:30px;}
+  .price-main{font-size:28px;}
+  .gallery-main img{height:300px;}
+  .cart-section{flex-wrap:wrap;}
+  .add-cart-btn{min-width:100%;}
+}
+
+/* TABS */
+.tabs-section{padding:64px 40px;background:#fff;max-width:1200px;margin:0 auto;}
+.tabs-nav{display:flex;gap:0;border-bottom:2px solid rgba(202,185,167,0.35);margin-bottom:40px;overflow-x:auto;}
+.tab-btn{padding:14px 28px;font-size:14px;font-weight:600;color:#9a8070;cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all 0.25s;white-space:nowrap;font-family:"Poppins",sans-serif;}
+.tab-btn.active{color:var(--brown);border-bottom-color:var(--brown);}
+.tab-pane{display:none;animation:fadeTab 0.35s ease;}
+.tab-pane.active{display:block;}
+@keyframes fadeTab{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.desc-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+.desc-text h3{font-family:"Playfair Display",serif;font-size:28px;color:var(--brown);margin-bottom:16px;}
+.desc-text p{font-size:15px;color:#6b4b35;line-height:1.9;margin-bottom:16px;}
+.desc-text ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.desc-text ul li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:#6b4b35;line-height:1.7;}
+.desc-text ul li::before{content:"✓";color:var(--brown);font-weight:700;flex-shrink:0;margin-top:2px;}
+.desc-visual{border-radius:22px;background:linear-gradient(135deg,#fdf4f3,#ecc8c5);padding:28px;display:flex;flex-direction:column;gap:16px;}
+.desc-stat{background:#fff;border-radius:14px;padding:16px 20px;box-shadow:0 4px 16px rgba(67,37,20,0.08);}
+.desc-stat-num{font-family:"Playfair Display",serif;font-size:36px;color:var(--brown);font-weight:700;line-height:1;}
+.desc-stat-label{font-size:12px;color:#9a8070;margin-top:4px;}
+@media(max-width:700px){.desc-grid{grid-template-columns:1fr;}.tabs-section{padding:48px 20px;}}
+
+.nutrition-table{max-width:520px;}
+.nutrition-table h3{font-family:"Playfair Display",serif;font-size:24px;color:var(--brown);margin-bottom:20px;}
+.nut-row{display:flex;justify-content:space-between;align-items:center;padding:12px 18px;border-bottom:1px solid rgba(202,185,167,0.3);font-size:14px;}
+.nut-row:first-of-type{background:var(--brown);color:#fff;border-radius:10px 10px 0 0;font-weight:700;}
+.nut-row:last-of-type{border-bottom:none;}
+.nut-row:nth-child(even):not(:first-of-type){background:var(--cream);}
+.nut-val{color:var(--brown);font-weight:700;}
+.nut-row:first-of-type .nut-val{color:#fff;}
+
+.ing-section{max-width:600px;}
+.ing-section h3{font-family:"Playfair Display",serif;font-size:24px;color:var(--brown);margin-bottom:20px;}
+.ing-bar-track{display:flex;height:16px;border-radius:10px;overflow:hidden;gap:3px;margin-bottom:12px;}
+.ing-bar-segment{height:100%;}
+.ing-pills{display:flex;flex-wrap:wrap;gap:8px;}
+.ing-pill{display:flex;align-items:center;gap:6px;padding:6px 14px;background:#fff;border-radius:20px;border:1px solid rgba(202,185,167,0.4);font-size:12px;font-weight:600;color:var(--brown);}
+.ing-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+
+.reviews-header{display:flex;align-items:center;gap:40px;margin-bottom:36px;padding:28px;background:var(--cream);border-radius:20px;}
+.reviews-avg{text-align:center;}
+.reviews-avg .big-num{font-family:"Playfair Display",serif;font-size:64px;color:var(--brown);line-height:1;font-weight:700;}
+.reviews-avg .big-stars{font-size:24px;color:#f59e0b;letter-spacing:2px;}
+.reviews-avg p{font-size:13px;color:#9a8070;margin-top:4px;}
+.rating-bars{flex:1;}
+.rbar-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;font-size:13px;color:var(--brown);}
+.rbar-track{flex:1;height:8px;background:rgba(202,185,167,0.4);border-radius:4px;overflow:hidden;}
+.rbar-fill{height:100%;background:linear-gradient(90deg,var(--red),#e74c3c);border-radius:4px;}
+.review-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.rev-card{background:var(--cream);border-radius:18px;padding:24px;border:1px solid rgba(202,185,167,0.3);}
+.rev-stars{color:#f59e0b;font-size:14px;margin-bottom:8px;}
+.rev-text{font-size:14px;color:#6b4b35;line-height:1.75;margin-bottom:16px;}
+.rev-author{display:flex;align-items:center;gap:10px;}
+.rev-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--sand),var(--brown));display:flex;align-items:center;justify-content:center;font-size:18px;}
+.rev-name{font-size:13px;font-weight:600;color:var(--brown);}
+.rev-date{font-size:11px;color:#9a8070;}
+@media(max-width:700px){.reviews-header{flex-direction:column;gap:20px;}.review-cards{grid-template-columns:1fr;}}
+
+/* ALSO LIKE */
+.also-like-section{padding:72px 40px 96px;background:var(--cream);}
+.section-header{text-align:center;margin-bottom:48px;}
+.section-eyebrow{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:var(--brown);opacity:0.55;margin-bottom:8px;}
+.section-title{font-family:"Playfair Display",serif;font-size:34px;color:var(--brown);}
+.underline-bar{width:54px;height:3px;background:var(--brown);margin:12px auto 0;border-radius:2px;}
+.also-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;max-width:1200px;margin:0 auto;}
+.also-card{background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 4px 20px rgba(67,37,20,0.07);transition:all 0.4s;border:1px solid rgba(202,185,167,0.2);cursor:pointer;display:flex;flex-direction:column;}
+.also-card:hover{transform:translateY(-10px);box-shadow:0 24px 56px rgba(67,37,20,0.15);}
+.also-img{height:200px;background:var(--cream);overflow:hidden;}
+.also-img img{width:100%;height:100%;object-fit:contain;padding:20px;transition:transform 0.5s;}
+.also-card:hover .also-img img{transform:scale(1.08);}
+.also-body{padding:16px 18px 20px;flex:1;display:flex;flex-direction:column;}
+.also-name{font-size:14px;font-weight:600;color:var(--brown);margin-bottom:6px;}
+.also-price{font-size:18px;font-weight:700;color:var(--brown);}
+.also-weight{font-size:12px;color:#9a8070;margin-bottom:12px;}
+.also-add{width:100%;padding:10px;background:var(--brown);color:#fff;border:none;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.25s;font-family:"Poppins",sans-serif;margin-top:12px;}
+.also-add:hover{background:var(--brown2);}
+@media(max-width:1000px){.also-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.also-grid{grid-template-columns:repeat(2,1fr);gap:14px;}.also-like-section{padding:52px 16px 72px;}}
+
+/* CART TOAST */
+.cart-toast{position:fixed;bottom:30px;right:30px;z-index:99999;display:flex;align-items:center;gap:14px;background:#fff;border-radius:18px;padding:16px 22px 16px 18px;box-shadow:0 20px 60px rgba(67,37,20,0.22);border-left:5px solid var(--brown);min-width:300px;max-width:380px;transform:translateX(140%) scale(0.92);opacity:0;transition:all 0.42s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;}
+.cart-toast.show{transform:translateX(0) scale(1);opacity:1;pointer-events:auto;}
+.cart-toast-img{width:56px;height:56px;border-radius:12px;object-fit:contain;flex-shrink:0;background:var(--cream);padding:4px;}
+.cart-toast-body{flex:1;}
+.cart-toast-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#22c55e;margin-bottom:3px;display:flex;align-items:center;gap:5px;}
+.cart-toast-label::before{content:"";width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;}
+.cart-toast-name{font-size:15px;font-weight:700;color:var(--brown);margin-bottom:3px;}
+.cart-toast-price{font-size:13px;color:#7a6a5c;}
+.cart-toast-go{background:var(--brown);color:#fff;border:none;padding:8px 16px;border-radius:10px;font-size:13px;font-weight:700;font-family:"Poppins",sans-serif;cursor:pointer;flex-shrink:0;}
+@media(max-width:500px){.cart-toast{bottom:16px;right:10px;left:10px;min-width:unset;max-width:unset;}}
+
+.sticky-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid rgba(202,185,167,0.4);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;z-index:500;transform:translateY(100%);transition:transform 0.4s ease;box-shadow:0 -8px 30px rgba(67,37,20,0.12);}
+.sticky-bar.visible{transform:translateY(0);}
+.sticky-bar-info{display:flex;align-items:center;gap:14px;}
+.sticky-bar-img{width:46px;height:46px;object-fit:contain;background:var(--cream);border-radius:10px;padding:4px;}
+.sticky-bar-name{font-size:15px;font-weight:700;color:var(--brown);}
+.sticky-bar-price{font-size:14px;color:#9a8070;}
+.sticky-bar-btn{padding:13px 32px;background:var(--brown);color:#fff;border:none;border-radius:25px;font-size:14px;font-weight:700;cursor:pointer;font-family:"Poppins",sans-serif;transition:all 0.25s;white-space:nowrap;}
+.sticky-bar-btn:hover{background:var(--brown2);}
+@media(max-width:600px){.sticky-bar{padding:12px 16px;}}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+</style>
+<script src="assets/title-case.js" defer></script>
+</head>
+<body>
+
+<div class="cart-toast" id="cartToast">
+  <img class="cart-toast-img" id="cartToastImg" src="" alt="">
+  <div class="cart-toast-body">
+    <div class="cart-toast-label">Added to Cart</div>
+    <div class="cart-toast-name" id="cartToastName">Product</div>
+    <div class="cart-toast-price" id="cartToastPrice">₹0</div>
+  </div>
+  <button class="cart-toast-go" onclick="window.location.href='cart.html'">View Cart →</button>
+</div>
+
+<div class="sticky-bar" id="stickyBar">
+  <div class="sticky-bar-info">
+    <img class="sticky-bar-img" id="stickyImg" src="https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_45_13-AM.png" alt="">
+    <div>
+      <div class="sticky-bar-name">Red Chilly Sauce</div>
+      <div class="sticky-bar-price" id="stickyPrice">₹ 150</div>
+    </div>
+  </div>
+  <button class="sticky-bar-btn" onclick="addToCartMain()">🛒 Add to Cart</button>
+</div>
+
+<nav class="navbar" id="mainNav">
+  <div class="navbar-logo"><img src="https://gamtuindia.com/wp-content/uploads/2026/03/Gamtu-Logo-PNG-1.png" alt="Gamtu"></div>
+  <div class="nav-menu" id="navMenu">
+    <a href="index.html">Home</a>
+    <a href="product.html">Products</a>
+    <a href="about.html">About Us</a>
+    <div class="cart-icon" onclick="window.location.href='cart.html'">🛒 <span id="cartCount">0</span></div>
+  </div>
+  <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a><span>›</span>
+  <a href="product.html">Products</a><span>›</span>
+  <a href="product.html">Sauces</a><span>›</span>
+  Red Chilly Sauce
+</div>
+
+<section class="product-hero" id="productHeroSection">
+  <div class="product-hero-inner">
+    <div class="product-gallery">
+      <div class="gallery-main">
+        <div class="gallery-badge">🌶️ Hot & Fiery</div>
+        <img id="mainImg" src="https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_45_13-AM.png" alt="Red Chilly Sauce">
+      </div>
+      <div class="gallery-thumbs">
+        <div class="gallery-thumb active"><img src="https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_45_13-AM.png" alt=""></div>
+        <div class="gallery-thumb"><img src="https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_45_13-AM.png" alt=""></div>
+        <div class="gallery-thumb"><img src="https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_45_13-AM.png" alt=""></div>
+      </div>
+    </div>
+
+    <div class="product-info">
+      <div class="product-category-tag">🌶️ Authentic Sauce · No Preservatives</div>
+      <h1 class="product-title">Red Chilly Sauce</h1>
+      <div class="product-sku">SKU: SAU008</div>
+      <div class="product-rating">
+        <span class="stars">★★★★★</span>
+        <span class="rating-count">4.7 · <a href="#tab-reviews">74 Reviews</a></span>
+      </div>
+      <div class="product-price-block">
+        <div class="price-main" id="prodPrice">₹ 150</div>
+        <div class="price-per">500g jar · Free shipping above ₹999</div>
+        <div class="price-savings">🌶️ 100% real chillies — no artificial colour</div>
+      </div>
+
+      <!-- Heat Level -->
+      <div class="heat-selector">
+        <div class="selector-label">Heat Level</div>
+        <div class="heat-indicator">
+          <div class="heat-dots">
+            <div class="heat-dot active"></div>
+            <div class="heat-dot active"></div>
+            <div class="heat-dot active"></div>
+            <div class="heat-dot"></div>
+            <div class="heat-dot"></div>
+          </div>
+          <span class="heat-label">🌶️🌶️🌶️ Medium-Hot</span>
+        </div>
+      </div>
+
+      <div class="weight-selector">
+        <div class="selector-label">Select Pack Size</div>
+        <div class="weight-options">
+          <button class="weight-opt active" onclick="selectWeight(this,'500g',150)">500 g</button>
+          <button class="weight-opt" onclick="selectWeight(this,'1 kg',280)">1 kg</button>
+          <button class="weight-opt" onclick="selectWeight(this,'2 kg (Bulk)',520)">2 kg (Bulk)</button>
+        </div>
+      </div>
+
+      <div class="cart-section">
+        <div class="qty-wrap">
+          <button onclick="changeQty(-1)">−</button>
+          <span id="qtyDisplay">1</span>
+          <button onclick="changeQty(1)">+</button>
+        </div>
+        <button class="add-cart-btn" onclick="addToCartMain()">🛒 Add to Cart</button>
+        <button class="wishlist-btn">🤍</button>
+      </div>
+
+      <div class="trust-inline">
+        <div class="trust-badge">🚫 No MSG</div>
+        <div class="trust-badge">🌿 No Preservatives</div>
+        <div class="trust-badge">🎨 No Artificial Colour</div>
+        <div class="trust-badge">🌶️ Real Chillies</div>
+      </div>
+
+      <div class="highlights">
+        <div class="highlight-item">
+          <div class="hi-icon">🌶️</div>
+          <div class="hi-text">
+            <strong>Made with Real Red Chillies</strong>
+            <span>Sun-dried, whole red chillies ground fresh — no chilli powder blends or artificial colour</span>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="hi-icon">🚫</div>
+          <div class="hi-text">
+            <strong>Clean Label — No Nasties</strong>
+            <span>Zero MSG, zero artificial preservatives, zero synthetic food colour — just pure ingredients</span>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="hi-icon">🥘</div>
+          <div class="hi-text">
+            <strong>Versatile Cooking Sauce</strong>
+            <span>Perfect for Indo-Chinese dishes, momos, spring rolls, noodles, and dipping sauces</span>
+          </div>
+        </div>
+        <div class="highlight-item">
+          <div class="hi-icon">🫙</div>
+          <div class="hi-text">
+            <strong>Wide Mouth Glass Jar</strong>
+            <span>Easy-scoop glass packaging — no plastic, no metallic aftertaste, stays fresh longer</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tabs-section">
+  <div class="tabs-nav">
+    <button class="tab-btn active" onclick="switchTab('desc',this)">Description</button>
+    <button class="tab-btn" onclick="switchTab('nutrition',this)">Nutrition</button>
+    <button class="tab-btn" onclick="switchTab('ingredients',this)">Ingredients</button>
+    <button class="tab-btn" onclick="switchTab('reviews',this)">Reviews</button>
+    <button class="tab-btn" onclick="switchTab('howto',this)">How to Use</button>
+  </div>
+
+  <div class="tab-pane active" id="tab-desc">
+    <div class="desc-grid">
+      <div class="desc-text">
+        <h3>The Perfect Fiery Companion</h3>
+        <p>Gamtu's Red Chilly Sauce is crafted from fresh, sun-dried whole red chillies sourced directly from farms in Guntur and Byadagi — the two most prized chilli-growing regions of India. The chillies are cleaned, sun-dried, and stone-ground with a blend of natural spices to create a sauce that is authentically fiery, deeply flavourful, and beautifully red — without a drop of artificial colour.</p>
+        <p>Unlike commercial sauces that rely on processed chilli extracts, our sauce uses whole-ground chillies, which means you get the full spectrum of flavour — not just heat. Perfect for Indo-Chinese cooking, as a dipping sauce for momos and spring rolls, or as a table condiment.</p>
+        <ul>
+          <li>Made from Guntur + Byadagi sun-dried whole chillies</li>
+          <li>Zero MSG, zero preservatives, zero artificial colour</li>
+          <li>Stone-ground for a coarser, authentic texture</li>
+          <li>Medium-hot heat level — flavourful, not punishing</li>
+          <li>Ideal for Indo-Chinese, momos, noodles, and snacks</li>
+          <li>Shelf life: 6 months refrigerated after opening</li>
+        </ul>
+      </div>
+      <div class="desc-visual">
+        <div class="desc-stat"><div class="desc-stat-num">100%</div><div class="desc-stat-label">Whole real chillies — no extracts</div></div>
+        <div class="desc-stat"><div class="desc-stat-num">0</div><div class="desc-stat-label">Artificial preservatives or colour</div></div>
+        <div class="desc-stat"><div class="desc-stat-num">3/5</div><div class="desc-stat-label">Heat rating — medium hot</div></div>
+        <div class="desc-stat"><div class="desc-stat-num">500g</div><div class="desc-stat-label">Glass jar — eco-friendly packaging</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-pane" id="tab-nutrition">
+    <div class="nutrition-table">
+      <h3>Nutritional Information</h3>
+      <p style="font-size:13px;color:#9a8070;margin-bottom:20px;">Per 100g serving · Values are approximate</p>
+      <div class="nut-row"><span>Nutrient</span><span class="nut-val">Amount</span></div>
+      <div class="nut-row"><span>Energy</span><span class="nut-val">82 kcal</span></div>
+      <div class="nut-row"><span>Total Fat</span><span class="nut-val">1.8 g</span></div>
+      <div class="nut-row"><span>Saturated Fat</span><span class="nut-val">0.3 g</span></div>
+      <div class="nut-row"><span>Carbohydrates</span><span class="nut-val">14.2 g</span></div>
+      <div class="nut-row"><span>Sugar</span><span class="nut-val">6.1 g</span></div>
+      <div class="nut-row"><span>Dietary Fibre</span><span class="nut-val">3.4 g</span></div>
+      <div class="nut-row"><span>Protein</span><span class="nut-val">2.1 g</span></div>
+      <div class="nut-row"><span>Sodium</span><span class="nut-val">680 mg</span></div>
+      <div class="nut-row"><span>Vitamin C</span><span class="nut-val">76 mg</span></div>
+      <div class="nut-row"><span>Capsaicin</span><span class="nut-val">Medium</span></div>
+    </div>
+  </div>
+
+  <div class="tab-pane" id="tab-ingredients">
+    <div class="ing-section" id="ingredientsSection">
+      <h3>Ingredient Composition</h3>
+      <p style="font-size:14px;color:#9a8070;margin-bottom:22px;">Loading ingredient data...</p>
+    </div>
+  </div>
+
+  <div class="tab-pane" id="tab-reviews">
+    <div class="reviews-header">
+      <div class="reviews-avg">
+        <div class="big-num">4.7</div>
+        <div class="big-stars">★★★★★</div>
+        <p>74 reviews</p>
+      </div>
+      <div class="rating-bars">
+        <div class="rbar-row"><span style="min-width:40px">5 ★</span><div class="rbar-track"><div class="rbar-fill" style="width:78%"></div></div><span>58</span></div>
+        <div class="rbar-row"><span style="min-width:40px">4 ★</span><div class="rbar-track"><div class="rbar-fill" style="width:14%"></div></div><span>10</span></div>
+        <div class="rbar-row"><span style="min-width:40px">3 ★</span><div class="rbar-track"><div class="rbar-fill" style="width:5%"></div></div><span>4</span></div>
+        <div class="rbar-row"><span style="min-width:40px">2 ★</span><div class="rbar-track"><div class="rbar-fill" style="width:2%"></div></div><span>1</span></div>
+        <div class="rbar-row"><span style="min-width:40px">1 ★</span><div class="rbar-track"><div class="rbar-fill" style="width:1%"></div></div><span>1</span></div>
+      </div>
+    </div>
+    <div class="review-cards">
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">Finally a red chilly sauce without that fake chemical heat! This one has real flavour — the chillies are deeply flavoured, slightly smoky, with a clean burn. My momo parties are a hit now because of this sauce!</p><div class="rev-author"><div class="rev-avatar">🙎‍♀️</div><div><div class="rev-name">Kavya Nair</div><div class="rev-date">Bangalore · March 2026</div></div></div></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">I run a small restaurant and switched to Gamtu's sauce for all our Indo-Chinese dishes. My customers noticed the difference immediately — the colour is naturally vibrant and the flavour is so much more authentic. Ordering the bulk 2kg pack next.</p><div class="rev-author"><div class="rev-avatar">🧔</div><div><div class="rev-name">Farhan Sheikh</div><div class="rev-date">Mumbai · February 2026</div></div></div></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">The texture is brilliant — slightly coarse from stone grinding, you can see the real chilli pieces. No gloopy artificial texture like commercial brands. This is the real deal. Love that it comes in a glass jar too.</p><div class="rev-author"><div class="rev-avatar">🙎</div><div><div class="rev-name">Pooja Mishra</div><div class="rev-date">Delhi · March 2026</div></div></div></div>
+      <div class="rev-card"><div class="rev-stars">★★★★★</div><p class="rev-text">Great heat level — not too mild, not aggressive. You can actually taste the chilli flavour rather than just pain! Used it as a pizza sauce base and it was incredible. Very happy with this purchase.</p><div class="rev-author"><div class="rev-avatar">👨</div><div><div class="rev-name">Arjun Verma</div><div class="rev-date">Pune · January 2026</div></div></div></div>
+    </div>
+  </div>
+
+  <div class="tab-pane" id="tab-howto">
+    <div style="max-width:680px">
+      <h3 style="font-family:'Playfair Display',serif;font-size:28px;color:var(--brown);margin-bottom:24px;">Best Ways to Use Red Chilly Sauce</h3>
+      <div style="display:flex;flex-direction:column;gap:18px;">
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:18px;background:var(--cream);border-radius:14px;"><div style="font-size:28px;flex-shrink:0;">🥟</div><div><strong style="display:block;color:var(--brown);margin-bottom:4px;">Momo & Dumpling Dipping Sauce</strong><span style="font-size:14px;color:#6b4b35;line-height:1.7;">Mix with a touch of sesame oil and garlic for the ultimate momo dipping sauce. The natural chilli flavour complements the steamed wrapper perfectly.</span></div></div>
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:18px;background:var(--cream);border-radius:14px;"><div style="font-size:28px;flex-shrink:0;">🍜</div><div><strong style="display:block;color:var(--brown);margin-bottom:4px;">Indo-Chinese Noodles & Fried Rice</strong><span style="font-size:14px;color:#6b4b35;line-height:1.7;">Add 2-3 tablespoons while stir-frying noodles or fried rice. The real chilli gives an authentic restaurant-quality Indo-Chinese flavour.</span></div></div>
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:18px;background:var(--cream);border-radius:14px;"><div style="font-size:28px;flex-shrink:0;">🫙</div><div><strong style="display:block;color:var(--brown);margin-bottom:4px;">Table Condiment</strong><span style="font-size:14px;color:#6b4b35;line-height:1.7;">Serve alongside pakoras, samosas, sandwiches, and wraps. Much healthier and tastier than commercial ketchup.</span></div></div>
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:18px;background:var(--cream);border-radius:14px;"><div style="font-size:28px;flex-shrink:0;">🍕</div><div><strong style="display:block;color:var(--brown);margin-bottom:4px;">Pizza & Wraps Base</strong><span style="font-size:14px;color:#6b4b35;line-height:1.7;">Use as a spicy pizza sauce base or wrap spread for an extra kick. Pairs beautifully with cheese and roasted vegetables.</span></div></div>
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:18px;background:var(--cream);border-radius:14px;"><div style="font-size:28px;flex-shrink:0;">❄️</div><div><strong style="display:block;color:var(--brown);margin-bottom:4px;">Storage</strong><span style="font-size:14px;color:#6b4b35;line-height:1.7;">Refrigerate after opening. Keeps fresh for 4-6 months. Always use a clean, dry spoon. Unopened shelf life: 12 months in a cool, dark place.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="also-like-section">
+  <div class="section-header reveal">
+    <span class="section-eyebrow">Explore More</span>
+    <h2 class="section-title">You Might Also Like</h2>
+    <div class="underline-bar"></div>
+  </div>
+  <div class="also-grid" id="alsoGrid">
+    <div style="grid-column:1/-1;text-align:center;padding:40px;color:#9a8070;">Loading...</div>
+  </div>
+</section>
+
+<script>
+let currentQty=1, currentPrice=150, currentName="Red Chilly Sauce", currentImg="https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_45_13-AM.png", currentWeight="500g";
+let toastTimer=null;
+
+function updateCartCount(){const cart=JSON.parse(localStorage.getItem("cart"))||{};let t=0;Object.values(cart).forEach(i=>t+=i.qty);document.getElementById("cartCount").innerText=t;}
+function showToast(name,price,img){
+  document.getElementById("cartToastName").innerText=name;document.getElementById("cartToastPrice").innerText="₹"+price+" each";document.getElementById("cartToastImg").src=img;
+  const t=document.getElementById("cartToast");t.classList.add("show");if(toastTimer)clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),3200);
+}
+function addToCartMain(){
+  let cart=JSON.parse(localStorage.getItem("cart"))||{};const key=currentName+"_"+currentWeight;
+  if(!cart[key])cart[key]={qty:currentQty,price:currentPrice,image:currentImg,grams:500,displayName:currentName+" ("+currentWeight+")"};else cart[key].qty+=currentQty;
+  localStorage.setItem("cart",JSON.stringify(cart));updateCartCount();showToast(currentName+" ("+currentWeight+")",currentPrice,currentImg);
+}
+function changeQty(d){currentQty=Math.max(1,currentQty+d);document.getElementById("qtyDisplay").innerText=currentQty;}
+function selectWeight(el,w,p){document.querySelectorAll(".weight-opt").forEach(b=>b.classList.remove("active"));el.classList.add("active");currentWeight=w;currentPrice=p;document.getElementById("prodPrice").innerText="₹ "+p;document.getElementById("stickyPrice").innerText="₹ "+p;}
+function switchTab(id,btn){document.querySelectorAll(".tab-pane").forEach(p=>p.classList.remove("active"));document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));document.getElementById("tab-"+id).classList.add("active");btn.classList.add("active");}
+document.getElementById("menuToggle").addEventListener("click",function(){this.classList.toggle("active");document.getElementById("navMenu").classList.toggle("active");});
+window.addEventListener("scroll",()=>{document.getElementById("mainNav").classList.toggle("scrolled",window.scrollY>50);const h=document.getElementById("productHeroSection").getBoundingClientRect().bottom;document.getElementById("stickyBar").classList.toggle("visible",h<0);});
+document.querySelectorAll(".gallery-thumb").forEach(t=>{t.addEventListener("click",()=>{document.querySelectorAll(".gallery-thumb").forEach(x=>x.classList.remove("active"));t.classList.add("active");document.getElementById("mainImg").src=t.querySelector("img").src;});});
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add("visible");}),{threshold:0.1});
+document.querySelectorAll(".reveal").forEach(el=>obs.observe(el));
+
+const ING_COLORS=["#D85A30","#1D9E75","#378ADD","#D4537E","#7F77DD","#BA7517","#639922"];
+const fallbackImgs={"A2 Gir Cow Ghee":"https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_34_26-AM.png","Instant Jain Soup":"https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_42_46-AM.png","Premium Dry Fruits":"https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_43_12-AM.png","Herbal Wellness Tea":"https://gamtuindia.com/wp-content/uploads/2026/03/ChatGPT-Image-Mar-2-2026-12_46_05-AM.png"};
+const PRODUCT_PAGES={"Gir Cow Ghee":"gir-cow-ghee.html","A2 Ghee":"gir-cow-ghee.html","Almonds":"almonds.html","Red Chilly Sauce":"red-chilly-sauce.html"};
+
+fetch("https://api.totalkaro.com/api/public/products/6").then(r=>r.json()).then(products=>{
+  const p=products.find(x=>x.id==88||x.name.toLowerCase().includes("red chilly"));
+  if(p&&p.ingredients&&p.ingredients.length){
+    const segs=p.ingredients.map((ing,i)=>`<div class="ing-bar-segment" style="flex:${ing.percentage};background:${ING_COLORS[i%ING_COLORS.length]};border-radius:${i===0?'8px 0 0 8px':i===p.ingredients.length-1?'0 8px 8px 0':'0'}"></div>`).join('');
+    const pills=p.ingredients.map((ing,i)=>`<div class="ing-pill"><div class="ing-dot" style="background:${ING_COLORS[i%ING_COLORS.length]}"></div>${ing.name} <strong>${ing.percentage}%</strong></div>`).join('');
+    document.getElementById("ingredientsSection").innerHTML=`<h3>Ingredient Composition</h3><p style="font-size:14px;color:#9a8070;margin-bottom:22px;">Natural composition per batch</p><div style="margin-bottom:12px"><div class="ing-bar-track">${segs}</div></div><div class="ing-pills">${pills}</div>`;
+  } else {
+    document.getElementById("ingredientsSection").innerHTML=`<h3>Ingredient Composition</h3><p style="font-size:14px;color:#6b4b35;margin-bottom:16px;">Primary ingredients as used in our recipe:</p><div class="ing-pills"><div class="ing-pill"><div class="ing-dot" style="background:#D85A30"></div>Red Chillies <strong>62%</strong></div><div class="ing-pill"><div class="ing-dot" style="background:#1D9E75"></div>Vinegar <strong>15%</strong></div><div class="ing-pill"><div class="ing-dot" style="background:#378ADD"></div>Garlic <strong>10%</strong></div><div class="ing-pill"><div class="ing-dot" style="background:#D4537E"></div>Salt <strong>8%</strong></div><div class="ing-pill"><div class="ing-dot" style="background:#7F77DD"></div>Spices <strong>5%</strong></div></div>`;
+  }
+  const others=products.filter(x=>x.id!=(p&&p.id||88)).slice(2,6);
+  document.getElementById("alsoGrid").innerHTML=others.map(op=>{
+    const img=op.image||fallbackImgs[op.name]||"https://via.placeholder.com/250";
+    const pg=PRODUCT_PAGES[op.name]||"product.html";
+    return`<div class="also-card reveal" onclick="window.location.href='${pg}'"><div class="also-img" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#faf6f1 0%,#f0e6d8 100%);padding:16px;text-align:center;"><div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:#432514;line-height:1.3;">${op.name}</div></div><div class="also-body"><div class="also-name">${op.name}</div><div class="also-price">₹ ${op.price}</div><div class="also-weight">${op.grams||0} gm</div><button class="also-add" onclick="event.stopPropagation();quickAdd('${op.name}',${op.price},'${img}')">+ Add to Cart</button></div></div>`;
+  }).join('');
+  document.querySelectorAll(".reveal").forEach(el=>obs.observe(el));
+});
+function quickAdd(name,price,img){let cart=JSON.parse(localStorage.getItem("cart"))||{};if(!cart[name])cart[name]={qty:1,price,image:img};else cart[name].qty++;localStorage.setItem("cart",JSON.stringify(cart));updateCartCount();showToast(name,price,img);}
+updateCartCount();
+</script>
+</body>
+</html>
